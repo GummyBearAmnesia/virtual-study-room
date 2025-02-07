@@ -1,0 +1,76 @@
+.login-container {
+    margin-top: 130px;
+    position: relative;
+}
+.heading1 {
+    border: 3px solid #F2BAC9;
+    padding: 20px;
+    text-align: center;
+    background-color: #F2BAC9;
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: fixed;
+    margin: 0;
+    box-sizing: border-box; /* Ensures padding doesn't push it down */
+    z-index: 1000;
+}
+body {
+    /* margin: 0;
+    padding: 0; */
+    display: flex;
+    justify-content: center;  /* Center horizontally */
+    align-items: center;
+    margin: 0;
+    background-color: #F6F0F0;
+}
+.login-form {
+    border: 5px solid #FFE7AC;
+    width: 480px;
+    height: 480px;
+    border-radius: 50px;
+    background-color: #FFE7AC;
+    display: flex;                  /* Use flexbox */
+    flex-direction: column;        /* Stack elements vertically */
+    align-items: center;           /* Center elements horizontally */
+    position: relative;            /* Maintain relative positioning for absolute children */
+}
+.heading2 {
+    margin-top: 10px;
+    width: 100%;                  /* Full width to keep heading centered */
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+.username-text, .password-text {
+    width: 100%;
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-left: 50px;
+}
+.username-field, .password-field {
+    width: 85%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    border: none;
+    border-radius: 40px;
+    padding: 18px;
+    text-align: center;
+    background-color: white;
+    border-color: white;
+    outline: none;
+}
+.submit-button {
+    margin-top: 40px;
+    padding: 15px 20px;
+    width: 20%;
+    border: none;
+    border-radius: 40px;
+    background-color: #F2BAC9;
+    color: black;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 700;
+}
