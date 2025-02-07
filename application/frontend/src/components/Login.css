@@ -36,7 +36,7 @@ body {
     position: relative;            /* Maintain relative positioning for absolute children */
 }
 .heading2 {
-    margin-top: 10px;
+    margin-top: 30px;
     width: 100%;                  /* Full width to keep heading centered */
     text-align: center;
     margin-bottom: 10px;
@@ -63,7 +63,7 @@ body {
     outline: none;
 }
 .submit-button {
-    margin-top: 40px;
+    margin-top: 30px;
     padding: 15px 20px;
     width: 20%;
     border: none;
