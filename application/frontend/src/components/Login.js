@@ -2,13 +2,20 @@ import React, { useState } from "react";
 import "./Login.css";
 
 function Login() {
-    // TODO: CHECK WHAT THESE DO
     // TODO: TEST THIS FILE?
+
+    //fields that the user will input
     const [formData, setFormData] = useState({ username: "", password: "" });
 
+    //when the username/password fields are edited, update form data
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+
+    //when the login button is clicked - send form data to backend django form
+    const handleLogin = async () => {
+        console.log(formData);
+    }
 
     return (
         <div className="login-container">
@@ -33,7 +40,7 @@ function Login() {
             onChange={handleChange}
             />
 
-            <button type="button" className="submit-button">LOGIN</button>
+            <button type="button" className="submit-button" onClick={handleLogin}>LOGIN</button>
         </form>
         </div>
     );

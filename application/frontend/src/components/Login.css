@@ -15,14 +15,12 @@
     width: 100%;
     position: fixed;
     margin: 0;
-    box-sizing: border-box; /* Ensures padding doesn't push it down */
+    box-sizing: border-box; /* ensures padding doesn't push it down */
     z-index: 1000;
 }
 body {
-    /* margin: 0;
-    padding: 0; */
     display: flex;
-    justify-content: center;  /* Center horizontally */
+    justify-content: center;  /* center horizontally */
     align-items: center;
     margin: 0;
     background-color: #F6F0F0;
@@ -33,14 +31,14 @@ body {
     height: 480px;
     border-radius: 50px;
     background-color: #FFE7AC;
-    display: flex;                  /* Use flexbox */
-    flex-direction: column;        /* Stack elements vertically */
-    align-items: center;           /* Center elements horizontally */
-    position: relative;            /* Maintain relative positioning for absolute children */
+    display: flex;                  
+    flex-direction: column;        /* stack elements vertically */
+    align-items: center;           /* center elements horizontally */
+    position: relative;
 }
 .heading2 {
     margin-top: 30px;
-    width: 100%;                  /* Full width to keep heading centered */
+    width: 100%;                  
     text-align: center;
     margin-bottom: 10px;
     font-family: 'Impact', sans-serif;
