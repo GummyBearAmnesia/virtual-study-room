@@ -6,6 +6,7 @@ from api.models import Friends, User, Status, Rewards
 import pytz
 from faker import Faker
 from random import choice, randint
+from api.models.motivational_message import MotivationalMessage
 
 '''
 For a default users we can simply create a json file and upload the data (have a look on tests/fixtures) 
@@ -38,11 +39,13 @@ class Command(BaseCommand):
         self. generating_rewards()
         print("Database seeded successfully!")
         
+        self.seed_motivationalMessage()
 
     def generate_random_friends(self):
         friends_count = Friends.objects.count()
         while friends_count < self.FRIENDS_COUNT:
             print(f"Seeding friend {friends_count}/{self.FRIENDS_COUNT}", end='\r')
+
             self.generate_friends()
             friends_count = Friends.objects.count()
         print("Friends seeding complete.")
@@ -120,3 +123,20 @@ class Command(BaseCommand):
 
     def create_email(self, first_name, last_name):
         return first_name.lower() + '.' + last_name.lower() + '@example.org'
+    
+    def seed_motivationalMessage(self):
+        messages = [
+            "Believe in yourself and all that you are.",
+            "Hard work beats talent when talent doesn’t work hard.",
+            "You are capable of more than you know.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+            "Don't watch the clock; do what it does. Keep going.",
+            "Difficulties in life are intended to make us better, not bitter.",
+            "You don’t have to be great to start, but you have to start to be great.",
+        ]
+
+        for msg in messages:
+            MotivationalMessage.objects.get_or_create(text=msg)
+
+        self.stdout.write(self.style.SUCCESS(f'Successfully seeded {len(messages)} motivational messages.'))
+
