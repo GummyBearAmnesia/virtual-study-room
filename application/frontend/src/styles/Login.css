@@ -1,6 +1,13 @@
 .login-container {
     margin-top: 130px;
-    position: relative;
+    display: flex;
+    justify-content: center;  /* center horizontally */
+    align-items: center;
+    margin: 0;
+    background-color: #F6F0F0;
+    min-height: 100vh; /* Ensures it takes the full viewport height */
+    width: 100vw; /* Ensures it spans the full width */
+    flex-direction: column;
 }
 .heading1 {
     border: 3px solid #F2BAC9;
@@ -18,13 +25,6 @@
     box-sizing: border-box; /* ensures padding doesn't push it down */
     z-index: 1000;
 }
-body {
-    display: flex;
-    justify-content: center;  /* center horizontally */
-    align-items: center;
-    margin: 0;
-    background-color: #F6F0F0;
-}
 .login-form {
     border: 5px solid #FFE7AC;
     width: 480px;
@@ -35,6 +35,7 @@ body {
     flex-direction: column;        /* stack elements vertically */
     align-items: center;           /* center elements horizontally */
     position: relative;
+    margin-top: 80px;
 }
 .heading2 {
     margin-top: 30px;
