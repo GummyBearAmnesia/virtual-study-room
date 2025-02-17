@@ -8,6 +8,7 @@ import Welcome from "./pages/Welcome";
 import Dashboard from "./pages/Dashboard";
 import GroupStudyPage from "./pages/GroupStudyPage";
 import MotivationalMessage from "./pages/Motivation";
+import GroupStudyPage from "./pages/GroupStudyPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/motivational-message" element={<MotivationalMessage />} />
         <Route path="/group-study" element={<GroupStudyPage />} />
         <Route path="/motivational-message" element={<MotivationalMessage />} />
+        <Route path="/group-study" element={<GroupStudyPage />} />
       </Routes>
     </Router>
   );
