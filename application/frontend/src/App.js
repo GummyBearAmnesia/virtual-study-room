@@ -6,6 +6,7 @@ import Welcome from "./pages/Welcome";
 import Dashboard from "./pages/Dashboard";
 import GroupStudyPage from "./pages/GroupStudyPage";
 import MotivationalMessage from "./pages/Motivation";
+import GroupStudyPage from "./pages/GroupStudyPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ToDoList from "./pages/ToDoList";
 import Dashboard from "./pages/Dashboard";
