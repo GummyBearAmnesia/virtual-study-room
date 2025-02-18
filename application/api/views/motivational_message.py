@@ -7,6 +7,7 @@ from random import randint
 @api_view(['GET'])
 def motivationalMessage(request):
     numMessages = MotivationalMessage.objects.count()
+    # choosing a random motivational message from the database
     motivation = MotivationalMessage.objects.get(id = randint(1, numMessages))
     message = motivation.text
     return Response({'message': message})

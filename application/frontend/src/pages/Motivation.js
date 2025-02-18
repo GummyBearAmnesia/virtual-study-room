@@ -9,10 +9,11 @@ const MotivationalMessage = () => {
     axios
       .get("http://127.0.0.1:8000/api/motivational-message/")
       .then((response) => {
+        // when the message from the backend is recieved, update message that is displayed on the screen
         setMessage(response.data.message);
       })
       .catch((error) => {
-        console.error("Error fetching message:", error);
+        // if any errors occur, the message below will be displayed to the user
         setMessage("Failed to load message");
       });
   }, []);
