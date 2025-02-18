@@ -3,19 +3,20 @@ import "../styles/Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+
 function Signup() {
 
     //fields that the user will input
     const [formData, setFormData] = useState({ firstname: "", lastname: "", email: "", username: "", password: "", passwordConfirmation: "", acceptTerms: false });
+    const navigate = useNavigate();
 
-    //when the username/password fields are edited, update form data
+    //when the fields are edited, update form data
     const handleChange = (e) => {
         const { name, type, checked, value } = e.target;
         setFormData({
             ...formData,
             [name]: type === "checkbox" ? checked : value
         });
-        //setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     //when the signup button is clicked - send form data to backend django form
@@ -29,11 +30,12 @@ function Signup() {
             const response = await axios.post("http://127.0.0.1:8000/api/signup/", formData, {
                 headers: { "Content-Type": "application/json" }
             });
-
+            
             alert(response.data.message); // Show success message
+            navigate('/dashboard');
         } catch (error) {
             if (error.response) {
-                alert(error.response.data.error); // Show error from backend
+                alert(error.response.data.error); 
             } else {
                 console.error("Signup error:", error);
                 alert("An error occurred. Please try again.");
