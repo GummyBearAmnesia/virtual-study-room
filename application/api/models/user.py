@@ -6,6 +6,7 @@ Custom User Model & Manager. Extends AbstractBaseUser to create custom User mode
 
 Primary key     :   user_id (Auto-incremented)
 Required fields :   firstname, lastname, email, username, password, description
+Required fields :   firstname, lastname, email, username, password, description
 
 WHEN USING: 
     -   settings.AUTH_USER_MODEL for models OR
