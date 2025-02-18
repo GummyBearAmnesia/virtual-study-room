@@ -1,0 +1,26 @@
+.message-container {
+  margin-top: 130px;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+  margin: 0;
+  background-color: #f6f0f0;
+  min-height: 100vh; /* Ensures it takes the full viewport height */
+  width: 100vw; /* Ensures it spans the full width */
+  flex-direction: column;
+}
+.message-card {
+  border: 5px solid #ffe7ac;
+  width: 700px;
+  height: 100px;
+  border-radius: 50px;
+  background-color: #ffe7ac;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+  display: flex;
+  position: relative;
+  margin-top: 80px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: large;
+  text-align: center;
+}
