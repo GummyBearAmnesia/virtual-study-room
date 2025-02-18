@@ -10,9 +10,33 @@ function GroupStudyPage(){
             </div>
             <div className="column">
                 <div className="user-list-container">
-                    <h2 class="heading">Study Room:</h2>
-                    <div class="user-row">
-                       
+                    <h2 className="heading"> Study Room: </h2>
+                    <h3 className='heading2'> Code: </h3>
+                    <div className='users'>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
+                        <div class="user-circle">
+                            <div class="user-image">JD</div>
+                            <div class="user-name">John Doe</div>
+                        </div>
                     </div>
                 </div>
                 <div className="motivationMessage-container">Motivation Message</div>

@@ -40,26 +40,84 @@
 }
 
 .user-list-container{
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
+    display: grid;
+    grid-template-areas: 
+        "header"
+        "code"
+        "users";
+    grid-template-rows: auto auto 1fr;
     height: 690px;
     width: 600px;
+    align-items: start;
 }
 
-.user-row {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.heading{
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    grid-area: header;
     width: 600px;
-    height: 45px;
+    height: 70px;
     border-radius: 40px;
     background-color: #DFFAE1;
     font-family: 'Impact', sans-serif;
-    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.heading2{
+    display: flex;
+    align-items: center;
     justify-content: center;
+    justify-self: center;
+    grid-area: code;
+    width: 100px;
+    height: 70px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    font-family: 'Impact', sans-serif;
+    margin-top: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.users {
+    border: 2px solid purple;
+    display: flex;
+    flex-wrap: wrap; 
+    grid-area: users;  
+    justify-content: flex-start;  
+    align-items: center; 
+    padding: 5px;  
+    gap: 5px;
+}
+
+.user-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;  
+    margin: 5px; 
+    text-align: center;
+    border: 2px solid blue;
+}
+
+.user-image {
+    width: 100px;
+    height: 100px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+
+.user-name {
+    margin-top: 8px;
+    font-size: 16px;
+    font-family: 'Impact', sans-serif;
 }
 
 .motivationMessage-container{
