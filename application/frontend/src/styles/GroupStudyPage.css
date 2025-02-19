@@ -237,7 +237,27 @@ label {
     width: 320px;
     border-radius: 40px;
     background-color: #FFFFFF;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex-direction: column;
+}
+
+.timer-start-button{
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: 900;
+    color: black;
+    background-color: #DFFAE1;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.timer-start-button.active { /*changing the button's appearance when being clicked on*/
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .custom-container{

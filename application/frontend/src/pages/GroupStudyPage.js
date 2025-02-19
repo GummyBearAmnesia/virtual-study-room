@@ -33,8 +33,6 @@ function GroupStudyPage(){
         });
         setTodos(newTodos);
     };
-
-
     return (
         <div className='groupStudyRoom-container'>
             <div className="column">
@@ -101,7 +99,17 @@ function GroupStudyPage(){
                 <div className="motivationMessage-container">Motivation Message</div>
             </div>
             <div className="column">
-                <div className="timer-container">Timer</div>
+                <div className="timer-container">
+                    <div style={{ flex: 1, width: '100%' }}>{/* This div takes all available space */}
+                    </div>
+                    <button
+                        type="button"
+                        className={`timer-start-button ${isActive ? 'active' : ''}`}
+                        onMouseDown={handleMouseDown}
+                        onMouseUp={handleMouseUp}  // Ensures the button resets its state
+                        onMouseLeave={handleMouseUp}  // Resets state if mouse leaves the button while pressed
+                    >Start</button> 
+                </div>
                 <div className="custom-container">Customization Options</div>
                 <div className="chatBox-container">Chat Box</div>
             </div>
