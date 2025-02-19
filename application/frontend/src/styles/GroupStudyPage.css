@@ -24,11 +24,116 @@
 }
 
 .todo-list-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
     height: 500px;
+    max-height: 500px;
     width: 320px;
     background-color: #FFFFFF;
     border-radius: 40px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.todo-list-container::-webkit-scrollbar {
+    width: 10px; /* Controls the width of the scrollbar */
+}
+
+.todo-list-container::-webkit-scrollbar-thumb {
+    border-radius: 40px; /* Optional: adds rounded corners to the scrollbar */
+    opacity: 0; /* Makes the scrollbar invisible when not in use */
+    transition: opacity 0.2s; /* Smooth transition for opacity changes */
+}
+
+.todo-list-container:hover::-webkit-scrollbar-thumb,
+.todo-list-container:active::-webkit-scrollbar-thumb {
+    background-color: #96d8c8; /* Color of scrollbar when hovered */
+}
+
+.todo-list-container::-webkit-scrollbar-thumb:hover {
+    background-color: #96d8c8; /* Color of scrollbar when hovered */
+}
+
+
+.todo-heading{
+    margin: -5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Impact', sans-serif;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin: 10px 0;
+    font-size: 16px;
+    background-color: #F2BAC9;
+    border-radius: 40px;
+    flex-wrap: wrap;
+}
+
+.checkbox-wrapper-28 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between checkbox and text */
+}
+
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border: 2px solid white;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    background-color: #FFFFFF;
+    border: 2px solid white;
+}
+
+.checkbox:checked::after {
+    content: '✔'; /* Unicode character for check mark */
+    font-size: 16px; /* Adjust size to fit inside the checkbox */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:  #BAF2E9;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+}
+
+.add-more-button {
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #FFFFFF;
+    background-color: #BAF2E9;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.add-more-button.active { /*changing the button's appearance when being clicked on*/
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .sharedMaterials-container{
@@ -36,7 +141,8 @@
     width: 320px;
     background-color: #FFFFFF;
     border-radius: 40px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 16px;
 }
 
 .user-list-container{
@@ -80,7 +186,6 @@
 }
 
 .users {
-    border: 2px solid purple;
     display: flex;
     flex-wrap: wrap; 
     grid-area: users;  
@@ -98,7 +203,6 @@
     width: 120px;  
     margin: 5px; 
     text-align: center;
-    border: 2px solid blue;
 }
 
 .user-image {
