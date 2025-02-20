@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.forms import ValidationError
+from api.models import List
 
 '''
 toDoList Model:
@@ -23,12 +24,12 @@ str Method:
 '''
 
 class toDoList(models.Model):
-    list_id = models.AutoField(primary_key=True)
+    #list_id = models.AutoField(primary_key=True)
+    list = models.ForeignKey(List, on_delete=models.CASCADE)
     title = models.CharField(max_length=255, blank=False)
     content = models.CharField(max_length=1000, blank=True)
     creation_date = models.DateField(auto_now_add=True)
     is_completed = models.BooleanField(default=False)
-    is_shared = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if self.pk: 

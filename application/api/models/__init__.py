@@ -1,4 +1,4 @@
-from .todo_list_user import *
+from .todo_list_user import List, Permission
 from .motivational_message import MotivationalMessage
 from .choices import Status
 from .friend_request import Friends
