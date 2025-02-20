@@ -37,7 +37,7 @@ function Signup() {
             if (error.response) {
                 alert(error.response.data.error); 
             } else {
-                console.error("Signup error:", error);
+                //console.error("Signup error:", error);
                 alert("An error occurred. Please try again.");
             }
         }

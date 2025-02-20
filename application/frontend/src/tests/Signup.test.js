@@ -14,8 +14,14 @@ describe("SignUpForm", () => {
     
 
     beforeEach(() => {
-        jest.spyOn(window, "alert").mockImplementation(() => { }); // ✅ Fix applied
+        jest.spyOn(console, 'error').mockImplementation(() => { });  // Mock console.error to prevent actual logging
+        jest.spyOn(window, 'alert').mockImplementation(() => { });    // Mock alert
     });
+
+    afterEach(() => {
+        jest.restoreAllMocks();  // Clean up mocks after each test
+    });
+
     
     test('renders form correctly', () => {
         
@@ -208,6 +214,21 @@ describe("SignUpForm", () => {
 
         await waitFor(() => {
             expect(window.alert).toHaveBeenCalledWith("Passwords do not match");
+        });
+    });
+
+    test('shows alert if empty username is wrong', async () => {
+        submitFormSuccessfully();
+
+        axios.post.mockRejectedValueOnce(new Error("Network Error"));
+
+        const username = screen.getByLabelText("Username:");
+        fireEvent.change(username, { target: { value: "" } });
+        const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
+        fireEvent.click(buttonElement);
+
+        await waitFor(() => {
+            expect(window.alert).toHaveBeenCalledWith("An error occurred. Please try again.");
         });
     });
 
