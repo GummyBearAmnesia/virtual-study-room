@@ -48,62 +48,62 @@ function Signup() {
             <h1 className="heading1">The Study Spot</h1>
             <form className="signup-form">
                 <h1 className="heading2">Signup</h1>
-                <label htmlFor="firstname" className="firstname-text">First name:</label>
+                <label htmlFor="firstname" className="label-text">First name:</label>
                 <input
                     id= "firstname"
                     type="text"
                     name="firstname"
-                    className="firstname-field"
+                    className="input-field"
                     value={formData.firstname}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="lastname" className="lastname-text">Last name:</label>
+                <label htmlFor="lastname" className="label-text">Last name:</label>
                 <input
                     id="lastname"
                     type="text"
                     name="lastname"
-                    className="lastname-field"
+                    className="input-field"
                     value={formData.lastname}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="username" className="username-text">Username:</label>
+                <label htmlFor="username" className="label-text">Username:</label>
                 <input
                     id="username"
                     type="text"
                     name="username"
-                    className="username-field"
+                    className="input-field"
                     value={formData.username}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="email" className="email-text">Email:</label>
+                <label htmlFor="email" className="label-text">Email:</label>
                 <input
                     id="email"
                     type="text"
                     name="email"
-                    className="email-field"
+                    className="input-field"
                     value={formData.email}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="password" className="password-text">Password:</label>
+                <label htmlFor="password" className="label-text">Password:</label>
                 <input
                     id="password"
                     type="password"
                     name="password"
-                    className="password-field"
+                    className="input-field"
                     value={formData.password}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="passwordConfirmation" className="password-text">Confirm password:</label>
+                <label htmlFor="passwordConfirmation" className="label-text">Confirm password:</label>
                 <input
                     id="passwordConfirmation"
                     type="password"
                     name="passwordConfirmation"
-                    className="password-field"
+                    className="input-field"
                     value={formData.passwordConfirmation}
                     onChange={handleChange}
                 />
