@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand, CommandError
 from api.models.motivational_message import MotivationalMessage
 
 from django.core.management import call_command
-from api.models import Friends, User, Status, toDoList, Permission, MotivationalMessage, Rewards, StudySession, SessionUser
+from api.models import Friends, User, Status, toDoList, Permission, MotivationalMessage, Rewards, StudySession, SessionUser, List
 
 import pytz
 from faker import Faker
@@ -27,6 +27,7 @@ class Command(BaseCommand):
     TODOLIST_COUNT = 10
     SESSION_COUNT = 5
     SESSION_USER_COUNT = 25
+    LIST_COUNT = 2
 
     def __init__(self):
         super().__init__()
@@ -46,6 +47,7 @@ class Command(BaseCommand):
         self.generating_users()
         self.generate_random_friends()
         self.generating_rewards()
+        self.generate_random_Lists()
         self.generate_random_toDoLists()
         self.generate_toDoListUsers()
         self.generating_study_sessions()
@@ -160,34 +162,75 @@ class Command(BaseCommand):
         titles = ['Finish cw1', 'catch with with week 2', 'Project Task: create a database']
         contents = ['complete week 2 and week3', 'ask TA for help', 'clone github repo', 'understand travelling salesman problem', '']
 
+        list = choice(List.objects.all())
         title = choice(titles)
         content = choice(contents)
         is_completed = choice([True, False])
-        is_shared = choice([True, False])
+        #is_shared = choice([True, False])
 
         self.create_toDoLists({
+            'list': list,
             'title':title,
             'content':content,
             'is_completed':is_completed,
-            'is_shared': is_shared
+            #'is_shared': is_shared
         })
 
     def create_toDoLists(self, data):
         try:
             toDoLists = toDoList.objects.create(
+                list = data["list"],
                 title = data["title"],
                 content = data["content"],
                 is_completed = data["is_completed"],
-                is_shared = data["is_shared"]
+                #is_shared = data["is_shared"]
             )
             return toDoLists
         except Exception as e:
             self.stdout.write(self.style.ERROR(f'Error creating ToDoList: {str(e)}'))
 
 
+    def generate_random_Lists(self):
+        toDoList_count = List.objects.count()
+        print(
+            f"Initial List count: {toDoList_count}, Target: {self.LIST_COUNT}")
+
+        while toDoList_count < self.LIST_COUNT:
+            print(f"Seeding ToDoLists {toDoList_count}/{self.LIST_COUNT}")
+            self.generate_Lists()
+            toDoList_count = List.objects.count()
+
+        print(
+            f"Final List count: {toDoList_count}, Target: {self.LIST_COUNT}")
+        print("List seeding complete.")
+    
+    def generate_Lists(self):
+        titles = ['Finish cw1', 'catch with with week 2',
+                  'Project Task: create a database']
+
+        name = choice(titles)
+
+        is_shared = choice([True, False])
+        self.create_Lists({
+            'name': name,
+            'is_shared': is_shared
+        })
+
+    def create_Lists(self, data):
+        try:
+            Lists = List.objects.create(
+                name=data["name"],
+                is_shared=data["is_shared"]
+            )
+            return Lists
+        except Exception as e:
+            self.stdout.write(self.style.ERROR(
+                f'Error creating ToDoList: {str(e)}'))
+
+
     def generate_toDoListUsers(self):
         users = list(User.objects.all())
-        toDoLists = list(toDoList.objects.all())
+        toDoLists = list(List.objects.all())
         permission_types = [Permission.READ, Permission.WRITE]
 
         print(f"Starting to seed permissions for {len(toDoLists)} toDoLists and {len(users)} users.")
