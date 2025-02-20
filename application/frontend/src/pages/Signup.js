@@ -48,26 +48,29 @@ function Signup() {
             <h1 className="heading1">The Study Spot</h1>
             <form className="signup-form">
                 <h1 className="heading2">Signup</h1>
-                <label className="username-text">First name:</label>
+                <label htmlFor="firstname" className="firstname-text">First name:</label>
                 <input
+                    id= "firstname"
                     type="text"
                     name="firstname"
-                    className="username-field"
+                    className="firstname-field"
                     value={formData.firstname}
                     onChange={handleChange}
                 />
 
-                <label className="username-text">Last name:</label>
+                <label htmlFor="lastname" className="lastname-text">Last name:</label>
                 <input
+                    id="lastname"
                     type="text"
                     name="lastname"
-                    className="username-field"
+                    className="lastname-field"
                     value={formData.lastname}
                     onChange={handleChange}
                 />
 
-                <label className="username-text">Username:</label>
+                <label htmlFor="username" className="username-text">Username:</label>
                 <input
+                    id="username"
                     type="text"
                     name="username"
                     className="username-field"
@@ -75,17 +78,19 @@ function Signup() {
                     onChange={handleChange}
                 />
 
-                <label className="username-text">Email:</label>
+                <label htmlFor="email" className="email-text">Email:</label>
                 <input
+                    id="email"
                     type="text"
                     name="email"
-                    className="username-field"
+                    className="email-field"
                     value={formData.email}
                     onChange={handleChange}
                 />
 
-                <label className="password-text">Password:</label>
+                <label htmlFor="password" className="password-text">Password:</label>
                 <input
+                    id="password"
                     type="password"
                     name="password"
                     className="password-field"
@@ -93,8 +98,9 @@ function Signup() {
                     onChange={handleChange}
                 />
 
-                <label className="password-text">Confirm password:</label>
+                <label htmlFor="passwordConfirmation" className="password-text">Confirm password:</label>
                 <input
+                    id="passwordConfirmation"
                     type="password"
                     name="passwordConfirmation"
                     className="password-field"
