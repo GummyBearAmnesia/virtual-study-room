@@ -3,64 +3,94 @@ import "../styles/GroupStudyPage.css";
 
 function GroupStudyPage(){
 
-    const [isActive, setIsActive] = useState(false); //initialise both variables: isActive and setIsActive to false
+    const [isActiveAddMore, setIsActiveAddMore] = useState(false); //initialise both variables: isActive and setIsActive to false
+    const [isActiveMusic, setIsActiveMusic] = useState(false);
+    const [isActiveCustom, setIsActiveCustom] = useState(false);
 
-    const handleMouseDown = () => {
-        setIsActive(true);  //when the button is pressed then the variable setIsActive is set to True
+    const handleMouseDown = (btnType) => {
+        //when the button is pressed then the variable setIsActive is set to True
+        if (btnType == 'addMore') {
+            setIsActiveAddMore(true);
+        } else if (btnType == 'music') {
+            setIsActiveMusic(true);
+        } else if (btnType == 'custom'){
+            setIsActiveCustom(true)
+        }
+        
     };
 
-    const handleMouseUp = () => {
-        setIsActive(false); //when the button is released then setIsActive is set to False
+    const handleMouseUp = (btnType) => {
+        //when the button is released then setIsActive is set to False
+        if (btnType == 'addMore') {
+            setIsActiveAddMore(false);
+        } else if (btnType == 'music') {
+            setIsActiveMusic(false);
+        } else if (btnType == 'custom'){
+            setIsActiveCustom(false)
+        }
     };
+
+
+    //testing functions- for UI purposes
 
     const [todos, setTodos] = useState([
-        { list_id: 1, text: "Study for Math", checked: false },
-        { list_id: 2, text: "Study for English", checked: false },
-        { list_id: 3, text: "Study for English", checked: false },
-        { list_id: 4, text: "Study for English", checked: false },
-        { list_id: 5, text: "Study for English", checked: false },
-        { list_id: 6, text: "Study for English", checked: false },
-        { list_id: 7, text: "Study for English", checked: false },
-        { list_id: 8, text: "Study for English", checked: false },
+        { id: 1, text: "Study for Math", checked: false },
+        { id: 2, text: "Study for English", checked: false },
+        { id: 3, text: "Study for Geography", checked: false },
+        { id: 4, text: "Study for Chemistry", checked: false },
+        { id: 5, text: "Study for Economics", checked: false },
+        { id: 6, text: "Study for Engineering", checked: false },
+        { id: 7, text: "Study for Physics", checked: false },
+        { id: 8, text: "Study for Biology", checked: false },
     ]);
 
-    const toggleTodo = list_id => {
+    const toggleTodo = id => {
         const newTodos = todos.map(todo => {
-            if (todo.list_id === list_id) {
+            if (todo.id === id) {
                 return { ...todo, checked: !todo.checked };
             }
             return todo;
         });
         setTodos(newTodos);
     };
+
     return (
         <div className='groupStudyRoom-container'>
             <div className="column">
                 <div className="todo-list-container">
-                    <h2 className='todo-heading'>To Do: </h2>
+                    <h2 className='todo-heading'>To Do: 
+                    <div class="checkbox-wrapper-5">
+                        <div class="check">
+                            <input id="check-5" type="checkbox"></input>
+                            <label for="check-5"></label>
+                        </div>
+                    </div>
+                    </h2>
                     <div style={{ flex: 1, width: '100%' }}> {/* This div takes all available space */}
                     {todos.map(todo => (
-                            <div key={todo.list_id} className="todo-item">
+                            <div key={todo.id} className="todo-item">
                                 <div className="checkbox-wrapper-28">
                                     <input
-                                        id={`todo-${todo.list_id}`}
+                                        id={`todo-${todo.id}`}
                                         type="checkbox"
                                         className="checkbox"
                                         checked={todo.checked}
-                                        onChange={() => toggleTodo(todo.list_id)}
+                                        onChange={() => toggleTodo(todo.id)}
                                     />
-                                    <label htmlFor={`todo-${todo.list_id}`}>{todo.text}</label>
+                                    <label htmlFor={`todo-${todo.id}`}>{todo.text}</label>
                                 </div>
+                                <button type= "button" className='delete-button' >X</button>
                             </div>
                         ))}
                     </div>
                     <button
                         type="button"
-                        className={`add-more-button ${isActive ? 'active' : ''}`}
-                        onMouseDown={handleMouseDown}
-                        onMouseUp={handleMouseUp}  // Ensures the button resets its state
-                        onMouseLeave={handleMouseUp}  // Resets state if mouse leaves the button while pressed
-                    >Add More</button>         
+                        className={`add-more-button ${isActiveAddMore ? 'active' : ''}`}
+                        onMouseDown={() => handleMouseDown('addMore')}
+                        onMouseUp={() => handleMouseUp('addMore')}
+                        onMouseLeave={() => handleMouseUp('addMore')}
+                        >Add More
+                    </button>      
                 </div>
 
                 <div className="sharedMaterials-container">Shared Materials</div>
@@ -99,18 +129,25 @@ function GroupStudyPage(){
                 <div className="motivationMessage-container">Motivation Message</div>
             </div>
             <div className="column">
-                <div className="timer-container">
-                    <div style={{ flex: 1, width: '100%' }}>{/* This div takes all available space */}
-                    </div>
+                <div className="timer-container">Timer</div>
+                <div className="custom-container">
                     <button
                         type="button"
-                        className={`timer-start-button ${isActive ? 'active' : ''}`}
-                        onMouseDown={handleMouseDown}
-                        onMouseUp={handleMouseUp}  // Ensures the button resets its state
-                        onMouseLeave={handleMouseUp}  // Resets state if mouse leaves the button while pressed
-                    >Start</button> 
+                        className={`music-button ${isActiveMusic ? 'active' : ''}`}
+                        onMouseDown={() => handleMouseDown('music')}
+                        onMouseUp={() => handleMouseUp('music')}
+                        onMouseLeave={() => handleMouseUp('music')}
+                        >Music
+                    </button>
+                    <button
+                        type="button"
+                        className={`customisation-button ${isActiveCustom ? 'active' : ''}`}
+                        onMouseDown={() => handleMouseDown('custom')}
+                        onMouseUp={() => handleMouseUp('custom')}
+                        onMouseLeave={() => handleMouseUp('custom')}
+                        >Customisation
+                    </button>
                 </div>
-                <div className="custom-container">Customization Options</div>
                 <div className="chatBox-container">Chat Box</div>
             </div>
         </div>
