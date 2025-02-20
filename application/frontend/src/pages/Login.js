@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
 
   // fields that the user will input
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
   // store login errors
   const [error, setError] = useState("");
@@ -25,9 +25,9 @@ function Login() {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/login/",
-        formData
+        formData,
+        { headers: { "Content-Type": "application/json" } } // ✅ Explicit JSON
       );
-
       // store tokens in localStorage
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
@@ -35,7 +35,12 @@ function Login() {
       alert("Login successful!");
       navigate("/dashboard"); // redirect to the dashboard after login
     } catch (error) {
-      setError("Invalid username or password!");
+      if (error.response) {
+        alert(error.response.data.error);
+      } else {
+        //console.error("Signup error:", error);
+        alert("An error occurred. Please try again.");
+      }
     }
     console.log(formData);
   };
@@ -50,9 +55,9 @@ function Login() {
         <label className="username-text">Username:</label>
         <input
           type="text"
-          name="username"
+          name="email"
           className="username-field"
-          value={formData.username}
+          value={formData.email}
           onChange={handleChange}
         />
         <label className="password-text">Password:</label>

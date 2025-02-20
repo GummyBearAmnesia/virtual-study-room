@@ -28,4 +28,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/signup/', views.signup, name='signup'),
+    path('api/login/', views.login, name='login'),
 ] 
