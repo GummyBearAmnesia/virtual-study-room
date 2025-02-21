@@ -52,6 +52,7 @@ function GroupStudyPage(){
         });
         setTodos(newTodos);
     };
+    
     //page is designed in columns
     //First Column: todoList, shared materials 
     //Second Column: users listes, motivational message
