@@ -1,0 +1,122 @@
+/* Fixed Position Layout Styles for ToDoList */
+.fixed-todolist {
+    position: fixed;
+    /* Fixed position at the bottom-left */
+    bottom: 4rem;
+    /* 4rem from the bottom */
+    left: 4rem;
+    /* 4rem from the left */
+    width: 33.33vw;
+    /* Set width to one third of the screen's width */
+    height: 50vh;
+    /* Set height to half of the screen's height */
+    background-color: white;
+    /* White background for the To-Do List */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* Shadow for the card */
+    border-radius: 8px;
+    overflow-y: auto;
+    /* Scroll if content exceeds height */
+}
+
+/* To-Do Container Styles inside the Fixed Position */
+.todo-container {
+    width: 100%;
+    /* Full width inside the fixed container */
+    height: 100%;
+    /* Full height inside the fixed container */
+    padding: 10px;
+    /* Padding for content */
+    font-size: 0.9em;
+    /* Smaller font size */
+    overflow-y: auto;
+    /* Scroll if content exceeds */
+}
+
+/* Make sure no other rules override the width and height */
+.fixed-todolist {
+    width: 33.33vw !important;
+    height: 50vh !important;
+    position: fixed;
+    bottom: 4rem;
+    left: 4rem;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow-y: auto;
+}
+
+/* To-Do List Styles */
+.todo-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* To-Do Card Styles */
+.todo-card {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 45%;
+    /* Adjust width of individual cards */
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 5px solid #3498db;
+}
+
+.todo-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.todo-card h4 {
+    font-size: 1.5em;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Checkbox Styles */
+input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: #3498db;
+    width: 18px;
+    height: 18px;
+}
+
+/* Completed Task Style */
+.completed {
+    text-decoration: line-through;
+    color: #bdc3c7;
+}
+
+.task-item:hover {
+    background-color: #ecf0f1;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .todo-card {
+        width: 100%;
+        /* Full width of the card on smaller screens */
+    }
+}
+
+/* Small adjustments to fit tasks better */
+input[type="checkbox"]:checked {
+    background-color: #2ecc71;
+}

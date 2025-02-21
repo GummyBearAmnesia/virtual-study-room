@@ -24,6 +24,8 @@ class Command(BaseCommand):
         print("Deleting all Permission Items")
         Permission.objects.all().delete()
 
+        List.objects.all().delete()
+
 
         print("Deleting friends...")
         Friends.objects.all().delete()

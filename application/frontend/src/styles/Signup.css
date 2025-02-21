@@ -41,7 +41,7 @@
 .signup-form {
     width: 500px;
     padding: 35px;
-    height: 950px;
+    height: 850px;
 }
 
 .heading2 {
@@ -51,21 +51,19 @@
     margin-bottom: 20px;
 }
 
-.username-text,
-.password-text {
+.label-text {
     width: 90%;
     text-align: left;
     font-size: 18px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 20px;
     font-family: 'Arial', sans-serif;
 }
 
-.username-field,
-.password-field {
+.input-field {
     width: 90%;
     padding: 12px;
-    margin-top: 8px;
+    margin-top: 5px;margin-bottom: 15px;
     border: 2px solid #ddd;
     border-radius: 25px;
     text-align: left;

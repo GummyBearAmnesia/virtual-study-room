@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 '''
 Custom User Model & Manager. Extends AbstractBaseUser to create custom User model
@@ -38,8 +38,9 @@ class UserManager(BaseUserManager):
             user.save(using=self._db)
             return user
     
-class User(AbstractBaseUser):
-    user_id = models.AutoField(primary_key=True)
+
+class User(AbstractBaseUser, PermissionsMixin):
+    #user_id = models.AutoField(primary_key=True)
     firstname = models.CharField(max_length=50)
     lastname = models.CharField(max_length=50)
     email = models.EmailField(max_length=100, unique=True)
