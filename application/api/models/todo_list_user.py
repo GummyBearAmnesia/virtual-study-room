@@ -1,10 +1,9 @@
 from django.db import models
 from .user import User
-
+from .todo_list import toDoList
 
 class List(models.Model):
-    name = models.CharField(max_length=255)  # Example field
-    is_shared = models.BooleanField(default=False)
+    name = models.CharField(max_length=255)  #this contains all lists created
 
 class Permission(models.Model):
     READ = 'read'
@@ -16,8 +15,7 @@ class Permission(models.Model):
     ]
 
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)  # Links to User
-    #list_id = models.ForeignKey(toDoList, on_delete=models.CASCADE)
-    list_id = models.ForeignKey(List, on_delete=models.CASCADE)
+    list_id = models.ForeignKey(toDoList, on_delete=models.CASCADE)  # Links to List
     permission_type = models.CharField(max_length=10, choices=PERMISSION_TYPE_CHOICES)
 
     class Meta:
