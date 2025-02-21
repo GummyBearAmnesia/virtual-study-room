@@ -27,3 +27,4 @@ class PermissionModelTest(TestCase):
         # Test the __str__ method of Permission model.
         permission = Permission.objects.create(user_id=self.user, list_id=self.todo_list, permission_type=Permission.READ)
         expected_str = f"{self.user} - {self.todo_list} - {Permission.READ}"
+        self.assertEqual(str(permission), expected_str)

@@ -1,8 +1,8 @@
 from django.db import models
 from .user import User
 
-
 class List(models.Model):
+
     name = models.CharField(max_length=255)  # Example field
     is_shared = models.BooleanField(default=False)
 
