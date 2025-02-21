@@ -30,8 +30,7 @@ function GroupStudyPage(){
         }
     };
 
-
-    //testing functions- for UI purposes
+    //testing functions- for UI purposes (not linked to the database)
 
     const [todos, setTodos] = useState([
         { id: 1, text: "Study for Math", checked: false },
@@ -53,9 +52,13 @@ function GroupStudyPage(){
         });
         setTodos(newTodos);
     };
-
+    //page is designed in columns
+    //First Column: todoList, shared materials 
+    //Second Column: users listes, motivational message
+    //Third Column: Timer, customisation, chatbox
     return (
         <div className='groupStudyRoom-container'>
+            {/*1st Column */}
             <div className="column">
                 <div className="todo-list-container">
                     <h2 className='todo-heading'>To Do: 
@@ -83,6 +86,7 @@ function GroupStudyPage(){
                             </div>
                         ))}
                     </div>
+                    {/*This is the add More button in the to do list- needs functionality (onClick method) */}
                     <button
                         type="button"
                         className={`add-more-button ${isActiveAddMore ? 'active' : ''}`}
@@ -95,12 +99,15 @@ function GroupStudyPage(){
 
                 <div className="sharedMaterials-container">Shared Materials</div>
             </div>
+            {/*2nd Column */}
             <div className="column">
                 <div className="user-list-container">
                     <h2 className="heading"> Study Room: </h2>
                     <h3 className='heading2'> Code: </h3>
                     <div className='users'>
-                        <div class="user-circle">
+                        {/*These are examples of how the user profiles are displayed. 
+                        user-image has the white circle, user-name is for the name at the bottom of the user. Can be changed, this is just an example.*/}
+                        <div class="user-circle"> 
                             <div class="user-image">JD</div>
                             <div class="user-name">John Doe</div>
                         </div>
@@ -128,12 +135,14 @@ function GroupStudyPage(){
                 </div>
                 <div className="motivationMessage-container">Motivation Message</div>
             </div>
+            {/*3rd Column */}
             <div className="column">
                 <div className="timer-container">Timer</div>
                 <div className="custom-container">
+                    {/*This is the button for music and customisation, needs functionality */}
                     <button
                         type="button"
-                        className={`music-button ${isActiveMusic ? 'active' : ''}`}
+                        className={`music-button ${isActiveMusicx ? 'active' : ''}`}
                         onMouseDown={() => handleMouseDown('music')}
                         onMouseUp={() => handleMouseUp('music')}
                         onMouseLeave={() => handleMouseUp('music')}
