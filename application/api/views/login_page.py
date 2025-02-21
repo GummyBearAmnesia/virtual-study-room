@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.views.decorators.csrf import csrf_exempt
 
 
 # POST method API call to send credentials to database server
@@ -10,13 +11,14 @@ from rest_framework_simplejwt.tokens import RefreshToken
 # ...to the frontend which is less secure!
 
 
+@csrf_exempt
 @api_view(['POST'])
 def login(request):
     #username = request.data.get('username')
     email = request.data.get('email')
     password = request.data.get('password')
 
-    user = authenticate(email=email, password=password)
+    user = authenticate(request, email=email, password=password)
 
     if user:
         refresh = RefreshToken.for_user(user)

@@ -1,26 +1,46 @@
-import React from "react"
+import React, { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import mangoCat from "../assets/mango_cat.png";
+import ToDoList from "../pages/ToDoList";
+import "../styles/Dashboard.css";
 
 function Dashboard() {
-    const navigate = useNavigate();
+  return (
+    <div>
+      {/* Header */}
+      <h1 className="text-2xl font-bold">Welcome to the Dashboard</h1>
 
-    return (
-        <div className="welcome-container">
-            <h1 className="welcome-heading">The Study Spot</h1>
-            <img src={mangoCat} alt="logo" className="welcome-image" />
-            <div className="button-container">
-                <button className="login-button" onClick={() => navigate("/login")}>
-                    LOGIN
-                </button>
-                {/* change this to create account page URL */}
-                <button className="create-account-button" onClick={() => navigate("/signup")}>
-                    CREATE ACCOUNT
-                </button>
-            </div>
+      {/* Dashboard Layout */}
+      <div className="grid-container">
+        {/* Left Column */}
+        <div className="grid-item  left-column">
+          <ToDoList />
         </div>
-    );
 
+        {/* Middle Column */}
+        <div className="grid-item">
+          <ToDoList />
+        </div>
+        {/* Middle Column */}
+        <div className="grid-item">
+          <ToDoList />
+        </div>
+        {/* Middle Column */}
+        <div className="grid-item">
+          <ToDoList />
+        </div>
+        {/* Middle Column */}
+        <div className="grid-item">
+          <ToDoList />
+        </div>
+
+        {/* Right Column */}
+        <div className="grid-item">
+          <ToDoList />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard;

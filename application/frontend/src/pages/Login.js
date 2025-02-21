@@ -25,24 +25,23 @@ function Login() {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/login/",
-        formData,
-        { headers: { "Content-Type": "application/json" } } // ✅ Explicit JSON
+        formData, // Contains email and password
+        { headers: { "Content-Type": "application/json" } } // No Authorization header here
       );
-      // store tokens in localStorage
+
+      // Store tokens in localStorage
       localStorage.setItem("access_token", response.data.access);
       localStorage.setItem("refresh_token", response.data.refresh);
 
       alert("Login successful!");
-      navigate("/dashboard"); // redirect to the dashboard after login
+      navigate("/dashboard"); // Redirect to dashboard after login
     } catch (error) {
       if (error.response) {
         alert(error.response.data.error);
       } else {
-        //console.error("Signup error:", error);
         alert("An error occurred. Please try again.");
       }
     }
-    console.log(formData);
   };
 
   return (

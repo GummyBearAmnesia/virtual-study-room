@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 
 from django.conf import settings
 from django.conf.urls.static import static
-
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from api import views
 
 urlpatterns = [
@@ -29,4 +29,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('api/signup/', views.signup, name='signup'),
     path('api/login/', views.login, name='login'),
+    path('api/todolists/<str:is_shared>/', views.ViewToDoList.as_view(), name='toDoList'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ] 

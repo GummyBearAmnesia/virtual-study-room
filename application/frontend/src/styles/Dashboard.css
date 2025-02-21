@@ -1,0 +1,44 @@
+/* Dashboard Container */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f4f6f9;
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.dashboard-container h1 {
+    margin-bottom: 20px;
+}
+
+/* Grid Container */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 equal-width columns */
+    grid-template-rows: repeat(2, 1fr);
+    /* 2 equal-height rows */
+    gap: 20px;
+    /* Space between grid items */
+    padding: 20px;
+    /* Padding around the grid container */
+}
+
+/* Grid Item (Each Section) */
+.grid-item {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        /* Stack columns into a single column on small screens */
+        grid-template-rows: repeat(6, 1fr);
+        /* Stack all sections vertically */
+    }
+}
