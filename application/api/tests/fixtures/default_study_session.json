@@ -1,0 +1,24 @@
+[
+    {
+        "model": "api.studysession",
+        "pk": 1,
+        "fields": {
+            "createdBy": 1,
+            "sessionName": "OSC Study Group",
+            "startTime": "14:27:00",
+            "endTime": "16:56:00",
+            "date": "2025-02-10"
+        }
+    },
+    {
+        "model": "api.studysession",
+        "pk": 2,
+        "fields": {
+            "createdBy": 2,
+            "sessionName": "MangoCat Study Room",
+            "startTime": "10:09:38",
+            "endTime": "12:00:30",
+            "date": "2025-02-11"
+        }
+    }
+]
