@@ -143,7 +143,7 @@ function GroupStudyPage(){
                     {/*This is the button for music and customisation, needs functionality */}
                     <button
                         type="button"
-                        className={`music-button ${isActiveMusicx ? 'active' : ''}`}
+                        className={`music-button ${isActiveMusic ? 'active' : ''}`}
                         onMouseDown={() => handleMouseDown('music')}
                         onMouseUp={() => handleMouseUp('music')}
                         onMouseLeave={() => handleMouseUp('music')}
