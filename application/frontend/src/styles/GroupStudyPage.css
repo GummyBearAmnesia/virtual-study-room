@@ -1,0 +1,435 @@
+.groupStudyRoom-container{
+    margin: 0;
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 20px;
+    background-color: #F6F0F0;
+}
+
+.column {
+    flex: 1; 
+    margin: 15px; 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.todo-list-container, .user-list-container, .sharedMaterials-container, .motivationMessage-container, .timer-container, .custom-container, .chatBox-container {
+    width: 70%;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.todo-list-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 500px;
+    max-height: 500px;
+    width: 320px;
+    background-color: #FFFFFF;
+    border-radius: 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.todo-list-container::-webkit-scrollbar {
+    width: 10px; /* Controls the width of the scrollbar */
+}
+
+.todo-list-container::-webkit-scrollbar-thumb {
+    border-radius: 40px; /* Optional: adds rounded corners to the scrollbar */
+    opacity: 0; /* Makes the scrollbar invisible when not in use */
+    transition: opacity 0.2s; /* Smooth transition for opacity changes */
+}
+
+.todo-list-container:hover::-webkit-scrollbar-thumb,
+.todo-list-container:active::-webkit-scrollbar-thumb {
+    background-color: #96d8c8; /* Color of scrollbar when hovered */
+}
+
+.todo-list-container::-webkit-scrollbar-thumb:hover {
+    background-color: #96d8c8; /* Color of scrollbar when hovered */
+}
+
+.todo-heading{
+    width: 100%;
+    margin: -5px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Impact', sans-serif;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    margin: 10px 0;
+    font-size: 16px;
+    background-color: #F2BAC9;
+    border-radius: 40px;
+    flex-wrap: wrap;
+}
+
+.checkbox-wrapper-28 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between checkbox and text */
+}
+
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border: 2px solid white;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.checkbox:checked {
+    background-color: #FFFFFF;
+    border: 2px solid white;
+}
+
+.checkbox:checked::after {
+    content: '✔'; /* Unicode character for check mark */
+    font-size: 16px; /* Adjust size to fit inside the checkbox */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color:  #BAF2E9;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-button{
+    margin-right: 10px;
+    padding: 0px 5px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #FFFFFF;
+    background-color: #BAF2E9;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.delete-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.checkbox-wrapper-5{
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.checkbox-wrapper-5 .check {
+    --size: 40px;
+    position: relative;
+    background: linear-gradient(90deg, #f19af3, #f099b5);
+    line-height: 0;
+    perspective: 400px;
+    font-size: var(--size);
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"],
+  .checkbox-wrapper-5 .check label,
+  .checkbox-wrapper-5 .check label::before,
+  .checkbox-wrapper-5 .check label::after,
+  .checkbox-wrapper-5 .check {
+    appearance: none;
+    display: inline-block;
+    border-radius: var(--size);
+    border: 0;
+    transition: .35s ease-in-out;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+  .checkbox-wrapper-5 .check label {
+    width: calc(2.2 * var(--size));
+    height: var(--size);
+    background: #d7d7d7;
+    overflow: hidden;
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"] {
+    position: absolute;
+    z-index: 1;
+    width: calc(.8 * var(--size));
+    height: calc(.8 * var(--size));
+    top: calc(.1 * var(--size));
+    left: calc(.1 * var(--size));
+    background: linear-gradient(45deg, #dedede, #ffffff);
+    box-shadow: 0 6px 7px rgba(0,0,0,0.3);
+    outline: none;
+    margin: 0;
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"]:checked {
+    left: calc(1.3 * var(--size));
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label {
+    background: transparent;
+  }
+
+  .checkbox-wrapper-5 .check label::before,
+  .checkbox-wrapper-5 .check label::after {
+    content: "· ·";
+    position: absolute;
+    overflow: hidden;
+    left: calc(.15 * var(--size));
+    top: calc(.5 * var(--size));
+    height: var(--size);
+    letter-spacing: calc(-0.04 * var(--size));
+    color: #9b9b9b;
+    font-family: "Times New Roman", serif;
+    z-index: 2;
+    font-size: calc(.6 * var(--size));
+    border-radius: 0;
+    transform-origin: 0 0 calc(-0.5 * var(--size));
+    backface-visibility: hidden;
+  }
+
+  .checkbox-wrapper-5 .check label::after {
+    content: "●";
+    top: calc(.65 * var(--size));
+    left: calc(.2 * var(--size));
+    height: calc(.1 * var(--size));
+    width: calc(.35 * var(--size));
+    font-size: calc(.2 * var(--size));
+    transform-origin: 0 0 calc(-0.4 * var(--size));
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::before,
+  .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+    left: calc(1.55 * var(--size));
+    top: calc(.4 * var(--size));
+    line-height: calc(.1 * var(--size));
+    transform: rotateY(360deg);
+  }
+
+  .checkbox-wrapper-5 .check input[type="checkbox"]:checked + label::after {
+    height: calc(.16 * var(--size));
+    top: calc(.55 * var(--size));
+    left: calc(1.6 * var(--size));
+    font-size: calc(.6 * var(--size));
+    line-height: 0;
+  }
+
+.add-more-button {
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: 900;
+    color: #FFFFFF;
+    background-color: #BAF2E9;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.add-more-button.active { /*changing the button's appearance when being clicked on*/
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.sharedMaterials-container{
+    height: 277px;
+    width: 320px;
+    background-color: #FFFFFF;
+    border-radius: 40px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-size: 16px;
+}
+
+.user-list-container{
+    display: grid;
+    grid-template-areas: 
+        "header"
+        "code"
+        "users";
+    grid-template-rows: auto auto 1fr;
+    height: 690px;
+    width: 600px;
+    align-items: start;
+}
+
+.heading {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    grid-area: header;
+    width: 600px;
+    height: 70px;
+    border-radius: 40px;
+    background-color: #DFFAE1;
+    font-family: 'Impact', sans-serif;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.heading2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: center;
+    grid-area: code;
+    width: 100px;
+    height: 70px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    font-family: 'Impact', sans-serif;
+    margin-top: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.users {
+    display: flex;
+    flex-wrap: wrap; 
+    grid-area: users;  
+    justify-content: flex-start;  
+    align-items: center; 
+    padding: 5px;  
+    gap: 5px;
+}
+
+.user-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 120px;  
+    margin: 5px; 
+    text-align: center;
+}
+
+.user-image {
+    width: 100px;
+    height: 100px;
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}
+
+.user-name {
+    margin-top: 8px;
+    font-size: 16px;
+    font-family: 'Impact', sans-serif;
+}
+
+.motivationMessage-container{
+    height: 80px;
+    width: 600px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.timer-container{
+    height: 251px;
+    width: 320px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    flex-direction: column;
+}
+
+.custom-container{
+    height: 166px;
+    width: 320px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
+
+.music-button{
+    display: flex;
+    align-items: center; /* This will vertically center the text */
+    justify-content: center; /* This will horizontally center the text */
+
+    padding: 15px 40px;
+    height: 80px;
+    font-size: 40px;
+    width: 100%;
+    
+    font-weight: 900;
+    color: #FFFFFF;
+    background-color: #BAD7F2;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.music-button.active { /*changing the button's appearance when being clicked on*/
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.customisation-button{
+    display: flex;
+    align-items: center; /* This will vertically center the text */
+    justify-content: center; /* This will horizontally center the text */
+    margin-top: 10px;
+
+    padding: 15px 40px;
+    height: 80px;
+    font-size: 40px;
+    width: 100%;
+    
+    font-weight: 900;
+    color: #FFFFFF;
+    background-color: #DFFAE1;  
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.customisation-button.active { /*changing the button's appearance when being clicked on*/
+    transform: scale(0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.chatBox-container{
+    height: 291px;
+    width: 320px;
+    border-radius: 40px;
+    background-color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); 
+}
