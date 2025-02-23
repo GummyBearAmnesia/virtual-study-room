@@ -49,7 +49,7 @@ class User(AbstractBaseUser):
     hours_studied = models.IntegerField(default=0)
     streaks = models.IntegerField(default=0)
     description = models.TextField(blank=True)  #Text field that can be blank
-    profile_id = models.CharField(max_length=255, blank=True, null=True)  #For Firebase storage reference
+    #profile_id = models.CharField(max_length=255, blank=True, null=True)  #For Firebase storage reference
 
 
     is_active = models.BooleanField(default=True)   #Allows users to be disabled if needed
