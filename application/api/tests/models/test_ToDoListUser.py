@@ -8,7 +8,7 @@ class PermissionModelTest(TestCase):
 
     def setUp(self):
         #Test Data creation
-        self.user = User.objects.create_user(email = "test_user@email.com", firstname = "test_user", lastname = "test_user", username = "test_user", password = "test_user")
+        self.user = User.objects.create_user(email = "test_user@email.com", description = "", firstname = "test_user", lastname = "test_user", username = "test_user", password = "test_user")
         self.todo_list = toDoList.objects.create(title="Test List", content="")
 
     def test_create_permission(self):

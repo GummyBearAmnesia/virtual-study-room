@@ -3,6 +3,7 @@
         "model": "api.user",
         "pk": 1,
         "fields": {
+            "description": "",
             "firstname": "Alice",
             "lastname": "Smith",
             "email": "alice@example.com",
@@ -16,6 +17,7 @@
         "model": "api.user",
         "pk": 2,
         "fields": {
+            "description": "",
             "firstname": "Bob",
             "lastname": "Johnson",
             "email": "bob@example.com",
@@ -29,6 +31,7 @@
         "model": "api.user",
         "pk": 3,
         "fields": {
+            "description": "",
             "firstname": "John",
             "lastname": "Doe",
             "email": "john@example.com",

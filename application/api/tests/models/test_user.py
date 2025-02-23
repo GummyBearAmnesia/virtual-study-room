@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
@@ -6,6 +7,7 @@ class UserModelTest(TestCase):
         """Set up test data"""
         self.user_data =    {
             "email": "testuser@email.com",
+            "description": "",
             "firstname": "Test",
             "lastname": "User",
             "username": "TestUser1",
@@ -27,26 +29,32 @@ class UserModelTest(TestCase):
         """Test that email is normalized -- lowercased domain part"""
         User = get_user_model()
         email = 'Test@EXAMPLE.com'
-        user = User.objects.create_user(email=email, firstname="Test", lastname="User", username="testuser", password="Password123!")
+        user = User.objects.create_user(description = "", email=email, firstname="Test", lastname="User", username="testuser", password="Password123!")
         self.assertEqual(user.email, "Test@example.com")
 
     def test_user_without_email_error(self):
         """Test that creating a user without an email raises an error"""
         User = get_user_model()
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="", firstname="Test", lastname="User", username="testUser", password="password123")
+            User.objects.create_user(description = "", email="", firstname="Test", lastname="User", username="testUser", password="password123")
         
     def test_user_without_username_error(self):
         """Test that creating a user without a username raises an error"""
         User = get_user_model()
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="test@example.com", firstname="Test", lastname="User", username="", password="password123")
+            User.objects.create_user(description = "", email="test@example.com", firstname="Test", lastname="User", username="", password="password123")
 
     def test_user_without_password_error(self):
         """Test that creating a user without a password raises an error"""
         User = get_user_model()
         with self.assertRaises(ValueError):
-            User.objects.create_user(email="test@example.com", firstname="Test", lastname="User", username="testUser", password="")
+            User.objects.create_user(description = "", email="test@example.com", firstname="Test", lastname="User", username="testUser", password="")
+
+    def test_user_with_none_description_fails(self):
+        """Test that creating a user with None description fails when null=False"""
+        User = get_user_model()
+        with self.assertRaises(IntegrityError):
+            User.objects.create_user(description=None, email="test_none@example.com", firstname="Test", lastname="User", username="testUserNone", password="password123")
 
         
     

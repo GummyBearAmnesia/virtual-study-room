@@ -6,7 +6,7 @@ from datetime import datetime
 class RewardsModelTest(TestCase):
     def setUp(self):
         #Set up test user and reward instance
-        self.user = User.objects.create_user(email = "test_user@email.com", firstname = "test_user", lastname = "test_user", username = "test_user", password = "test_user")
+        self.user = User.objects.create_user(email = "test_user@email.com", description = "", firstname = "test_user", lastname = "test_user", username = "test_user", password = "test_user")
         self.rewards = Rewards.objects.create(user=self.user, reward_number=1)
 
     def test_reward_creation(self):
