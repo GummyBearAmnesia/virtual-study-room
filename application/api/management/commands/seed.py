@@ -42,6 +42,7 @@ class Command(BaseCommand):
             call_command('loaddata', 'api/tests/fixtures/default_user.json')
             call_command('loaddata', 'api/tests/fixtures/default_friends.json')
             call_command('loaddata', 'api/tests/fixtures/default_study_session.json')
+            call_command('loaddata', 'api/tests/fixtures/default_session_users.json')
         except Exception as e:
             self.stdout.write(self.style.ERROR(f'Error while seeding database: {e}'))
       
@@ -123,7 +124,7 @@ class Command(BaseCommand):
             print(f"Failed to create user: {e}")
 
     def create_user(self, data):
-        User.objects.create_user(firstname = data['firstName'], lastname = data['lastName'], email = data['email'], description = "", username = data['username'], password = self.DEFAULT_PASSWORD, hours_studied = data['hoursStudied'], streaks = data['streak'])
+        User.objects.create_user(firstname = data['firstName'], lastname = data['lastName'], email = data['email'], username = data['username'], password = self.DEFAULT_PASSWORD, hours_studied = data['hoursStudied'], streaks = data['streaks'], description = data['description'], total_sessions = data['totalSessions'])
 
     def generate_random_user(self):
         firstName = self.faker.first_name()
@@ -131,9 +132,11 @@ class Command(BaseCommand):
         email = self.create_email(firstName, lastName)
         username = self.create_username(firstName, lastName)
         hoursStudied = randint(0, 8760)     # assuming that the hoursStudied reset every year
-        streak = randint(0, 365)            # assuming the streaks reset every year
+        streaks = randint(0, 365)            # assuming the streaks reset every year
+        description = Faker().text(max_nb_chars=200)
+        totalSessions = randint(0, 100)
 
-        self.try_create_user({'firstName': firstName, 'lastName' : lastName, 'email': email, 'username': username, 'hoursStudied': hoursStudied, 'streak': streak})
+        self.try_create_user({'firstName': firstName, 'lastName' : lastName, 'email': email, 'username': username, 'hoursStudied': hoursStudied, 'streaks': streaks, 'description': description, 'totalSessions': totalSessions})
 
     def generating_rewards(self):
         for x in range(self.REWARDS_COUNT):
@@ -325,13 +328,9 @@ class Command(BaseCommand):
             SessionUser.objects.create(
                 user=user,
                 session=session,
-                join_sequence=randint(1,5),
                 status=choice(['FOCUSED', 'CASUAL']),
                 focus_target=self.faker.sentence(nb_words=6) if randint(0, 1) else None,
-                joined_at=now(),
-                focus_time=datetime.timedelta(minutes=randint(0, 300)),
-                last_status_change=now(),
-                last_active=now()
+                joined_at=now()
             )
         except Exception as e:
             print(f"Failed to create session user: {e}")

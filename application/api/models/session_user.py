@@ -25,11 +25,9 @@ class SessionUser(models.Model):
     )
     # What specific thing the user is currently working on
     focus_target = models.CharField(max_length=255, null=True, blank=True)
-    # Session timing
+    # When the user joined and left the session
     joined_at = models.DateTimeField(default=now)
     left_at = models.DateTimeField(null=True, blank=True)
-    # All the time spent in FOCUSED status during the session
-    focus_time = models.DurationField(default=datetime.timedelta(0))
 
     class Meta:
         # Sort by newest sessions and joins first
@@ -59,22 +57,23 @@ class SessionUser(models.Model):
 
     def leave_session(self):
         """
-        Calculate final focus time, update user's study statistics, and mark session as left.
+        Calculate total session time, update user's study statistics, and remove session entry.
         """
-        # Calculate final focus time
-        if self.status == 'FOCUSED':
-            final_time = now() - self.joined_at
-            self.focus_time += final_time
-        
-        # Set left_at time
-        self.left_at = now()
-        self.save()
-        
+        # Calculate total session time
+        if self.left_at is None:
+            self.left_at = now()
+
+        session_duration = self.left_at - self.joined_at
+        hours_studied = session_duration.total_seconds() / 3600  # Convert to hours
+
         # Update user's total study statistics
-        if self.focus_time.total_seconds() > 0:
-            hours_studied = self.focus_time.total_seconds() / 3600
+        if hours_studied > 0:
             self.user.hours_studied += int(hours_studied)
+            self.user.total_sessions += 1  # Increment total sessions
             self.user.save()
+
+        # Delete the session user entry
+        self.delete()
 
     def update_focus_target(self, new_goal):
         """
