@@ -539,10 +539,6 @@ label {
   /*changing the button's appearance when being clicked on*/
   transform: scale(0.95);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-.customisation-button.active {
-  /*changing the button's appearance when being clicked on*/
-  transform: scale(0.95);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .groupStudyRoom-container {
