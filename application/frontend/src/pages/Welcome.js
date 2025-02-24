@@ -21,9 +21,6 @@ function Welcome() {
         >
           CREATE ACCOUNT
         </button>
-        <button onClick={() => navigate("/motivational-message")}>
-          MOTIVATION!!!!
-        </button>
       </div>
     </div>
   );

@@ -7,15 +7,6 @@
   width: 100vw;
   padding: 20px;
   background-color: #f6f0f0;
-.groupStudyRoom-container {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  min-height: 100vh;
-  width: 100vw;
-  padding: 20px;
-  background-color: #f6f0f0;
 }
 
 .column {
@@ -41,30 +32,8 @@
   width: 70%;
   padding: 20px;
   margin-bottom: 20px;
-.todo-list-container,
-.user-list-container,
-.sharedMaterials-container,
-.motivationMessage-container,
-.timer-container,
-.custom-container,
-.chatBox-container {
-  width: 70%;
-  padding: 20px;
-  margin-bottom: 20px;
 }
 
-.todo-list-container {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  height: 500px;
-  max-height: 500px;
-  width: 320px;
-  background-color: #ffffff;
-  border-radius: 40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
 .todo-list-container {
   display: flex;
   align-items: center;
@@ -104,14 +73,6 @@
   background-color: #96d8c8; /* Color of scrollbar when hovered */
 }
 
-.todo-heading {
-  width: 100%;
-  margin: -5px;
-  margin-bottom: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-family: "Impact", sans-serif;
 .todo-heading {
   width: 100%;
   margin: -5px;
@@ -223,6 +184,8 @@ label {
   outline: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.1s, box-shadow 0.1s;
+}
+
 .delete-button {
   margin-right: 10px;
   padding: 0px 5px;
@@ -250,21 +213,21 @@ label {
   justify-content: flex-end;
   flex-grow: 1;
   margin-left: 10px;
-.checkbox-wrapper-5 {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-  margin-left: 10px;
-}
+  .checkbox-wrapper-5 {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
 
-.checkbox-wrapper-5 .check {
-  --size: 40px;
-  position: relative;
-  background: linear-gradient(90deg, #f19af3, #f099b5);
-  line-height: 0;
-  perspective: 400px;
-  font-size: var(--size);
-}
+  .checkbox-wrapper-5 .check {
+    --size: 40px;
+    position: relative;
+    background: linear-gradient(90deg, #f19af3, #f099b5);
+    line-height: 0;
+    perspective: 400px;
+    font-size: var(--size);
+  }
   --size: 40px;
   position: relative;
   background: linear-gradient(90deg, #f19af3, #f099b5);
