@@ -18,11 +18,11 @@ const MotivationalMessage = () => {
   }, []);
 
   return (
-    <div className="message-container">
+    
       <div className="message-card">
         <h4>{message}</h4>
       </div>
-    </div>
+    
   );
 };
 

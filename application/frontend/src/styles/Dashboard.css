@@ -44,8 +44,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px;
-    gap: 30px;
+    padding: 10px;
+    gap: 15px;
     height: 100%; /* Ensure panels stretch to fill the full height of their container */
     box-sizing: border-box; /* Ensure padding/border don't increase its size */
 }

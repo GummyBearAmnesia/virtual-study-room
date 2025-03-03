@@ -3,6 +3,7 @@ import "../styles/Dashboard.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ToDoList from '../pages/ToDoList';
+import Analytics from './Analytics';
 
 function Dashboard() {
     return (
@@ -13,7 +14,7 @@ function Dashboard() {
             {/* Left panel - main panel - right panel*/}
             <div class = "dashboard-content">
                 <div class = "dashboard-left-panel">
-                    <div class="dashboard-panel">Analytics</div>
+                    <Analytics />
                     <div class="dashboard-panel">Calendar</div>
                     <div class="dashboard-panel">Invites</div>
                 </div>
