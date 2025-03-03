@@ -11,13 +11,6 @@
     overflow: hidden;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden; /* Prevents scrolling */
-}
-
 .column {
     flex: 1; 
     margin: 15px; 
