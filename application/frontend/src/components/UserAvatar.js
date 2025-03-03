@@ -32,6 +32,7 @@ const UserAvatar = ({ onSelect, currentAvatar }) => {
         >
           {avatarUrls.slice(rowIndex * 4, (rowIndex + 1) * 4).map((url, colIndex) => (
             <img
+              data-testid="avatar-img"
               key={rowIndex * 4 + colIndex}
               src={url}
               alt={`Avatar ${rowIndex * 4 + colIndex + 1}`}

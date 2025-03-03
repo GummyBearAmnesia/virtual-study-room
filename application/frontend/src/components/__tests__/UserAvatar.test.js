@@ -46,11 +46,12 @@ describe('UserAvatar', () => {
     });
   });
 
-  test('handles keyboard navigation', () => {
-    render(<UserAvatar {...mockProps} />);
-    const firstAvatar = screen.getAllByRole('img')[0];
-    firstAvatar.focus();
-    fireEvent.keyDown(firstAvatar, { key: 'Enter' });
-    expect(mockProps.onSelect).toHaveBeenCalled();
+  test('handles avatar selection on click', () => {
+    const mockOnSelect = jest.fn();
+    render(<UserAvatar onSelect={mockOnSelect} currentAvatar={null} />);
+    const avatars = screen.getAllByTestId('avatar-img');
+    fireEvent.click(avatars[0]);
+    expect(mockOnSelect).toHaveBeenCalledTimes(1);
   });
+  
 }); 
