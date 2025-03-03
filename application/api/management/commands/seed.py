@@ -236,7 +236,6 @@ class Command(BaseCommand):
     def generate_toDoListUsers(self):
         users = list(User.objects.all())
         toDoLists = list(List.objects.all())
-        permission_types = [Permission.READ, Permission.WRITE]
 
         print(f"Starting to seed permissions for {len(toDoLists)} toDoLists and {len(users)} users.")
 
@@ -251,13 +250,11 @@ class Command(BaseCommand):
             #print(f"{'Shared' if toDo.is_shared else 'Exclusive'} toDoList {toDo.list_id}: Assigning {num_permissions} permissions.")
 
             for user in selected_users:
-                permission_type = choice(permission_types) if toDo.is_shared else Permission.WRITE
                 #print(f"Assigning {permission_type} permission to user {user.user_id} for toDoList {toDo.list_id}.")
 
                 self.create_toDoListUser({
                     'user_id': user,
-                    'list_id': toDo,
-                    'permission_type': permission_type
+                    'list_id': toDo
                 })
         print("toDoListUser seeding complete")
 
@@ -265,8 +262,7 @@ class Command(BaseCommand):
         try:
             Permission.objects.create(
                 user_id = data["user_id"],
-                list_id = data["list_id"],
-                permission_type = data["permission_type"]
+                list_id = data["list_id"]
             )
         except Exception as e:
             self.stdout.write(self.style.ERROR(f'Error creating ToDoListUser: {str(e)}'))
