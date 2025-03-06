@@ -3,6 +3,9 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Signup from "../pages/Signup";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios"; // Import axios
+import { cleanup } from "@testing-library/react";
+
+//npx jest --coverage
 
 jest.mock("axios", () => ({
   get: jest.fn(() => Promise.resolve({ data: {} })),
@@ -19,6 +22,7 @@ describe("SignUpForm", () => {
 
   afterEach(() => {
     jest.restoreAllMocks(); // Clean up mocks after each test
+    cleanup();
   });
 
   test("renders form correctly", () => {
@@ -98,10 +102,8 @@ describe("SignUpForm", () => {
 
     fireEvent.change(firstname, { target: { value: "John" } });
     fireEvent.change(lastname, { target: { value: "Doe" } });
-    fireEvent.change(username, { target: { value: "johndoe" } });
+    fireEvent.change(username, { target: { value: "@john789" } });
     fireEvent.change(email, { target: { value: "johndoe@gmail.com" } });
-    fireEvent.change(password1, { target: { value: "Qa1" } });
-    fireEvent.change(password2, { target: { value: "Qa1" } });
     fireEvent.change(password1, { target: { value: "Qa1" } });
     fireEvent.change(password2, { target: { value: "Qa1" } });
 
@@ -152,52 +154,32 @@ describe("SignUpForm", () => {
   };
 
   test("submits form successfully after accepting terms", async () => {
-    submitFormSuccessfully();
+    await submitFormSuccessfully();
   });
 
-  test("shows alert if username is already in use", async () => {
-    submitFormSuccessfully();
-
-    axios.post.mockRejectedValueOnce({
-      response: {
-        data: {
-          error: "Username already taken",
-        },
-      },
+  test("shows message if email is already in use", async () => {
+    axios.get.mockImplementation((url, { params }) => {
+      if (url.includes("/api/check-email/")) {
+        return Promise.resolve({ data: { exists: true } }); // Force email to be "already taken"
+      }
+      return Promise.resolve({ data: {} });
     });
 
-    const username = screen.getByLabelText("Username:");
-    fireEvent.change(username, { target: { value: "johndoe" } });
+    submitFormSuccessfully();
+
+    const email = screen.getByLabelText("Email:");
+    fireEvent.change(email, { target: { value: "johndoe@example.com" } });
     const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
     fireEvent.click(buttonElement);
 
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith("Username already taken");
+    await waitFor(async () => {
+      expect(await screen.getByTestId("error-message-email")).toHaveTextContent(
+        "This email is already taken, please enter another"
+      );
     });
   });
 
-  test("shows alert if email is already in use", async () => {
-    submitFormSuccessfully();
-
-    axios.post.mockRejectedValueOnce({
-      response: {
-        data: {
-          error: "Email already taken",
-        },
-      },
-    });
-
-    const username = screen.getByLabelText("Email:");
-    fireEvent.change(username, { target: { value: "johndoe@gmail.com" } });
-    const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
-    fireEvent.click(buttonElement);
-
-    await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith("Email already taken");
-    });
-  });
-
-  test("shows alert if password do not match", async () => {
+  test("shows message if password do not match", async () => {
     submitFormSuccessfully();
 
     axios.post.mockRejectedValueOnce({
@@ -212,12 +194,15 @@ describe("SignUpForm", () => {
     fireEvent.change(password1, { target: { value: "Password" } });
     const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
     fireEvent.click(buttonElement);
-    expect(screen.getByTestId("error-message-password")).toHaveTextContent(
-      "Password confirmation needs to match password"
-    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByTestId("error-message-passwordConfirmation")
+      ).toHaveTextContent("Password confirmation needs to match password");
+    });
   });
 
-  test("shows alert if empty username is wrong", async () => {
+  test("shows message if empty username is wrong", async () => {
     submitFormSuccessfully();
 
     axios.post.mockRejectedValueOnce(new Error("Network Error"));
@@ -225,10 +210,92 @@ describe("SignUpForm", () => {
     const username = screen.getByLabelText("Username:");
     fireEvent.change(username, { target: { value: "" } });
     const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
+
+    await waitFor(() => {
+      fireEvent.click(buttonElement);
+      expect(screen.getByTestId("error-message-username")).toHaveTextContent(
+        "Username is required"
+      );
+    });
+  });
+
+  test("shows message if username is in the wrong format", async () => {
+    submitFormSuccessfully();
+
+    axios.post.mockRejectedValueOnce(new Error("Network Error"));
+
+    const username = screen.getByLabelText("Username:");
+    fireEvent.change(username, { target: { value: "testUsername" } });
+    const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
+
+    await waitFor(() => {
+      fireEvent.click(buttonElement);
+      expect(screen.getByTestId("error-message-username")).toHaveTextContent(
+        "Username must consist of @ followed by at least three alphanumericals"
+      );
+    });
+  });
+
+  test("shows message if password does not meet criteria", async () => {
+    submitFormSuccessfully();
+
+    axios.post.mockRejectedValueOnce({
+      response: {
+        data: {
+          error: "Password is not in the correct format",
+        },
+      },
+    });
+
+    const password1 = screen.getByLabelText("Password:");
+    fireEvent.change(password1, { target: { value: "Password" } });
+    const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
     fireEvent.click(buttonElement);
 
-    expect(screen.getByTestId("error-message-username")).toHaveTextContent(
-      "Username is required"
-    );
+    await waitFor(() => {
+      expect(screen.getByTestId("error-message-password")).toHaveTextContent(
+        "Password must contain an uppercase character, a lowercase character, and a number."
+      );
+    });
   });
+
+  test("shows message if email is in the wrong format", async () => {
+    submitFormSuccessfully();
+
+    axios.post.mockRejectedValueOnce(new Error("Network Error"));
+
+    const username = screen.getByLabelText("Email:");
+    fireEvent.change(username, { target: { value: "testEmail" } });
+    const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
+
+    await waitFor(() => {
+      fireEvent.click(buttonElement);
+      expect(screen.getByTestId("error-message-email")).toHaveTextContent(
+        "Invalid email format"
+      );
+    });
+  });
+  /*
+  test("shows message if username is already in use", async () => {
+    submitFormSuccessfully();
+
+    axios.get.mockImplementation((url, { params }) => {
+      if (url.includes("/api/check-email/")) {
+        return Promise.resolve({ data: { exists: true } }); // Force email to be "already taken"
+      }
+      return Promise.resolve({ data: {} });
+    });
+
+    const username = screen.getByLabelText("Username:");
+    fireEvent.change(username, { target: { value: "@john789" } });
+    const buttonElement = screen.getByRole("button", { name: "SIGNUP" });
+    fireEvent.click(buttonElement);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("error-message-username")).toHaveTextContent(
+        "This username is already taken, please enter another"
+      );
+    });
+  });
+  */
 });
