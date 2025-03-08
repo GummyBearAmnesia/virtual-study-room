@@ -6,6 +6,7 @@ import { getAuthenticatedRequest, getAccessToken } from "./utils/authService";
 import defaultAvatar from '../assets/avatars/avatar_2.png';
 import UserAvatar from '../components/UserAvatar';
 import UserBadges from '../components/UserBadges';
+import "../styles/ProfileBox.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,6 +15,7 @@ function ProfileBox() {
     const [showAvatarSelector, setShowAvatarSelector] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [userBadges, setUserBadges] = useState([]);
+    const [showModal, setShowModal] = useState(false); 
     const [userData, setUserData] = useState({
         username: null,
         description: "",
@@ -156,49 +158,69 @@ function ProfileBox() {
 
     return (
         <div className='profile-container'>
+            <ToastContainer position='top-center'/>
             <div className='profile-box'>
                 <h1 className='profile-title'>Profile</h1>
-                <ToastContainer position='top-center'/>
-                <img src={userData.image} alt="logo" className="profile-pic" />
-                <input type="file" accept="image/*" data-testid='file-input' id='change-avatar' onChange={handleChangeAvatar} className="change-avatar-button" style={{ display: 'none' }} />
-                <label htmlFor="change-avatar" className="upload-button" style={{ color: 'black' }}>Upload Avatar</label>
-                <h1 className='profile-username'>{userData.username}</h1>
-                <button className="default-select-button" onClick={() => setShowAvatarSelector(!showAvatarSelector)}>Default Avatars</button>
-                {showAvatarSelector && (<UserAvatar onSelect={handleDefaultPFP} currentAvatar={userData.avatarSrc}/>)} 
-                <textarea
-                    className="profile-description"
-                    value={userData.description}
-                    onChange={handleChangeDescription}
-                    placeholder="Please Enter Description"
-                />
-                <button type="button" className="save-desc-button" onClick={handleSaveDescription}>Save</button>
-                <button 
-                    className='inventory-button'
-                    onClick={() => setShowInventory(!showInventory)}
-                    style={{
-                        width: '45px',
-                        height: '45px',
-                        borderRadius: '50%',
-                        backgroundColor: showInventory ? '#b0f2b4' : '#bad7f5',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px',
-                        transition: 'all 0.2s ease-in-out',
-                        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                    }}
-                    aria-label={showInventory ? 'Hide Badge Collection' : 'View Badge Collection'}
-                    >🏆
-                </button>
-                {showInventory && (
-                    <div className='inventory-content'>
-                        <h2>Your Badge Collection</h2>
-                        <UserBadges userBadges={userBadges}/>
+                <div className='picture-container'>
+                    <div className='container1'>
+                        <img src={userData.image} alt="logo" className="profile-pic" />
+                        <h1 className='profile-username'>{userData.username}</h1>
+                        <input type="file" accept="image/*" data-testid='file-input' id='change-avatar' onChange={handleChangeAvatar} className="change-avatar-button" style={{ display: 'none' }} />
+                    </div>
+                    <div className='container2'>
+                        <button type="button" className="logoff-button" onClick={handleLogOff}>LOG OFF</button>
+                        <button type='button' className='show-modal-button' onClick={() => setShowModal(true)}></button>
+                    </div>
+                </div>
+
+                {showModal && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <span className="close-button" onClick={() => setShowModal(false)}>&times;</span>
+                            <div className='button-container'>
+                                <div className='inventory-align'>
+                                    <label htmlFor="change-avatar" className="upload-button">UPLOAD AVATAR</label>
+                                    <button className="default-select-button" onClick={() => setShowAvatarSelector(!showAvatarSelector)}>DEFAULT AVATARS</button>
+                                </div>
+                                {showAvatarSelector && (<div className='avatar-selector'><UserAvatar onSelect={handleDefaultPFP} currentAvatar={userData.avatarSrc}/></div>)}
+                            </div>
+                            <textarea
+                                className="profile-description"
+                                value={userData.description}
+                                onChange={handleChangeDescription}
+                                placeholder="Please Enter Description"
+                            />
+                            <button type="button" className="save-desc-button" onClick={handleSaveDescription}>SAVE DESCRIPTION</button>
+                            <button 
+                                className='inventory-button'
+                                onClick={() => setShowInventory(!showInventory)}
+                                style={{
+                                    width: '45px',
+                                    height: '45px',
+                                    borderRadius: '50%',
+                                    backgroundColor: showInventory ? '#baf2e9' : '#bad7f5',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontSize: '24px',
+                                    transition: 'all 0.2s ease-in-out',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                    marginBottom: '10px',
+                                }}
+                                aria-label={showInventory ? 'Hide Badge Collection' : 'View Badge Collection'}
+                                >🏆
+                            </button>
+                            {showInventory && (
+                                <div className='inventory-content'>
+                                    <h2>Your Badge Collection</h2>
+                                    <UserBadges userBadges={userBadges}/>
+                                </div>
+                            )}
+                        </div>
                     </div>
                 )}
-                <button type="button" className="logoff-button" onClick={handleLogOff}>Log Off</button>
             </div>
         </div>
     );

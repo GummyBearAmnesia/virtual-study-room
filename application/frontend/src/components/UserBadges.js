@@ -30,7 +30,7 @@ const UserBadges = ({ userBadges }) => {
   }
 
   return (
-    <div style={{ width: '440px' }}>
+    <div style={{ width: '500px' }}>
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} style={{ display: 'flex' }}>
           {row.map((badgeUrl, colIndex) => {
