@@ -14,17 +14,17 @@ function Dashboard() {
             {/* This is where all the main components will go*/}
             {/* Left panel - main panel - right panel*/}
             <div className = "dashboard-content">
-                <div className = "dashboard-left-panel">
+                <div className = "dashboard-left-panel" data-testid="left-panel">
                     <Analytics />
                     <div className="dashboard-panel">Calendar</div>
                     <div className="dashboard-panel">Invites</div>
                 </div>
-                <div className = "dashboard-main-panel">
+                <div className = "dashboard-main-panel" data-testid="main-panel">
                     <div className="dashboard-panel">Profile</div>
                     <div className="dashboard-panel">Friends List</div>
                     <div className="dashboard-panel">Add Friends</div>
                 </div>
-                <div className = "dashboard-right-panel">
+                <div className = "dashboard-right-panel" data-testid="right-panel">
                     <div className="dashboard-panel">Generate Group Study Room</div>
                     <div className="dashboard-panel"><ToDoList/></div>
                 </div>

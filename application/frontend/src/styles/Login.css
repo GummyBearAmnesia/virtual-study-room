@@ -9,7 +9,7 @@
     width: 100vw; /* Ensures it spans the full width */
     flex-direction: column;
 }
-.heading1 {
+.login-heading1 {
     border: 3px solid #F2BAC9;
     padding: 10px;
     text-align: center;
@@ -38,7 +38,7 @@
     position: relative;
     margin-top: 80px;
 }
-.heading2 {
+.login-heading2 {
     margin-top: 30px;
     width: 100%;                  
     text-align: center;
@@ -70,7 +70,7 @@
     border-color: white;
     outline: none;
 }
-.submit-button {
+.login-submit-button {
     margin-top: 30px;
     padding: 15px 20px;
     width: 20%;

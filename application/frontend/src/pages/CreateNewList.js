@@ -76,9 +76,9 @@ const AddListModal = ({ addListWindow, setAddListWindow, setLists }) => {
                             onChange={(e) => setFormData({ ...formData, isShared: e.target.checked })}
                         />
 
-                        <span>
+                        <task-span>
                             Do you want to make it sharable?
-                        </span>
+                        </task-span>
 
                         <div>
                             <button type="submit" className="btn btn-primary">Save</button>

@@ -26,8 +26,8 @@
 }
 
 /* Input and Checkbox */
-input[type="text"],
-input[type="checkbox"] {
+.newTask input[type="text"],
+.newTask input[type="checkbox"] {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -36,18 +36,18 @@ input[type="checkbox"] {
     font-size: 14px;
 }
 
-input[type="text"]:focus {
+.newTask input[type="text"]:focus {
     border-color: #4CAF50;
 }
 
 /* Checkbox Styling */
-input[type="checkbox"] {
+.newTask input[type="checkbox"] {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-span {
+task-span {
     font-size: 14px;
     margin-left: 10px;
 }

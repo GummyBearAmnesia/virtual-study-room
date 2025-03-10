@@ -5,7 +5,7 @@ import 'tailwindcss';
 import '@fontsource/vt323';
 import '@fontsource/press-start-2p';
 
-const StudyTimer = ({ roomId, isHost, onClose }) => {
+const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [dragging, setDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -570,7 +570,7 @@ const StudyTimer = ({ roomId, isHost, onClose }) => {
   `;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+    <div className="fixed inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }} data-testid={dataTestId}>
       <style>{errorMessageAnimation}</style>
       {/* Error message positioned abovethe timer */}
       {errorMessage && (

@@ -121,20 +121,19 @@
     color:  #BAF2E9;
 }
 
-label {
+.todo-label {
     font-size: 16px;
     font-weight: 900;
     color: white;
     cursor: pointer;
 }
 
-.checkbox:checked + label {
+.checkbox:checked + .todo-label {
     text-decoration: line-through;
     opacity: 0.7; /* Slight fade effect */
 }
 
 .delete-button{
-    min-width: 0;
     margin-right: 10px;
     padding: 0px 5px;
     font-size: 20px;
@@ -146,6 +145,7 @@ label {
     outline: none;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     transition: transform 0.1s, box-shadow 0.1s;
+    font-family: 'Inter', sans-serif;
 }
 
 .delete-button:hover {
@@ -440,8 +440,6 @@ label {
     height: 5%;
     width: 10%;
 
-    font-weight: 900;
-    color: #FFFFFF;
     background-color: #BAD7F2;
     border: none;
     border-radius: 20px;
@@ -544,6 +542,7 @@ label {
 }
 
 .exit-button img,  .copy-button img, .customisation-button img, .music-button img{
+    max-width: none;
     width: 20px;
     height: 20px;
 }
