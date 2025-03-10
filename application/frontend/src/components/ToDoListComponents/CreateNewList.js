@@ -1,7 +1,7 @@
     import React, { useState } from "react";
-    import "../styles/CreateNewList.css";
+    import "../../styles/CreateNewList.css";
 
-    import { getAuthenticatedRequest } from "../utils/authService";
+    import { getAuthenticatedRequest } from "../../pages/utils/authService";
 
 const AddListModal = ({ addListWindow, setAddListWindow, setLists }) => {
         const [formData, setFormData] = useState({ name: "", isShared: false});
@@ -40,9 +40,8 @@ const AddListModal = ({ addListWindow, setAddListWindow, setLists }) => {
             setAddListWindow(false);
             console.log("List Created:", response);
         } catch (error) {
-            console.error("Error creating list:", error);
             if (error.response) {
-                alert(error.response.data.error);  // or display specific error from the server
+                alert(error.response.data.error);
             } else {
                 alert("An error occurred. Please try again.");
             }
@@ -57,7 +56,7 @@ const AddListModal = ({ addListWindow, setAddListWindow, setLists }) => {
 
         if (!addListWindow) return null;
         return (
-            <div className="modal-overlay">
+            <div role="dialog" className="modal-overlay">
                 <div className="modal-content">
                     <h4>Add List</h4>
                     <form onSubmit={handleSubmit}>
@@ -66,7 +65,7 @@ const AddListModal = ({ addListWindow, setAddListWindow, setLists }) => {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="Enter task title"
+                            placeholder="Enter list title"
                             required
                         />
                         <input

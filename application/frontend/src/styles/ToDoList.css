@@ -1,5 +1,3 @@
-
-
 /* To-Do List Container */
 .todo-container {
     display: flex;
@@ -7,67 +5,16 @@
     align-items: center;
     justify-content: flex-start;
     max-width: 100%;
-    min-height: 100%;
+    max-height: 100%;
+    margin: 1%;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: all 0.3s ease-in-out;
-}
-/* Full-Screen Mode */
-.todo-container.full-screen {
-    position: fixed;
-    top: 10%;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    max-height: 100%;
-    z-index: 999;
-    background: white;
-    padding: 20px;
-    overflow-y: auto;
-    /* ✅ Allow vertical scrolling */
-    overflow-x: hidden;
-    /* Prevents horizontal scrolling */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    max-width: 100% !important;
-}
+    overflow-x: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 
-/* Full-Screen List Layout */
-.todo-container.full-screen .todo-list {
-    width: 90%;
-    /* Ensures lists stay inside the screen */
-    height: auto;
-    /* Allow height to adjust */
-    max-height: calc(100vh - 100px);
-    /* ✅ Adjust height dynamically to allow vertical scroll */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    /* Centers the lists */
-    overflow-y: auto;
-    /* ✅ Enable vertical scrolling */
-}
-
-/* Full-Screen List Card */
-.todo-container.full-screen .todo-card {
-    width: 30%;
-    min-width: 300px;
-    max-width: 400px;
-    flex-shrink: 0;
-}
-
-/* ✅ Add vertical scroll to container if needed */
-.todo-container.full-screen::-webkit-scrollbar {
-    width: 5px;
-}
-
-.todo-container.full-screen::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 5px;
 }
 
 /* Header Container */
@@ -76,10 +23,9 @@
     justify-content: space-between;
     align-items: center;
     width: 90%;
-    /* ✅ Reduce width to keep buttons visible */
     margin: 0 auto;
-    /* ✅ Center the header */
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+
 }
 
 /* Header Styling */
@@ -87,6 +33,7 @@
     font-size: 18px;
     font-weight: bold;
     margin: 0;
+    margin-bottom: 5px;
 }
 
 /* Add List Button */
@@ -97,11 +44,13 @@
 
 .todo-header button {
     padding: 8px 12px;
+    margin: 2%;
     font-size: 14px;
     cursor: pointer;
     background-color: #28a745;
     color: white;
-    border: none;
+    /*border: 15px;
+    border-color: #000000;*/
     border-radius: 4px;
 }
 
@@ -110,30 +59,36 @@
     display: flex;
     flex-direction: row;
     /* Arrange lists in a horizontal row */
-    gap: 15px;
+    gap: 5px;
     /* Space between lists */
-    width: 100%;
-    height: 100%;
+    max-width: 100%;
+    min-width: 100%;
+
     min-height: 100%;
+    max-height: 100%;
     /* Leaves space for header */
-    overflow-x: auto;
-    /* Horizontal scroll if too many lists */
-    overflow-y: hidden;
+    overflow-x: unset;
+    padding: auto;
+    ;
+}
+
+.todo-list h4 {
+    margin: 3%;
 }
 
 /* Individual To-Do List Card */
 .todo-card {
-    background-color: #f9f9f9;
+    background-color: #ebaef6;
     border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 10px;
-    width: 300px;
+    padding: 3%;
     min-height: 80%;
     max-height: 80%;
     /* Set a fixed width for each list */
-    min-width: 250px;
-    /* Prevent shrinking */
-    flex-shrink: 0;
+    min-width: 85%;
+    max-width: 85%;
+    margin: 2%;
+    ;
     /* Prevents lists from shrinking */
     display: flex;
     flex-direction: column;
@@ -141,38 +96,148 @@
 
 /* Header for Each To-Do List */
 .todo-card-header {
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 5px;
 }
 
 /* Tasks Container (Scrollable if Needed) */
 .todo-card ul {
-    max-height: 400px;
+    max-height: 100%;
     /* Limits the height of tasks */
     overflow-y: auto;
     /* Vertical scroll if too many tasks */
-    padding-left: 0;
+    padding-left: 1;
     list-style: none;
-    margin: 0;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
     /* Keep tasks in a vertical column */
 }
 
-/* Individual Task Item */
+.task {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2%;
+    max-width: 90%;
+    border: 1px solid rgb(255, 255, 255);
+    background: #fff;
+    border-radius: 4px;
+    margin: 1%;
+    transition: all 0.3s ease-in-out;
+}
+
 .task-item {
+    display: flex;
+    flex-direction: row;
+    /* Arrange elements in a row */
+    align-items: center;
+    padding: 10px;
+    background: rgb(199, 196, 239);
+    text-align: left;
+    border-radius: 4px;
+    transition: all 0.3s ease-in-out;
+    width: 90%;
+    justify-content: space-between;
+}
+
+.task-item span {
+    color: #000000;
+    margin: 1%;
+    font-weight: lighter;
+    /* Pushes the column to the right */
+}
+
+.task-item-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    margin-left: 1%;
+    ;
+}
+
+/* Show/Hide Details Button */
+.task-item button {
+    padding: 5px;
+    margin: 1%;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #f0f0f0;
+    border: 1px solid #ccc;
+    transition: 0.2s ease-in-out;
+    font-weight: lighter;
+}
+
+.task-item button:hover {
+    background: rgb(197, 197, 197);
+}
+
+/* Task Details Section */
+.task-details {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    text-align: left;
+    min-width: 95%;
+    max-width: 95%;
+}
+
+/* Task Title & Buttons in One Line */
+.task-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 5px;
-    border-bottom: 1px solid #ddd;
+    width: 100%;
 }
 
-/* Checkbox Styling */
-.task-item input[type="checkbox"] {
-    margin-right: 10px;
+/* Text inside Task Details */
+.task-details p {
+    margin: 5px 0;
+    font-size: 12px;
+    color: #20293e;
+    font-weight: normal;
+
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    /* Set custom height */
+    border: 2px solid #555;
+    border-radius: 4px;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background: white;
+    width: 15%;
+    height: 15%;
+}
+
+/* Custom checkmark */
+.custom-checkbox:checked::before {
+    content: "✔";
+    /* Unicode checkmark */
+    font-size: 15px;
+    color: white;
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+/* Change background when checked */
+.custom-checkbox:checked {
+    background: #4CAF50;
+    /* Green background */
+    border-color: #4CAF50;
 }
 
 /* Completed Task Styling */
@@ -181,32 +246,93 @@
     color: gray;
 }
 
-/* Custom Scrollbars */
-.todo-list::-webkit-scrollbar {
-    height: 6px;
-    /* Horizontal scrollbar */
+/* Full-Screen Mode for To-Do List */
+.todo-container.full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 98%;
+    /* Full width */
+    height: 89%;
+    /* Full height */
+    background-color: white;
+    z-index: 9999;
+    overflow: hidden;
+    /* Hide outer scrollbar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+    /* Prevents content from being hidden behind header */
 }
 
-.todo-list::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 3px;
+/* Fixed Header in Full-Screen */
+.todo-container.full-screen .todo-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 97.5%;
+    height: 70px;
+    /* Fixed height */
+    background-color: white;
+    z-index: 10000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.todo-list::-webkit-scrollbar-thumb:hover {
-    background: #999;
+/* To-Do List Layout (3 lists per row) */
+.todo-container.full-screen .todo-list {
+    top: 0;
+    left: 0;
+    max-width: 99%;
+
+    background-color: rgb(230, 186, 186);
+    overflow-x: unset;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* Ensures space between items */
+    align-items: flex-start;
+    gap: 0.5%;
+    padding: 1%;
+    overflow-y: auto;
+    /* Only this section should be scrollable */
+    max-height: calc(100vh - 2%);
+    /* Ensure it doesn't overflow */
 }
 
-.todo-card ul::-webkit-scrollbar {
+/* Individual To-Do List */
+.todo-container.full-screen .todo-card {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 1%;
+    width: calc(33.33% - 1%);
+    /* 3 lists per row */
+    min-width: 25%;
+    max-width: 25%;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide outer scrollbar */
+.todo-container.full-screen::-webkit-scrollbar {
+    display: none;
+}
+
+/* Custom scrollbar inside lists */
+.todo-container.full-screen .todo-list::-webkit-scrollbar {
     width: 6px;
-    /* Vertical scrollbar for tasks */
 }
 
-.todo-card ul::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 3px;
+.todo-container.full-screen .todo-list::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 5px;
 }
 
-.todo-card ul::-webkit-scrollbar-thumb:hover {
-    background: #999;
+.todo-container.full-screen .todo-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
-

@@ -118,7 +118,9 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "\\.css$": "identity-obj-proxy"
+      "\\.css$": "identity-obj-proxy",
+      "@fontsource/press-start-2p": "identity-obj-proxy",
+      "@fontsource/vt323": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
       "web.js",
@@ -145,6 +147,7 @@
     "@babel/preset-react": "^7.26.3",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "babel-jest": "^29.7.0",
     "fs": "^0.0.1-security",
     "identity-obj-proxy": "^3.0.0",

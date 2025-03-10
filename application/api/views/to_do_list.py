@@ -38,6 +38,7 @@ class ViewToDoList(APIView):
                         "title": task.title,
                         "content": task.content,
                         "is_completed": task.is_completed,
+                        "creation_date": task.creation_date
                     }
                     for task in tasks
                 ]
@@ -114,6 +115,7 @@ class ViewToDoList(APIView):
                     "title": task.title,
                     "content": task.content,
                     "is_completed": task.is_completed,
+                    #"creation_date": task.creation_date
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
 
@@ -134,7 +136,8 @@ class ViewToDoList(APIView):
                 name=name, is_shared=is_shared)
             list.save()
 
-            Permission.objects.create(list_id=list, user_id=user)
+            permission = Permission.objects.create(list_id=list, user_id=user)
+            permission.save()
             
             response_data = {
                 "listId": list.pk,
@@ -145,13 +148,22 @@ class ViewToDoList(APIView):
         except Exception as e:
             return Response({"error": "Invalid request", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
     def patch(self, request, task_id):
         print(f"Received PATCH request for task_id: {task_id}")
-        task = toDoList.objects.get(id=task_id) 
-        if task:
+
+        try:
+        # This line throws DoesNotExist if not found
+            task = toDoList.objects.get(id=task_id)
+
             new_task_status = not task.is_completed
-            task = toDoList.objects.filter(id=task_id).update(is_completed=new_task_status)
-            print(task)
-            return Response(task, status=status.HTTP_200_OK)
-            #return self.get(request)
-        return Response('Task not found', status=status.HTTP_400_BAD_REQUEST)
+            task.is_completed = new_task_status
+            task.save()
+
+            return Response({"is_completed": task.is_completed}, status=status.HTTP_200_OK)
+
+        except toDoList.DoesNotExist:  # Catch the specific exception
+            return Response({"error": "Task not found"}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return Response({"error": "Invalid request", "details": str(e)}, status=status.HTTP_400_BAD_REQUEST)
