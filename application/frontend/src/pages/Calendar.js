@@ -18,6 +18,7 @@ const CalendarPage = () => {
     const [eventEnd, setEventEnd] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
+   
     const location = useLocation();
     const userId = location.state?.userId;
 
@@ -71,7 +72,9 @@ const CalendarPage = () => {
     };
 
     const openAddEventPopup = () => {
+        console.log('Add Event button func called'); 
         setShowPopup(true);
+        console.log('showPopup:', showPopup);
     };
 
     const closeAddEventPopup = () => {
@@ -109,13 +112,16 @@ const CalendarPage = () => {
         };
     });
 
-    return (
-        <div>
-            <h1 className='hlol'>My Calendar</h1>
-            <ToastContainer position='top-center'/>
-            <button onClick={openAddEventPopup}>Add Event</button>
 
-            {showPopup && (
+
+    return (
+        <div className='Page'>
+            <h1 className='Header'>My Calendar</h1>
+            <ToastContainer position='top-center'/>
+        
+             {
+             /* <button className="addeventbutton"onClick={openAddEventPopup}>Add Event</button>
+             {showPopup && (
                 <div className="event-popup">
                     <div className="popup-content">
                         <h2 className='eventbutton'>Add Event</h2>
@@ -158,26 +164,76 @@ const CalendarPage = () => {
                         </form>
                     </div>
                 </div>
-            )}
+            )} */}
 
-            <FullCalendar 
+            <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin]}
                 initialView="timeGridWeek"
                 events={processedEvents}
                 headerToolbar={{
                     left: 'prev,today,next',
                     center: 'title',
-                    right: 'timeGridWeek,dayGridMonth,dayGridYear',
+                    right: 'addEventButton,timeGridWeek,dayGridMonth,dayGridYear',
+                }}
+                customButtons={{
+                    addEventButton: {
+                        text: 'Add Event',
+                        // Debugging
+                        click: () => { 
+                            console.log('Add Event button clicked'); 
+                            openAddEventPopup(); // Ensure this is correctly defined
+                        },
+                    },
                 }}
                 eventClick={handleEventClick}
-                eventContent={(eventInfo) => {
-                    return (
-                        <div style={{ backgroundColor: eventInfo.event.backgroundColor, color: eventInfo.event.textColor }}>
-                            {eventInfo.event.title}
-                        </div>
-                    );
-                }}
             />
+
+            {showPopup && (
+                <div className="event-popup">
+                    <div className="popup-content">
+                        <h2 className="eventbutton">Add Event</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div>
+                                <label>Title: </label>
+                                <input
+                                    type="text"
+                                    value={eventTitle}
+                                    onChange={(e) => setEventTitle(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>Description: </label>
+                                <textarea
+                                    value={eventDescription}
+                                    onChange={(e) => setEventDescription(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <label>Start: </label>
+                                <input
+                                    type="datetime-local"
+                                    value={eventStart}
+                                    onChange={(e) => setEventStart(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>End: </label>
+                                <input
+                                    type="datetime-local"
+                                    value={eventEnd}
+                                    onChange={(e) => setEventEnd(e.target.value)}
+                                />
+                            </div>
+                            <button type="submit">Save Event</button>
+                            <button type="button" onClick={closeAddEventPopup}>
+                                Cancel
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             {selectedEvent && (
                 <div className="event-popup">
