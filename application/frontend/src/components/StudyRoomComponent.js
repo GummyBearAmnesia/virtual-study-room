@@ -69,28 +69,6 @@ const StudyRoomComponent = () => {
       console.error("Error joining room:", error);
     }
   };
-  /*
-  // Methods to leave room
-  const leaveRoom = async () => {
-    try {
-      // This stuff gets sent to the backend!
-      const response = await getAuthenticatedRequest("/leave-room/", "POST", {
-        roomCode: roomCode, // Sends the room name to the backend
-      });
-
-      console.log("leaving .. . .");
-
-      console.log("ROOM CODE", roomCode);
-
-      if (response.status === 200) setLeaving(true);
-      // Redirect to the Dashboard
-      navigate("/dashboard/", {});
-      console.log("User has left the room");
-    } catch (error) {
-      console.error("Error leaving room:", error);
-    }
-  };
-  */
 
   return (
     <div className="dashboard-panel">

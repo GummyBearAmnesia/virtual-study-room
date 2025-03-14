@@ -14,16 +14,20 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @api_view(['POST'])
 def login(request):
-    #username = request.data.get('username')
+
     email = request.data.get('email')
     password = request.data.get('password')
 
     user = authenticate(request, email=email, password=password)
+    print("User", user)
+    print("Username",user.username)
+    username = user.username
 
     if user:
         refresh = RefreshToken.for_user(user)
         return Response({
             'refresh': str(refresh),
-            'access': str(refresh.access_token)
+            'access': str(refresh.access_token),
+            'username' : username
         })
     return Response({'error': 'Invalid Credentials'}, status=400)

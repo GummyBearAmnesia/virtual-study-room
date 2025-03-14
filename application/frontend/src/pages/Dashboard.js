@@ -9,8 +9,13 @@ import ToDoList from '../components/ToDoListComponents/ToDoList';
 import StudyRoomComponent from '../components/StudyRoomComponent';
 import Analytics from './Analytics';
 import ProfileBox from './ProfileBox';
+import { useParams, useLocation } from 'react-router-dom';
+
 
 function Dashboard() {
+    const location = useLocation();
+    const { username } = useParams();
+
     const navigate = useNavigate();
 
     const gotoCalendar = () => {
@@ -24,7 +29,7 @@ function Dashboard() {
     return (
         <div className='dashboard-container'>
             <h1 className="dashboard-heading">Dashboard</h1> {/* A simple heading */}
-
+            {username}
             {/* This is where all the main components will go*/}
             {/* Left panel - main panel - right panel*/}
             <div className = "dashboard-content">

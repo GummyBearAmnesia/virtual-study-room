@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { storage } from "../firebase-config";
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { getAuthenticatedRequest, getAccessToken } from "./utils/authService";
 import defaultAvatar from '../assets/avatars/avatar_2.png';
@@ -11,13 +11,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function ProfileBox() {
+
+    const location = useLocation();
+    const { username } = useParams();
+
     const navigate = useNavigate();
     const [showAvatarSelector, setShowAvatarSelector] = useState(false);
     const [showInventory, setShowInventory] = useState(false);
     const [userBadges, setUserBadges] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [userData, setUserData] = useState({
-        username: null,
+        username: username,
         description: "",
         image: defaultAvatar, //default image
         avatarSrc: null, //represents selectable PFPs
@@ -27,19 +31,23 @@ function ProfileBox() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const data = await getAuthenticatedRequest("/profile/", "GET");
+                const data = await getAuthenticatedRequest("/profile/", "GET", {
+                    username: username, // Sends the user name to the backend
+                  });
 
                 //fetch profile picture from firebase using user_id
-                const imageRef = ref(storage, `avatars/${data.username}`);
+                const imageRef = ref(storage, `avatars/${username}`);
                 const imageUrl = await getDownloadURL(imageRef).catch(() => defaultAvatar); //default image if not found
 
                 //update user data
                 setUserData({
-                    username: data.username || "N/A",
+                    username: username || "N/A",
                     description: data.description || "",
                     image: imageUrl,
                     avatarSrc: imageUrl,
                 });
+
+                console.log("THIS IS THE USER", username)
 
                 //fetch user badges
                 const badges = await getUserBadges();
@@ -57,12 +65,12 @@ function ProfileBox() {
     const handleChangeAvatar = async (event) => {
         //get the selected file
         const file = event.target.files[0];
-        if (!file || !userData.username) {
+        if (!file || !username) {
             toast.error("no valid user id or file selected");
             return;
         }
         //get the file reference from firebase
-        const fileRef = ref(storage, `avatars/${userData.username}`);
+        const fileRef = ref(storage, `avatars/${username}`);
         try 
         {
             //upload file to firebase
@@ -88,6 +96,7 @@ function ProfileBox() {
     const handleLogOff = async () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        console.log("Logging off", username);
 
         navigate("/login");
     }
@@ -114,7 +123,7 @@ function ProfileBox() {
     }
 
     const handleDefaultPFP = async (avatarSrc) => {
-        const fileRef = ref(storage, `avatars/${userData.username}`);
+        const fileRef = ref(storage, `avatars/${username}`);
         try 
         {
             //upload file to firebase
@@ -158,7 +167,7 @@ function ProfileBox() {
                 <div className='picture-container'>
                     <div className='container1'>
                         <img src={userData.image} alt="logo" className="profile-pic" />
-                        <h1 className='profile-username'>{userData.username}</h1>
+                        <h1 className='profile-username'>{username}</h1>
                         <button 
                                 className='inventory-button'
                                 onClick={() => setShowInventory(!showInventory)}

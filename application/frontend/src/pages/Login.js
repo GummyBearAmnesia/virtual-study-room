@@ -22,26 +22,6 @@ function Login() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // to retrieve the username
-    const [userName, setUserName] = useState("");
-    useEffect(() => {
-        const fetchUserName = async () => {
-            try {
-                const data = await getAuthenticatedRequest("/profile/", "GET");
-                console.log("Login: ", data.username)
-                //update user data
-                setUserName({
-                    username: data.username || "N/A",
-                });
-            }
-            catch (error) {
-                toast.error("error fetching user data");
-            }
-        };
-        fetchUserName();
-    }, []);
-
-
     // when the login button is clicked - send form data to backend django form
     const handleLogin = async () => {
         setError("");
@@ -61,13 +41,13 @@ function Login() {
                 hideProgressBar: true
             });
 
-            console.log(" Look here: ", userName)
+            console.log(" Logging in: ", response.data.username)
             setTimeout(() => {
-                navigate(`/dashboard/${userName.username}`, {
-                        state: { userName: userName},
+                navigate(`/dashboard/${response.data.username}`, {
+                        state: { userName: response.data.username },
       });
             }, 1500)
-            
+
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
                 toast.error(error.response.data.error);
