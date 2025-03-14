@@ -7,7 +7,6 @@ import { storage } from "../firebase-config";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import defaultAvatar from '../assets/avatars/avatar_2.png';
 import { ToastContainer, toast } from 'react-toastify';
-import io from 'socket.io-client';
 
 const StudyParticipants = () => {
 

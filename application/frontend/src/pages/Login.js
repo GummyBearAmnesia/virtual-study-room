@@ -5,74 +5,81 @@ import "../styles/Login.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAuthenticatedRequest, getAccessToken } from "./utils/authService";
+import { v4 as uuidv4 } from "uuid";  // For generating unique Tab IDs
+
+
 
 function Login() {
-    // TODO: TEST THIS FILE?
-
     const navigate = useNavigate();
 
-    // fields that the user will input
-    const [formData, setFormData] = useState({ email: "", password: "" });
+    // Generate or retrieve the unique Tab ID
+    useEffect(() => {
+        let tabId = sessionStorage.getItem("tab_id");
+        if (!tabId) {
+            tabId = uuidv4();  // Generate a new unique ID for this tab
+            sessionStorage.setItem("tab_id", tabId);
+        }
 
-    // store login errors
+        // Check if an access token exists for this tab
+        const storedToken = localStorage.getItem(`access_token_${tabId}`);
+        if (storedToken) {
+            navigate("/dashboard");  // Redirect authenticated users
+        }
+    }, [navigate]);
+
+    // User login form fields
+    const [formData, setFormData] = useState({ email: "", password: "" });
     const [error, setError] = useState("");
 
-    // when the username/password fields are edited, update form data
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    // to retrieve the username
+    // To retrieve the username
     const [userName, setUserName] = useState("");
+
     useEffect(() => {
         const fetchUserName = async () => {
             try {
                 const data = await getAuthenticatedRequest("/profile/", "GET");
-                console.log("Login: ", data.username)
-                //update user data
-                setUserName({
-                    username: data.username || "N/A",
-                });
-            }
-            catch (error) {
-                toast.error("error fetching user data");
+                setUserName(data.username || "N/A");
+            } catch (error) {
+                toast.error("Error fetching user data");
             }
         };
         fetchUserName();
     }, []);
 
+    // Update form data when input fields change
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
 
-    // when the login button is clicked - send form data to backend django form
+    // Handle login logic
     const handleLogin = async () => {
         setError("");
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/login/",
-                formData,  // Contains email and password
-                { headers: { "Content-Type": "application/json" } }  // No Authorization header here
+                formData,
+                { headers: { "Content-Type": "application/json" } }
             );
 
-            // Store tokens in localStorage
-            localStorage.setItem("access_token", response.data.access);
-            localStorage.setItem("refresh_token", response.data.refresh);
-            localStorage.setItem('user_id', response.data.userId);
+            // Get the unique Tab ID
+            const tabId = sessionStorage.getItem("tab_id");
 
-            toast.success("Login Successful!", {
-                hideProgressBar: true
-            });
+            // Store tokens and user ID in localStorage with the Tab ID
+            localStorage.setItem(`access_token_${tabId}`, response.data.access);
+            localStorage.setItem(`refresh_token_${tabId}`, response.data.refresh);
+            localStorage.setItem(`user_id_${tabId}`, response.data.userId);
 
-            console.log(" Look here: ", userName)
+            toast.success("Login Successful!", { hideProgressBar: true });
+
             setTimeout(() => {
-                navigate(`/dashboard/${userName.username}`, {
-                        state: { userName: userName},
-      });
-            }, 1500)
+                navigate(`/dashboard/${userName}`, { state: { userName } });
+            }, 1500);
             
         } catch (error) {
-            if (error.response && error.response.data && error.response.data.error) {
+            if (error.response?.data?.error) {
                 toast.error(error.response.data.error);
             } else {
-                toast.error("An error occurred. Please try again.")
+                toast.error("An error occurred. Please try again.");
             }
         }
     };
