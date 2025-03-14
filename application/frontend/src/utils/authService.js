@@ -5,7 +5,10 @@ const API_BASE_URL = "http://127.0.0.1:8000/api";
 //"https://studyspot.pythonanywhere.com/api/" // Change if needed
 
 
-export const getAccessToken = () => localStorage.getItem("access_token");
+export const getAccessToken = () => {
+    const sessionId = sessionStorage.getItem("session_id"); // Get the session ID for this tab
+    return sessionStorage.getItem(`${sessionId}_access_token`); // Retrieve the access token for this session
+};
 export const getRefreshToken = () => localStorage.getItem("refresh_token");
 
 export const isTokenExpired = (token) => {

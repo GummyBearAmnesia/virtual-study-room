@@ -22,11 +22,20 @@ function Login() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // function to generate a session id
+    const generateSessionId = () => {
+        return 'session_' + Math.random().toString(36).substr(2, 9);
+        };
+
     // to retrieve the username
     const [userName, setUserName] = useState("");
     useEffect(() => {
         const fetchUserName = async () => {
             try {
+                console.log("AJSHDLKJASHDLKAJSLKDJASLKD")
+                const sessionId = sessionStorage.getItem("session_id"); // Get the session ID
+                console.log("session id", sessionStorage.getItem("session_id"))
+                const accessToken = sessionStorage.getItem(`${sessionId}_access_token`); // Get the access token for this session
                 const data = await getAuthenticatedRequest("/profile/", "GET");
                 console.log("Login: ", data.username)
                 //update user data
@@ -52,10 +61,16 @@ function Login() {
                 { headers: { "Content-Type": "application/json" } }  // No Authorization header here
             );
 
-            // Store tokens in localStorage
-            localStorage.setItem("access_token", response.data.access);
-            localStorage.setItem("refresh_token", response.data.refresh);
-            localStorage.setItem('user_id', response.data.userId);
+            // Generate a unique session ID for this tab
+            const sessionId = generateSessionId();
+
+            // Store the session ID in sessionStorage
+            sessionStorage.setItem("session_id", sessionId);
+
+            // Store tokens in sessionStorage
+            sessionStorage.setItem(`${sessionId}_access_token`, response.data.access);
+            sessionStorage.setItem(`${sessionId}_refresh_token`, response.data.refresh);
+            sessionStorage.setItem(`${sessionId}_user_id`, response.data.userId);
 
             toast.success("Login Successful!", {
                 hideProgressBar: true
@@ -75,6 +90,7 @@ function Login() {
                 toast.error("An error occurred. Please try again.")
             }
         }
+
     };
 
 

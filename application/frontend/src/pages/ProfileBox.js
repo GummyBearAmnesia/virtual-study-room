@@ -27,6 +27,8 @@ function ProfileBox() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
+                const sessionId = sessionStorage.getItem("session_id"); // Get the session ID
+                const accessToken = sessionStorage.getItem(`${sessionId}_access_token`); // Get the access token for this session
                 const data = await getAuthenticatedRequest("/profile/", "GET");
 
                 //fetch profile picture from firebase using user_id
@@ -86,9 +88,15 @@ function ProfileBox() {
     }
 
     const handleLogOff = async () => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("refresh_token");
+        const sessionId = sessionStorage.getItem("session_id"); // Get the session ID for this tab
 
+        // Remove session data for this tab
+        sessionStorage.removeItem(`${sessionId}_access_token`);
+        sessionStorage.removeItem(`${sessionId}_refresh_token`);
+        sessionStorage.removeItem(`${sessionId}_user_id`);
+        sessionStorage.removeItem("session_id");
+
+        // Redirect to the login page or perform other logout actions
         navigate("/login");
     }
 
