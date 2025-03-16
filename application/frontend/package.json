@@ -118,7 +118,7 @@
       "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!axios|react-router-dom)"
+      "/node_modules/(?!axios|react-router-dom|@fullcalendar)"
     ],
     "modulePaths": [],
     "moduleNameMapper": {
@@ -162,12 +162,16 @@
     "jest-transform-css": "^6.0.2",
     "jest-transform-stub": "^2.0.0",
     "jest-watch-typeahead": "^2.2.2",
+    "ts-jest": "^29.2.6",
+    "typescript": "^5.8.2",
     "webpack-dev-server": "^4.11.1"
   },
   "babel": {
     "presets": [
       "react-app",
       [
+        
+        "@babel/preset-env",
         "@babel/preset-react",
         {
           "runtime": "automatic"
