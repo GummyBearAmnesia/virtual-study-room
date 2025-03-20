@@ -1,7 +1,6 @@
 \chapter{Specifications}
 \label{chap:specifications}
 
-\defaultInstructions
 
 \begin{length}
 There are no strict length requirements for this chapter.  However, it is important that the writing is clear and concise.  Avoid repeating yourself.  It is expected that a typical project needs 1--5 pages, but this can vary considerably from project to project.
@@ -10,11 +9,11 @@ There are no strict length requirements for this chapter.  However, it is import
 \begin{expectations}
 This chapter should provide the specifications of the software that you have implemented.  Good specifications are clear, concise, consistent (with one another and with the project objectives), estimable (the effort required of functional requirements should be estimable), and testable (you should be able to create automated or manual tests for these specifications).
 
-A significant part of this chapter covers functional requirements/specifications.  These refer to the product features your team has developed.  Present a clear overview of all functional requirements/specifications that can be found in the deployed system.  For each feature, explain how it contributes to the project objectives, and explain how/where it can be found.  Do \emph{not} mix the specifications the team managed to implement with those they did not.  
+A significant part of this chapter covers functional requirements/specifications.  These refer to the product features your team has developed.  Present a clear overview of all functional requirements/specifications that can be found in the deployed system.  For each feature, explain how it contributes to the project objectives, and explain how/where it can be found.  Do \emph{not} mix the specifications the team managed to implement with those they did not.
 
 If necessary or helpful for clarity, explain what is out of scope of the project in a distinct section.  You may discuss ideas for functional specifications the team did not manage to implement, provided this discussion is clearly distinct from the project's achieved functional specifications.
 
-The project objectives will also entail certain non-functional specifications.  These may include, for example, reliability, usability, portability, scalability, performance, compatibility, security, compliance, etc.  Identify which non-functional specifications are important to this project and define them.  Make sure to present them in order of importance, and relate each one to the project objectives.  
+The project objectives will also entail certain non-functional specifications.  These may include, for example, reliability, usability, portability, scalability, performance, compatibility, security, compliance, etc.  Identify which non-functional specifications are important to this project and define them.  Make sure to present them in order of importance, and relate each one to the project objectives.
 
 The section headers below provide a suggested structure.  You should feel free to change it or extend it.
 \end{expectations}
@@ -22,5 +21,45 @@ The section headers below provide a suggested structure.  You should feel free t
 \section{Functional specifications}
 \label{sect:functional-specifications}
 
+Our main aims for this project were to create a cosy online environment where users could study with their friends. We focused on implementing features which would improve virtual collaboration, and motivate students to study.
+
+Our basic functional specifications are as follows:
+
+\begin{itemize}
+\item Users should be able to sign up and login with a personal account. Having a personal login will help the user keep track of their studies, their friends, to-do-lists, calendars and achievements. The login page can be found at the url: /login.
+\item Users should be able to choose an avatar of their choice or upload their own. This will help users personalize their online identity when they are in study rooms. This can be found by pressing 'edit' underneath the user profile after signing in.
+\item User should be able to create their own profile description. Again, this will help users feel more connected to their online identity and can be shared with their friends. This can also be found by pressing 'edit' under user profile after signing in.
+\item Users should be able to send and receive friend requests to save their study buddies. This will allow users to connect with their friends more easily and share their achievements and profiles. Can be found in the 'friends' tab on the dashboard.
+\item Users should be able to keep track of their study statistics and optionally share it with their friends. This will help foster some healthy competition within friend groups and should motivate students to study more often. Can be found in 'statistics' and 'view friends' on the dashboard.
+\item Users should be able to create a study room and invite people to it via a code. This will allow users to join a virtual study room and invite their friend easily with a code. Can be found under 'generate study room' on the dashboard page.
+\item Users should be able to communicate with their friends via chat within the study room. Allows users to talk with their friends in breaks or ask questions while studying or working on a project together. Can be found in the 'chat box' within a study room. Click create study room to find this page.
+\item User should be able to share study materials within the study room. Allows users to share notes or homework questions easily within the room itself. Can be found under 'shared materials' in the study room.
+\item Users should be able to share a group to-do list within the study room
+\item Users should have access to a personal pomodoro timer which they can adjust to their liking within the study room
+\item Users should be able to create and store many personal to-do-lists to keep track of their studies
+\item Users should have access to a personal calendar to track their studies and note key events such as exams or deadlines
+\item Users should be able to earn badges and achievements to recognize their effort and motivate them to study more
+\item Users should be able to view their friends badges and statistics, if shared, to create a healthy competition
+\item Users should be able to read motivational messages within the study room to keep their spirits high
+\end{itemize}
+
+
+Due to the nature of this project being only a few months long, the above are all features which we prioritized and managed to complete. We did have some features which we intend to add in the future and have left skeleton functionality allowing for them to be added later.
+
+\begin{itemize}
+\item In the future we would like to add functionality for users to see whcih of their friends are currently online and join their study room by clicking on them
+\item We would like to add functionality for users to talk via audio call in addition to the chat box
+\item We would like to add more customization for user avatars, profiles and themes which they can apply to change the colours of the website
+\item We would like to add the ability for users to play music in the study rooms
+\item We would like to add functionality for users to plan study sessions on a shared calendar so they can plan their studies
+\end{itemize}
+
 \section{Non-functional specifications}
 \label{sect:non-functional-specifications}
+
+In terms of non-functional specifications, since our target users are teens and students we focused a lot on the aesthetics and simplicity in the User Interface. One of our core goals was to ensure that the website would be appealing to a young teen audience and we implemented a cosy, pixelated style for the website.
+
+We heavily focused on usability and made sure that every icon, text and button was easy to understand and in an easily readable font size.
+
+For our website we focused mainly on desktop / laptop proportions and designed the website around the idea that students would be working on their homework on a computer. In the future we would like to expand this to function well on other screens such as tablets and phones.
+

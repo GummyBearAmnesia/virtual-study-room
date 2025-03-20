@@ -59,14 +59,14 @@ const Analytics = () => {
 
     return ( 
         <div className="dashboard-panel analytics">
-            <h2>Your Progress</h2>
+            <h2>Statistics</h2>
             <div className="stats">
                 <div className="stat">
                     <div className="circle">
                         <span className="number">{analytics.streaks}</span>
                     </div>
                     <div className="stat-label">
-                        <p>Streak Days</p>
+                        <p>Day Streak</p>
                         <div className="tooltip-container">
                             <span className="info-icon">i</span>
                             <span className="tooltip">Number of consecutive days you've studied</span>
@@ -78,7 +78,7 @@ const Analytics = () => {
                         <span className="number">{analytics.average_study_hours}</span>
                     </div>
                     <div className="stat-label">
-                        <p>Avg Study Hours</p>
+                        <p>Average Hours</p>
                         <div className="tooltip-container">
                             <span className="info-icon">i</span>
                             <span className="tooltip">Your average time spent in a study room in hours</span>
@@ -89,7 +89,7 @@ const Analytics = () => {
             <div className="share">
                 <div className="share-label" >
                     <div className="checkbox-wrapper-5">
-                        <h5>Make it sharable</h5>
+                        <p>Share Statistics</p>
                         <div className="check">
                             <input id="check-5"
                                 type="checkbox"

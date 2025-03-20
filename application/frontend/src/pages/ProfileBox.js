@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { storage } from "../firebase-config";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-
+import CalendarPage from './Calendar';
 import { getAuthenticatedRequest, getAccessToken } from "../utils/authService";
 import defaultAvatar from '../assets/avatars/avatar_2.png';
 import UserAvatar from '../components/UserAvatar';
@@ -27,6 +27,14 @@ function ProfileBox() {
   const [editedDescription, setEditedDescription] = useState(
     userData.description
   );
+
+  const gotoCalendar = () => {
+    const user_id = localStorage.getItem('user_id');
+    console.log(user_id);
+    navigate(`/calendar/`, {
+        state: { userId : user_id }
+    });
+    }
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -184,6 +192,27 @@ function ProfileBox() {
             >
               🏆
             </button>
+            <button
+                className="CalendarButton"
+                onClick={gotoCalendar}
+                style={{
+                    width: '45px',
+                    height: '45px',
+                    borderRadius: '50%',
+                    backgroundColor: '#bad7f5', // Static background color
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                    transition: 'all 0.2s ease-in-out',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                    marginBottom: '10px',
+                }}
+            >
+                📅
+            </button>
             <input
               type="file"
               accept="image/*"
@@ -195,7 +224,6 @@ function ProfileBox() {
             />
           </div>
           <div className="main-profile-container">
-            <p className="description-text-label">Description</p>
             <div className="description-display-container">
               <p className="description-display">{userData.description}</p>
             </div>
@@ -205,7 +233,7 @@ function ProfileBox() {
                 className="logoff-button"
                 onClick={handleLogOff}
               >
-                LOG OFF
+                 Logout
               </button>
               <button
                 type="button"
@@ -213,7 +241,7 @@ function ProfileBox() {
                 className="logoff-button"
                 onClick={() => setShowModal(true)}
               >
-                EDIT
+                ✏️ Edit
               </button>
             </div>
           </div>

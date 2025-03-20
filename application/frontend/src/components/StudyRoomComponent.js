@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import GroupStudyRoom from "../pages/GroupStudyPage";
+import GroupStudyRoom from '../pages/GroupStudyPage';
 import { getAuthenticatedRequest } from "../utils/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import "../styles/StudyRoomComponent.css";
 
 const StudyRoomComponent = () => {
@@ -35,16 +35,13 @@ const StudyRoomComponent = () => {
       console.log("Joining .. . .");
 
       navigate(`/group-study/${response.roomCode}`, {
-        state: {
-          roomCode: response.roomCode,
-          roomName: roomName,
-          roomList: response.roomList,
-        },
+        state: { roomCode: response.roomCode, roomName: roomName, roomList: response.roomList },
       });
     } catch (error) {
       console.error("Error creating room: ", error);
     }
   };
+
 
   // Methods to join room
   const joinRoom = async () => {
@@ -66,17 +63,35 @@ const StudyRoomComponent = () => {
       if (response.status === 200) setJoined(true);
       // Redirect to the Group Study Room page with the roomCode
       navigate(`/group-study/${roomCode}`, {
-        state: {
-          roomCode: roomCode,
-          roomName: response1.sessionName,
-          roomList: response1.roomList,
-        },
+        state: { roomCode: roomCode, roomName: response1.sessionName, roomList: response1.roomList },
       });
       console.log("User has joined the room");
     } catch (error) {
       console.error("Error joining room:", error);
     }
   };
+  /*
+  // Methods to leave room
+  const leaveRoom = async () => {
+    try {
+      // This stuff gets sent to the backend!
+      const response = await getAuthenticatedRequest("/leave-room/", "POST", {
+        roomCode: roomCode, // Sends the room name to the backend
+      });
+
+      console.log("leaving .. . .");
+
+      console.log("ROOM CODE", roomCode);
+
+      if (response.status === 200) setLeaving(true);
+      // Redirect to the Dashboard
+      navigate("/dashboard/", {});
+      console.log("User has left the room");
+    } catch (error) {
+      console.error("Error leaving room:", error);
+    }
+  };
+  */
 
   return (
     <div className="dashboard-panel">

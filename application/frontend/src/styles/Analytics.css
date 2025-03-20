@@ -20,13 +20,16 @@
 }
 
 .analytics h2{
-    padding: 20px;
+    color: black;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 25px;
+    margin: 10px 0px;
 }
 
 .stats {
     display: flex;
     justify-content: space-around;
-    margin: -1rem 0;
     gap: 1rem;
 }
 
@@ -38,8 +41,8 @@
 }
 
 .circle {
-    width: 112px;  /* 28rem from previous design */
-    height: 112px;
+    width: 5vw;
+    height: 10vh;
     background: linear-gradient(135deg, #fff3c4, #ffe7ac);
     border-radius: 50%;
     display: flex;
@@ -48,7 +51,7 @@
 }
 
 .number {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     color: #1a1a1a;
 }
@@ -66,8 +69,11 @@
 
 .share p {
     color: #4a4a4a;
-    font-weight: 935;
+    font-weight: 700;
     margin-bottom: 0.5rem;
+    font-size: 15px;
+    justify-content: center;
+    padding: 4px;
 }
 
 .button-container {
@@ -166,4 +172,9 @@
 .tooltip-container:hover .tooltip {
     visibility: visible;
     opacity: 1;
+}
+
+.analytics check {
+    height: 3vh;
+    width: 6vw;
 }
