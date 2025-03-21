@@ -2,7 +2,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 //const API_BASE_URL = "http://127.0.0.1:8000/api"; // Change if needed
-const API_BASE_URL = "https://studyspot.pythonanywhere.com/api";
+const API_BASE_URL = "https://virtual-study-room-unly.onrender.com/api";
 
 export const getAccessToken = () => localStorage.getItem("access_token");
 export const getRefreshToken = () => localStorage.getItem("refresh_token");
