@@ -1,298 +1,327 @@
 .profile-container {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin: 0;
-    max-width: 100%;
-    max-height: 100%;
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }
 
-.profile-container button{
-    background : #F2BAC9;
-    width: 6vw;
+.profile-container button {
+  background: #f2bac9;
+  width: 6vw;
+  padding: 5px;
 }
-.profile-button-container{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin-top: 20px;
-    align-items: center;
-    width: 10vw;
-    justify-content: left;
+
+.profile-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 30px;
+  align-items: center;
+  width: 10vw;
+  justify-content: center;
 }
 
 .profile-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }
 
 .profile-pic {
-    max-width: 150px;
-    max-height: 150px;
-    border-radius: 20px;
-    border: 5px solid #F2BAC9;
-    margin: 0 10px;
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 20px;
+  border: 5px solid #f2bac9;
+  margin: 0 10px;
 }
 
-.profile-title, .profile-username {
-    color: black;
-    font-weight: 900;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 25px;
-    margin: 10px 0px;
+.profile-title,
+.profile-username {
+  color: black;
+  font-weight: 900;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 25px;
+  margin: 10px 0px;
 }
 
 .container1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-popup-container {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center;
+  gap: 15px; /* Space between buttons and avatar selector */
+  width: 100%;
 }
 
 .upload-button {
-    border-radius: 20px;
-    border: none;
-    background-color: #F2BAC9;
-    padding: 5px 15px;
-    text-align: center;
-    justify-self: left;
-    color: white;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: #f2bac9;
+  padding: 15px;
+  text-align: center;
+  justify-self: left;
+  color: white;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
 }
 
 .default-select-button {
-    border-radius: 20px;
-    border: none;
-    background-color: #F2BAC9;
-    padding: 5px 15px;
-    text-align: center;
-    justify-self: right;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: #f2bac9;
+  padding-right: 20px;
+  padding-left: 20px;
+  text-align: center;
+  justify-self: center;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  min-width: 120px;
+}
+
+.avatar-selector {
+  width: 100%; /* Take full width of the container */
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .upload-button,
 .default-select-button,
 .save-desc-button,
 .profile-description {
-    margin: 10px 0;
+  margin: 10px 0;
+  min-width: 140px;
 }
 
 .profile-description {
-    background-color: antiquewhite;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    text-align: center;
-    resize: none;
-    width: 90%;
-    color: black;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
+  background-color: antiquewhite;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  text-align: center;
+  resize: none;
+  width: 90%;
+  min-height: 120px;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
 }
 
 .save-desc-button {
-    border-radius: 20px;
-    border: none;
-    background-color: #BAF2E9;
-    padding: 5px 15px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: #baf2e9;
+  padding: 5px 15px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
 }
 
 .logoff-button {
-    border-radius: 20px;
-    border: none;
-    background-color: #BAF2E9;
-    padding: 5px 15px;
-    text-align: center;
-    color: white;
-    cursor: pointer;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
+  border-radius: 20px;
+  border: none;
+  background-color: #baf2e9;
+  padding: 5px 20px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
 }
 
-.modal, .inventory-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    z-index: 2000; /*ensures it is on top of dashboard heading*/
+.profile-edit-button {
+  border-radius: 20px;
+  border: none;
+  background-color: #baf2e9;
+  padding: 5px 20px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
 }
 
-.modal-content {
-    margin: auto;
-    padding: 20px;
-    border: 5px solid #f2bac9;
-    width: 80%;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 2001; /*ensures it is on top of dashboard heading*/
+.modal-profile,
+.inventory-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  height: 100%;
+  overflow: auto;
+  z-index: 2000; /*ensures it is on top of dashboard heading*/
+}
+
+.modal-content-profile {
+  margin: auto;
+  padding: 20px;
+  border: 5px solid #f2bac9;
+  background-color: white;
+  width: 50%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2001; /*ensures it is on top of dashboard heading*/
 }
 
 .inventory-display-content {
-    margin: auto;
-    padding: 20px;
-    border: 5px solid #f2bac9;
-    background-color: white;
-    width: auto;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 2001; /*ensures it is on top of dashboard heading*/
+  margin: auto;
+  padding: 20px;
+  border: 5px solid #f2bac9;
+  background-color: white;
+  width: auto;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2001; /*ensures it is on top of dashboard heading*/
 }
 
 .show-modal-button {
-    border: none;
-    background-color: #f2bac9;
-    width: 30px;
-    height: 30px;
-    border-radius: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 15px;
-    color: white;
-    transition: background-color 0.3s ease;
-    margin: 10px 0px;
+  border: none;
+  background-color: #f2bac9;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 15px;
+  color: white;
+  transition: background-color 0.3s ease;
+  margin: 10px 0px;
 }
 
-
 .close-button {
-    align-self: flex-end;
-    background-color: #bad7f5;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  align-self: flex-end;
+  background-color: #bad7f5;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .close-button:hover,
 .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .profile-box button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 0 10px; /* Add padding to the container to prevent outer gaps */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .inventory-align {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
 }
 
-
 .inventory-content {
-    width: 100%;
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .picture-container {
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-    gap: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  gap: 20px;
 }
 
 .main-profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .description-text-label {
-    color: black;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px;
-    justify-content: left;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  justify-content: left;
 }
 
 .description-display-container {
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: 5px solid #bad7f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 200px; /* adjust width */
-    background: #EEF7FF;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 5px solid #bad7f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 200px; /* adjust width */
+  background: #eef7ff;
 }
 
 .description-display {
-    color: black;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
-    font-size: 17px;
-    text-align: center;
-    height: 20vh;
-    width: 10vw;
-    overflow-y: auto; /* Add scrollbar if content overflows */
-    overflow-x : hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3; /* ensures 3-line ellipsis */
-    word-wrap: break-word;
-    white-space: normal;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  text-align: center;
+  height: 20vh;
+  width: 10vw;
+  overflow-y: auto; /* Add scrollbar if content overflows */
+  overflow-x: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; /* ensures 3-line ellipsis */
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .description-display::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
-
-
-
-
-

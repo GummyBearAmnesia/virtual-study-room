@@ -14,8 +14,32 @@
     border-radius: 30px;
 }
 
+.h2{
+    color: black;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    padding: 10px;
+}
+
 .dashboard-panel input:focus {
     border-color: #007bff;
+}
+
+.generate-image{
+    height: 20vh;
+}
+
+.generate-panel{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+}
+
+.input-panel{
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
 }
 
 /* Buttons */
@@ -27,6 +51,7 @@
     border: none;
     border-radius: 30px;
     font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-bottom: 10px;

@@ -10,7 +10,7 @@
     width: 100vw;
     box-sizing: border-box;
     background-color: #F6F0F0;
-    padding-top: 100px;
+    padding-top: 250px;
 }
 
 .dashboard-heading {
@@ -84,18 +84,25 @@
 
 .dashboard-main-panel .dashboard-panel:first-child {
     height: 250px;
-    color: purple;
+}
+
+.dashboard-main-panel .dashboard-panel:last-child {
+    height: 65vh;
 }
 
 .dashboard-right-panel .dashboard-panel:last-child {
-    height: 100%;
+    height: 100vh;
     color: red;
 }
 
 .dashboard-left-panel .dashboard-panel:first-child {
-    height: 40vh;
+    height: 30vh;
 }
 
-.dashboard-left-panel .dashboard-panel:first-child {
-    height: 40vh;
+.dashboard-left-panel .dashboard-panel:last-child {
+    height: 20vh;
+}
+
+.dashboard to-do-list{
+    height: 100vh;
 }

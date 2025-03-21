@@ -1,20 +1,21 @@
 .friends-container {
     max-width: 100%;
+    background: red;
     margin: 20px auto;
     padding: 20px;
     border-radius: 12px;
     background: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
-        text-align: center;
-            align-items: center;
-            display: flex;
-                /* Added flex display */
-                flex-direction: row;
-                /* Ensures content is stacked vertically */
-                justify-content: center;
-                /* Centers content vertically */
-                transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    /* Added flex display */
+    flex-direction: row;
+    /* Ensures content is stacked vertically */
+    justify-content: center;
+    /* Centers content vertically */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 /* Scrollable Row */
@@ -114,7 +115,7 @@
     font-size: 12px;
     cursor: pointer;
     transition: 0.2s ease-in-out;
-    background: #ff1919;
+    background: #eb7891;
     /* Default red background */
     color: white;
 }
@@ -127,7 +128,7 @@
 
 
 .friend-card .details-btn {
-    background: #4CAF50;
+    background: #a2de9b;
     color: white;
 }
 

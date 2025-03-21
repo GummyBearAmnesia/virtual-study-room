@@ -1,8 +1,13 @@
 # this is for websocket handling
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from .models import StudySession
+
+from django.core.exceptions import ObjectDoesNotExist
+
+from .models import StudySession, User
 from asgiref.sync import sync_to_async
+
+from asgiref.sync import async_to_sync
 
 class RoomConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -16,7 +21,17 @@ class RoomConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.room_code = self.scope["url_route"]["kwargs"]["room_code"]
+
         print(f"Consumers.py Room code: {self.room_code}")  # Debugging: Log the room code
+
+        try:
+            # Use sync_to_async to call the synchronous ORM code
+            self.study_session = await sync_to_async(StudySession.objects.get)(roomCode=self.room_code)
+        except ObjectDoesNotExist:
+            # If the study session does not exist, close the connection
+            await self.close()
+            return
+
         # Create a name to refer to the room
         self.room_group_name = f"room_{self.room_code}"
 
@@ -25,7 +40,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
         # Fetch and broadcast the updated participants list
-        await self.broadcast_participants()
+        await self.update_participants()
 
 
     async def disconnect(self, close_code):
@@ -33,10 +48,7 @@ class RoomConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
         # Fetch and broadcast the updated participants list
-        await self.broadcast_participants()
-
-        # disconnect from websocket
-        await self.close(self)
+        await self.update_participants()
 
 
     # Methods for updating the users in the study room for all participants
@@ -44,30 +56,30 @@ class RoomConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def get_participants(self):
         # Fetch participants from the StudySession model
+        # try:
+        #     print("Yes")
+        #     print(StudySession.objects.filter(roomCode=self.room_code))
+        #     study_session = StudySession.objects.get(roomCode=self.room_code)
+        # except StudySession.DoesNotExist:
+        #     print(f"StudySession with room code {self.room_code} does not exist.")
+        #     # You can also add some handling logic here, for example:
+        #     # - Return a message to the user
+        #     # - Try again or handle the error in a way that doesn't crash the program
+        #     study_session = None  # Or handle it appropriately
+        # participants = study_session.participants.all()
+        
+        # return [participant.username for participant in participants]
+        if not self.study_session:
+            return []  # Return an empty list if study_session is None
+
         try:
-            print("Yes")
-            print(StudySession.objects.filter(roomCode=self.room_code))
             study_session = StudySession.objects.get(roomCode=self.room_code)
+            participants = study_session.participants.all()
+            return [participant.username for participant in participants]
         except StudySession.DoesNotExist:
             print(f"StudySession with room code {self.room_code} does not exist.")
-            # You can also add some handling logic here, for example:
-            # - Return a message to the user
-            # - Try again or handle the error in a way that doesn't crash the program
-            study_session = None  # Or handle it appropriately
-        participants = study_session.participants.all()
-        
-        return [participant.username for participant in participants]
+            return []  # Return an empty list if the StudySession does not exist
 
-
-    async def broadcast_participants(self):
-        participants = await self.get_participants()
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "participants_update",
-                "participants": participants,
-            }
-        )
 
    # Method to send to-do list updates to all group participants
     async def broadcast_todo_list(self, text_data):
@@ -121,6 +133,9 @@ class RoomConsumer(AsyncWebsocketConsumer):
                     "sender": data["sender"],
                 }
             )
+        elif message_type == "update_participants":
+            # Trigger a participants update
+            await self.update_participants()
         elif message_type == "study_update":
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -230,3 +245,14 @@ class RoomConsumer(AsyncWebsocketConsumer):
             }))
         except Exception as e:
             print(f"Error in file_deleted: {e}")
+
+    async def update_participants(self):
+        """Fetch the updated list of participants and broadcast it to the room."""
+        participants = await self.get_participants()
+        await self.channel_layer.group_send(
+            self.room_group_name,
+            {
+                "type": "participants_update",
+                "participants": participants,
+            }
+        )

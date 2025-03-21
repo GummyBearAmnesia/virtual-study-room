@@ -217,12 +217,11 @@ def leave_room(request):
             if (study_session.participants.count() == 0):
                 destroy_room(request, study_session)
 
-            return Response({"message": "Left successfully!"})
+            user1 = session_user.user
+            return Response({"message": "Left successfully!", "username": user.username})
         except SessionUser.DoesNotExist:
             return Response({"error": "User is not in the session"}, status=404)
-
-        return Response({"message": "Left successfully!"})
-    return Response({"error": "Room not found"}, status=404)
+        return Response({"error": "Room not found"}, status=404)
 
 # update the participants in real time as someone joins the room, and leaves the room
 def notify_participants(room_code, participants):

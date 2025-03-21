@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { storage } from "../firebase-config";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import CalendarPage from './Calendar';
+import CalendarPage from "./Calendar";
 import { getAuthenticatedRequest, getAccessToken } from "../utils/authService";
-import defaultAvatar from '../assets/avatars/avatar_2.png';
-import UserAvatar from '../components/UserAvatar';
-import UserBadges from '../components/UserBadges';
+import defaultAvatar from "../assets/avatars/avatar_2.png";
+import UserAvatar from "../components/UserAvatar";
+import UserBadges from "../components/UserBadges";
 import "../styles/ProfileBox.css";
-import { ToastContainer, toast } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ProfileBox() {
   const navigate = useNavigate();
@@ -29,12 +28,12 @@ function ProfileBox() {
   );
 
   const gotoCalendar = () => {
-    const user_id = localStorage.getItem('user_id');
+    const user_id = localStorage.getItem("user_id");
     console.log(user_id);
     navigate(`/calendar/`, {
-        state: { userId : user_id }
+      state: { userId: user_id },
     });
-    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -193,25 +192,25 @@ function ProfileBox() {
               🏆
             </button>
             <button
-                className="CalendarButton"
-                onClick={gotoCalendar}
-                style={{
-                    width: '45px',
-                    height: '45px',
-                    borderRadius: '50%',
-                    backgroundColor: '#bad7f5', // Static background color
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '24px',
-                    transition: 'all 0.2s ease-in-out',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                    marginBottom: '10px',
-                }}
+              className="CalendarButton"
+              onClick={gotoCalendar}
+              style={{
+                width: "45px",
+                height: "45px",
+                borderRadius: "50%",
+                backgroundColor: "#bad7f5", // Static background color
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "24px",
+                transition: "all 0.2s ease-in-out",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                marginBottom: "10px",
+              }}
             >
-                📅
+              📅
             </button>
             <input
               type="file"
@@ -233,12 +232,12 @@ function ProfileBox() {
                 className="logoff-button"
                 onClick={handleLogOff}
               >
-                 Logout
+                Logout
               </button>
               <button
                 type="button"
                 data-testid="show-more-button"
-                className="logoff-button"
+                className="profile-edit-button"
                 onClick={() => setShowModal(true)}
               >
                 ✏️ Edit
@@ -248,15 +247,15 @@ function ProfileBox() {
         </div>
 
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div className="modal-profile">
+            <div className="modal-content-profile">
               <span
                 className="close-button"
                 onClick={() => setShowModal(false)}
               >
                 &times;
               </span>
-              <div className="button-container">
+              <div className="profile-popup-container">
                 <div className="inventory-align">
                   <label htmlFor="change-avatar" className="upload-button">
                     UPLOAD AVATAR

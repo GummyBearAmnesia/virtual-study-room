@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import "../styles/GroupStudyPage.css";
 import MotivationalMessage from "./Motivation";
 import musicLogo from "../assets/music_logo.png";
@@ -33,6 +33,14 @@ function GroupStudyPage() {
 
   // Track the logged-in user
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const chatMessagesRef = useRef(null); // Ref for the chat messages container
+
+  // Function to scroll to the bottom of the chat messages container
+  const scrollToBottom = () => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  };
 
   const { roomCode, roomName, roomList } = location.state || {
     roomCode: "",
@@ -66,12 +74,26 @@ function GroupStudyPage() {
 
   const [shouldReconnect, setShouldReconnect] = useState(true); // Determines whether or not to auto-reconnect user to websocket server
 
+  const stringToColor = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).slice(-2);
+    }
+    return color;
+  };
+
   // Updates the websocket saved everytime it changes
   useEffect(() => {
     if (socket) {
       console.log("Socket state updated:", socket);
     }
-  }, [socket]); // This effect runs whenever `socket` changes
+    scrollToBottom();
+  }, [socket, messages]); // This effect runs whenever `socket` changes
 
   useEffect(() => {
     // Ensure room code is given
@@ -107,8 +129,6 @@ function GroupStudyPage() {
     };
   }, [finalRoomCode, shouldReconnect]);
 
-
-
   // Method for connecting to the websocket
   const connectWebSocket = () => {
     // Check if a WebSocket connection already exists, not sure if this actually does anything?
@@ -116,9 +136,9 @@ function GroupStudyPage() {
       console.log("Using existing WebSocket connection");
       return; // Reuse the existing connection
     }
-    const ws = new WebSocket(`wss://https://studyspot.pythonanywhere.com/ws/room/${finalRoomCode}/`);
-
-    //const ws = new WebSocket(`ws://localhost:8000/ws/room/${finalRoomCode}/`);
+    
+    const ws = new WebSocket(`ws://localhost:8000/ws/room/${finalRoomCode}/`); 
+    // const socket = new WebSocket("wss://studyspot.pythonanywhere.com/ws/room/room_code/");  // Production (deployed backend)
 
     //Logs when connection is established
     ws.onopen = () => {
@@ -288,11 +308,8 @@ function GroupStudyPage() {
     }
   };
 
-
   // Method to leave room
   const leaveRoom = useCallback(async () => {
-    // User is leaving so they should not reconnect to the room automatically
-    setShouldReconnect(false);
 
     try {
       // Close the WebSocket connection if it exists
@@ -311,7 +328,7 @@ function GroupStudyPage() {
       );
       console.log("Participants", response1.participantsList.length);
       console.log("num participants: ", participants.length);
-      if (response1.participantsList.length == 0) {
+      if (response1.participantsList.length == 1) {
         await deleteFirebaseFiles(finalRoomCode);
         console.log("all firebase files deleted successfully");
       }
@@ -328,8 +345,10 @@ function GroupStudyPage() {
 
       if (response.status === 200) setIsActiveExit(true);
       // Redirect to the Dashboard
-      navigate("/dashboard/", {});
-      console.log("User has left the room");
+      navigate(`/dashboard/${response.username}`, {
+        state: { userName: response.username },
+      });
+      console.log("User has left the room", response.username);
     } catch (error) {
       console.error("Error leaving room:", error);
     }
@@ -413,14 +432,12 @@ function GroupStudyPage() {
   //Third Column: Timer, customisation, chatbox
 
   return (
-
     <>
       {/* Restructured header */}
       <div className="study-room-header">
         <h2 className="heading">Study Room: {roomName}</h2>
         <div className="header-right-section">
           <div className="utility-bar">
-            
             <button
               type="button"
               className={`music-button ${isActiveMusic ? "active" : ""}`}
@@ -466,14 +483,19 @@ function GroupStudyPage() {
         </div>
       </div>
 
-    {/*End of header */}
+      {/*End of header */}
       <div
         className="groupStudyRoom-container"
         data-testid="groupStudyRoom-container"
       >
         {/*1st Column */}
-                <div className="column" role="column" data-testid="column-1">
-                <ToDoList isShared={true} listId={roomList} socket={socket} roomCode={roomCode} />
+        <div className="column" role="column" data-testid="column-1">
+          <ToDoList
+            isShared={true}
+            listId={roomList}
+            socket={socket}
+            roomCode={roomCode}
+          />
 
           <div
             className="sharedMaterials-container"
@@ -484,26 +506,29 @@ function GroupStudyPage() {
         </div>
         {/*2nd Column */}
         <div className="column" role="column" data-testid="column-2">
-        <div className="user-list-container" data-testid="user-list-container">
-          <div className="users">
-            {/* Dynamically render participants */}
-            {participants.map((participant, index) => (
-              <div key={index} className="user-circle">
-                <div className="user-image">
-                  <img
-                    src={participant.imageUrl}
-                    alt="profile"
-                    className="user-image"
-                  />
-                </div>
+          <div
+            className="user-list-container"
+            data-testid="user-list-container"
+          >
+            <div className="users">
+              {/* Dynamically render participants */}
+              {participants.map((participant, index) => (
+                <div key={index} className="user-circle">
+                  <div className="user-image">
+                    <img
+                      src={participant.imageUrl}
+                      alt="profile"
+                      className="user-image"
+                    />
+                  </div>
 
-                <div className="user-name">{participant.username}</div>
-              </div>
-            ))}
+                  <div className="user-name">{participant.username}</div>
+                </div>
+              ))}
+            </div>
           </div>
+          <MotivationalMessage data-testid="motivationalMessage-container" />
         </div>
-        <MotivationalMessage data-testid="motivationalMessage-container" />
-      </div>
         {/*3rd Column */}
         <div className="column" role="column" data-testid="column-3">
           {/* StudyTimer replaces the timer-container div */}
@@ -515,20 +540,30 @@ function GroupStudyPage() {
           />
           {/* <StudyTimer roomId="yourRoomId" isHost={true} onClose={() => console.log('Timer closed')} data-testid="studyTimer-container" /> */}
           {/* Chat Box */}
-          <div className="chatBox-container" data-testid="chatBox-container">
+          <div className="chatBox-container">
             {/* Chat Messages */}
-            <div className="chat-messages">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`chat-message ${
-                    msg.sender === username ? "current-user" : "other-user"
-                  }`}
-                >
-                  <strong>{msg.sender}:</strong> {msg.text}
-                </div>
-              ))}
-              {typingUser && (
+            <div className="chat-messages" ref={chatMessagesRef}>
+              {messages.map((msg, index) => {
+                const userColor = stringToColor(msg.sender); // Generate color for the sender
+                const isSameUserAsPrevious =
+                  index > 0 && messages[index - 1].sender === msg.sender;
+
+                return  (
+                  <div
+                    key={index}
+                    className={`chat-message ${
+                      msg.sender === username ? "current-user" : "other-user"
+                    }`}
+                    style={{ 
+                      color: userColor,
+                      borderBottom: isSameUserAsPrevious ? "none" : "1px dotted #eee", // Conditionally apply border
+                    }}
+                  >
+                    <strong>{msg.sender}:</strong> {msg.text}
+                  </div>
+                );
+              })}
+              {typingUser && typingUser !== username && (
                 <p className="typing-indicator">
                   {" "}
                   <strong>{typingUser}</strong> is typing...
@@ -536,16 +571,18 @@ function GroupStudyPage() {
               )}
             </div>
             {/* Chat Input */}
-            <input
-              value={chatInput}
-              onChange={(e) => {
-                setChatInput(e.target.value);
-                handleTyping();
-              }}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}
-              placeholder="Type a message..."
-            />
-            <button onClick={sendMessage}>Send</button>
+            <div className="input-container">
+              <input
+                  value={chatInput}
+                  onChange={(e) => {
+                    setChatInput(e.target.value);
+                    handleTyping();
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}
+                  placeholder="Type a message..."
+                />
+              <button onClick={sendMessage}>Send</button>
+            </div>
           </div>
         </div>
       </div>

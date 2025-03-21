@@ -1,80 +1,139 @@
-/* Modal Overlay Styles */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+/* Modal Overlay */
+.modal-overlay-task {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other elements */
 }
 
-.modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.modal-content-task {
+  margin: auto;
+  padding: 20px;
+  border: 5px solid #f2bac9;
+  background-color: white;
+  width: 50%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2001; /*ensures it is on top of dashboard heading*/
 }
 
-.modal-content h4 {
-    margin-bottom: 20px;
+.form-class-task {
+  width: 100%;
+  margin-bottom: 20px;
+  margin-left: 5px;
 }
 
-/* Input and Checkbox */
-.newTask input[type="text"],
-.newTask input[type="checkbox"] {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
+.modal-content-task h2 {
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: black;
+  margin-bottom: 30px;
 }
 
-.newTask input[type="text"]:focus {
-    border-color: #4CAF50;
+/* Form Group */
+.form-group-task {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 20px;
+  padding-bottom: 10px;
+  gap: 5px; /* Space between label and input */
 }
 
-/* Checkbox Styling */
-.newTask input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.form-group-task label {
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
 }
 
-task-span {
-    font-size: 14px;
-    margin-left: 10px;
+.form-group-task input {
+  background-color: antiquewhite;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  text-align: left;
+  resize: none;
+  width: 100%;
+  min-height: 60px;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
 }
 
-/* Buttons */
-.btn {
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.form-group-task input:focus {
+  border-color: #f2bac9; /* Match calendar modal focus color */
+  outline: none;
 }
 
-.btn-primary {
-    background-color: #4CAF50;
-    color: #fff;
+.form-group-task textarea {
+  background-color: antiquewhite;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  text-align: left;
+  resize: none;
+  width: 100%;
+  min-height: 60px;
+  color: black;
+  font-weight: 600;
+  font-family: "Inter", sans-serif;
+  margin-top: 5px;
 }
 
-.btn-primary:hover {
-    background-color: #45a049;
+/* Button Group */
+.button-group-task {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px; /* Space between buttons */
+  margin-top: 15px;
+  padding-right: 20px;
 }
 
-.btn-secondary {
-    background-color: #ddd;
-    color: #333;
+/* Save Button */
+.btn-save-task {
+  background-color: #f2bac9; /* Match calendar modal button color */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.btn-secondary:hover {
-    background-color: #ccc;
+.btn-save-task:hover {
+  background-color: #d89aa9; /* Darker shade on hover */
+}
+
+/* Cancel Button */
+.btn-cancel-task {
+  background-color: #bad7f2; /* Match calendar modal button color */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancel-task:hover {
+  background-color: #9ab7d8; /* Darker shade on hover */
 }

@@ -4,6 +4,8 @@ import GroupStudyRoom from '../pages/GroupStudyPage';
 import { getAuthenticatedRequest } from "../utils/authService";
 import { useNavigate } from 'react-router-dom';
 import "../styles/StudyRoomComponent.css";
+import "../styles/Dashboard.css";
+import generate from "../assets/generate.PNG";
 
 const StudyRoomComponent = () => {
   // Web socket handling
@@ -70,59 +72,44 @@ const StudyRoomComponent = () => {
       console.error("Error joining room:", error);
     }
   };
-  /*
-  // Methods to leave room
-  const leaveRoom = async () => {
-    try {
-      // This stuff gets sent to the backend!
-      const response = await getAuthenticatedRequest("/leave-room/", "POST", {
-        roomCode: roomCode, // Sends the room name to the backend
-      });
-
-      console.log("leaving .. . .");
-
-      console.log("ROOM CODE", roomCode);
-
-      if (response.status === 200) setLeaving(true);
-      // Redirect to the Dashboard
-      navigate("/dashboard/", {});
-      console.log("User has left the room");
-    } catch (error) {
-      console.error("Error leaving room:", error);
-    }
-  };
-  */
 
   return (
     <div className="dashboard-panel">
+      <h2>  Study Room </h2>
       <div>
         {!joined ? (
           <>
-            {/* To create a study room, text field to enter a room name ( NOT CODE, code is auto generated ) */}
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="I want to study..."
-                value={roomName}
-                onChange={(e) => setRoomName(e.target.value)}
-              />
-              <button className="gsr" onClick={createRoom}>
-                Create Room
-              </button>
-            </div>
+          <div className="generate-panel">
+              <img src={generate} alt="generate" className="generate-image" />
 
-            {/* For joining the room, there is also a text input for the room code"*/}
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="Room Code... "
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value)}
-              />
-              <button className="gsr" onClick={joinRoom}>
-                Join Room
-              </button>
-            </div>
+              <div className="input-panel">
+                {/* To create a study room, text field to enter a room name ( NOT CODE, code is auto generated ) */}
+                <div className="input-group">
+                  <input
+                    type="text"
+                    placeholder="I want to study..."
+                    value={roomName}
+                    onChange={(e) => setRoomName(e.target.value)}
+                  />
+                  <button className="gsr" onClick={createRoom}>
+                    Create Room
+                  </button>
+                </div>
+
+                {/* For joining the room, there is also a text input for the room code"*/}
+                <div className="input-group">
+                  <input
+                    type="text"
+                    placeholder="Room Code... "
+                    value={roomCode}
+                    onChange={(e) => setRoomCode(e.target.value)}
+                  />
+                  <button className="gsr" onClick={joinRoom}>
+                    Join Room
+                  </button>
+                </div>
+              </div>
+          </div>
           </>
         ) : (
           <GroupStudyRoom roomCode={roomCode} />

@@ -4,6 +4,7 @@ import PendingRequests from "./PendingRequests";
 import FriendsRequested from "./FriendsRequested";
 import SearchFriends from "./SearchFriends";
 import "../../styles/friends/FriendsTab.css";
+import "../../styles/Dashboard.css";
 
 import { FriendsProvider } from './FriendsContext';
 
@@ -12,7 +13,7 @@ const FriendsTab = () => {
 
     return (
         <FriendsProvider>
-            <div className="friends-tabs-container">
+            <div className="dashboard-panel friends-tab">
             {/* Tab Navigation */}
             <div className="tabs">
                 <button className={activeTab === "all" ? "active" : ""} onClick={() => setActiveTab("all")}>
