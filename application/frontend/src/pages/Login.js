@@ -112,17 +112,19 @@ function Login() {
         <h1 className="login-heading2">Login</h1>
         {error && <p className="error-message">{error}</p>}{" "}
         {/* Show error if login fails */}
-        <label className="username-text">Email:</label>
+        <label className="username-text" data-testid='email-label'>Email:</label>
         <input
           type="text"
+          data-testid="email-input-field"
           name="email"
           className="username-field"
           value={formData.email}
           onChange={handleChange}
         />
-        <label className="password-text">Password:</label>
+        <label className="password-text" data-testid='password-label'>Password:</label>
         <input
           type="password"
+          data-testid="password-input-field"
           name="password"
           className="password-field"
           value={formData.password}
@@ -130,6 +132,7 @@ function Login() {
         />
         <button
           type="button"
+          data-testid='login-click-button'
           className="login-submit-button"
           onClick={handleLogin}
         >

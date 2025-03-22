@@ -1,11 +1,24 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api"; // Change if needed
+const API_BASE_URL = "http://127.0.0.1:8000/api"; //change if needed
 
+/**
+ * gets access token from local storage
+ * @returns - access token or null
+ */
 export const getAccessToken = () => localStorage.getItem("access_token");
+/**
+ * gets refresh token from local storage
+ * @returns - refresh token or null
+ */
 export const getRefreshToken = () => localStorage.getItem("refresh_token");
 
+/**
+ * checks if the token has expired
+ * @param {*} token - the token to check
+ * @returns - true if token is expired, false otherwise
+ */
 export const isTokenExpired = (token) => {
     if (!token) return true;
     const decoded = jwtDecode(token);
@@ -13,27 +26,32 @@ export const isTokenExpired = (token) => {
     return decoded.exp < currentTime;
 };
 
-// Logout function - Clears storage and redirects to login page
+/**
+ * clears storage and logs out user, redirects to login page
+ */
 const logoutUser = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     window.location.href = "/login"; // Redirect user to login page
 };
 
+/**
+ * refreshes the access token using the refresh token
+ * @returns the new access token or null if refreshing failed
+ */
 export const refreshToken = async () => {
     const refresh = getRefreshToken();
     if (!refresh || isTokenExpired(refresh)) {
-        //console.warn("Refresh token is expired or missing. Logging out.");
         logoutUser();
         return null;
     }
 
     try {
         const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
-            refresh: refresh,  // Sending the refresh token in the body
+            refresh: refresh,  //sending the refresh token in the body
         });
 
-        // Store new tokens
+        //store new tokens
         localStorage.setItem("access_token", response.data.access);
         if (response.data.refresh) {
             localStorage.setItem("refresh_token", response.data.refresh);
@@ -48,7 +66,13 @@ export const refreshToken = async () => {
 };
 
 
-// Function to get an authenticated request
+/**
+ * makes an authenticated request
+ * @param {*} url - URL to request
+ * @param {*} method - HTTP method to use
+ * @param {*} data - data to send with request
+ * @returns - response data
+ */
 export const getAuthenticatedRequest = async (url, method = "GET", data = null) => {
     let token = getAccessToken();
 

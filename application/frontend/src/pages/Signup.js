@@ -237,7 +237,7 @@ function Signup() {
 
         <div className="field">
           <label htmlFor="details" className="label-text">
-            Your motto in life :):
+            Your motto in life:
           </label>
           <input
             id="details"
@@ -301,7 +301,7 @@ function Signup() {
           </label>
         </div>
 
-        <button type="button" className="submit-button" onClick={handleSignup}>
+        <button type="button" data-testid="signup-button-click" className="submit-button" onClick={handleSignup}>
           SIGNUP
         </button>
       </form>
