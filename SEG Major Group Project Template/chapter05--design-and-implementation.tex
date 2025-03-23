@@ -22,6 +22,39 @@ A good report considers alternative options for key decisions and includes sound
 
 \section{Architecture}
 \label{sect:architecture}
-\begin{expectations}
-Add other sections and sub-sections as necessary.
-\end{expectations}
+%\begin{expectations}
+%Add other sections and sub-sections as necessary.
+%\end{expectations}
+
+Since our main stakeholders are students, we decided to base our design decisions on what would attract students to our website. Our colour palette was decided early on, and we focused on a gender neutral, yet colourful and engaging design. Simplicity was something that the entire team wanted; as students, we know how difficult it is to navigate cluttered and confusing websites. Due to this, we were encouraged to ensure that the focus remained on the actual studying and not an immense overload of things to explore. The Login and Signup pages were created to mirror each other, with a straightforward UI and clear input fields. Any errors are repeated back to the user to ensure a smooth login/signup process. After the user logs in, they are directed to the main Dashboard page, where there is a ‘mini version’ of each of the features. This way, the user gets an immediate idea of the overview of features, without getting overwhelmed. If they wish to ‘expand’ the feature, they can simply click on the relevant icon (e.g. a simplified calendar icon, where if you click it, it brings you to a dedicated calendar page with multiple interactive features you can use). Again, with the Group-Study page, we retained a simplified approach. As mentioned before, this is due to the possibility that the user may become distracted if the UI is too cluttered. This idea is reflected in our colour scheme also, with the palette containing subtle and light colours that are easy on the eyes.
+
+\section{Implementation Details}
+\label{sect:implementation-details}
+
+\section{Alternative Considerations}
+\label{sect:alternative-considerations}
+We researched and discussed many possibilities for different aspects of the project, from our tech stack to which features we should implement.
+
+\textbf{Features:}
+
+We had planned to use an AI API to create small quizzes using the documents uploaded to the shared materials box in the group study room; however, we had to deprioritise this feature due to lack of time, as well as us considering the other features to be of greater importance.
+
+We also considered allowing users to join their friends' study rooms without a room code, as in having a feature that lets you see which of your friends are currently online or in a study room, and being able to join them in that study room without needing to enter the room code. After much deliberation, we decided to scrap this feature since users may not want their friends to just be able to barge into a study room without their permission, especially considering that most students have different study groups for different purposes and they may not want members of one group mixing with another.
+
+
+\textbf{Tech Stack:}
+
+We had decided on using Django for the backend and React for the frontend quite early on in the project, however, it took us a while to settle on which database to use in order to store user data. In particular, we could not choose between SQLite and Firebase. 
+
+Half of us wanted to stick to what we knew by using SQLite since that is what we used in the Small Group Project back in semester 1, whereas the other half wanted to learn something new and extend ourselves. In the end, we decided to use both. We used SQLite through the Django models for the relational part of the database such as the User table and the Friends table, and we used Firebase to store pictures and pdfs and other data that were not as relational such as the documents uploaded to the shared materials box in the group study room.
+
+\textbf{Deployment:}
+
+We did not want to spend too much time on deployment so we decided to stick with what we know and use PythonAnywhere to deploy Django part of the project, however we did not realise that the free version of PythonAnywhere does not support websockets. We have used websockets in multiple features of our group study room such as the chat and the shared materials box, and when deployed on PythonAnywhere, none of those features worked. We did some research and asked other groups with a similar tech stack. One of the groups told us about Render and we tried deploying our backend on Render, which was successful meaning our websockets are now functional on the deployed website.
+
+Although we were unanimous in our decision for the backend deployment, we struggled a little in finding the correct service for our frontend deployment. We looked into Azure, Cloudflare, Heroku, and a couple other services however they all did not have a free plan that met our needs. After searching for a while, we came across Vercel and it seemed to meet all our requirements, so we decided to deploy our frontend on Vercel. It is very convenient to use Vercel since it is linked to our GitHub repository meaning it redeploys everytime main is updated which means we do not have to dedicate extra time to deploying the frontend regularly.
+
+
+
+\section{Changes During Development}
+\label{sect:changes-during-development}
