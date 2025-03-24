@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import "../styles/GroupStudyPage.css";
 import MotivationalMessage from "./Motivation";
 import musicLogo from "../assets/music_logo.png";
@@ -37,6 +37,14 @@ function GroupStudyPage() {
 
   // Track the logged-in user
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const chatMessagesRef = useRef(null); // Ref for the chat messages container
+
+  // Function to scroll to the bottom of the chat messages container
+  const scrollToBottom = () => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  };
 
   const { roomCode, roomName, roomList } = location.state || {
     roomCode: "",
@@ -70,6 +78,7 @@ function GroupStudyPage() {
 
   const [shouldReconnect, setShouldReconnect] = useState(true); // Determines whether or not to auto-reconnect user to websocket server
 
+
   //handle open for spotify button
   const handleClickOpen = () => {
     setOpen(true);
@@ -87,12 +96,27 @@ function GroupStudyPage() {
 
   const [openMusicPlayer, setOpenMusicPlayer] = useState(false); //handle open and close for free tracks
 
+  const stringToColor = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    let color = "#";
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).slice(-2);
+    }
+    return color;
+  };
+
+
   // Updates the websocket saved everytime it changes
   useEffect(() => {
     if (socket) {
       console.log("Socket state updated:", socket);
     }
-  }, [socket]); // This effect runs whenever `socket` changes
+    scrollToBottom();
+  }, [socket, messages]); // This effect runs whenever `socket` changes
 
   
   useEffect(() => {
@@ -137,7 +161,8 @@ function GroupStudyPage() {
       return; // Reuse the existing connection
     }
 
-    const ws = new WebSocket(`ws://localhost:8000/ws/room/${finalRoomCode}/`);
+    const ws = new WebSocket(`ws://localhost:8000/ws/room/${finalRoomCode}/`); 
+    // const socket = new WebSocket("wss://studyspot.pythonanywhere.com/ws/room/room_code/");  // Production (deployed backend)
 
     //Logs when connection is established
     ws.onopen = () => {
@@ -309,8 +334,6 @@ function GroupStudyPage() {
 
   // Method to leave room
   const leaveRoom = useCallback(async () => {
-    // User is leaving so they should not reconnect to the room automatically
-    setShouldReconnect(false);
 
     try {
       // Close the WebSocket connection if it exists
@@ -553,20 +576,30 @@ function GroupStudyPage() {
           />
           {/* <StudyTimer roomId="yourRoomId" isHost={true} onClose={() => console.log('Timer closed')} data-testid="studyTimer-container" /> */}
           {/* Chat Box */}
-          <div className="chatBox-container" data-testid="chatBox-container">
+          <div className="chatBox-container">
             {/* Chat Messages */}
-            <div className="chat-messages">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`chat-message ${
-                    msg.sender === username ? "current-user" : "other-user"
-                  }`}
-                >
-                  <strong>{msg.sender}:</strong> {msg.text}
-                </div>
-              ))}
-              {typingUser && (
+            <div className="chat-messages" ref={chatMessagesRef}>
+              {messages.map((msg, index) => {
+                const userColor = stringToColor(msg.sender); // Generate color for the sender
+                const isSameUserAsPrevious =
+                  index > 0 && messages[index - 1].sender === msg.sender;
+
+                return  (
+                  <div
+                    key={index}
+                    className={`chat-message ${
+                      msg.sender === username ? "current-user" : "other-user"
+                    }`}
+                    style={{ 
+                      color: userColor,
+                      borderBottom: isSameUserAsPrevious ? "none" : "1px dotted #eee", // Conditionally apply border
+                    }}
+                  >
+                    <strong>{msg.sender}:</strong> {msg.text}
+                  </div>
+                );
+              })}
+              {typingUser && typingUser !== username && (
                 <p className="typing-indicator">
                   {" "}
                   <strong>{typingUser}</strong> is typing...
@@ -574,16 +607,18 @@ function GroupStudyPage() {
               )}
             </div>
             {/* Chat Input */}
-            <input
-              value={chatInput}
-              onChange={(e) => {
-                setChatInput(e.target.value);
-                handleTyping();
-              }}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}
-              placeholder="Type a message..."
-            />
-            <button onClick={sendMessage}>Send</button>
+            <div className="input-container">
+              <input
+                  value={chatInput}
+                  onChange={(e) => {
+                    setChatInput(e.target.value);
+                    handleTyping();
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}
+                  placeholder="Type a message..."
+                />
+              <button onClick={sendMessage}>Send</button>
+            </div>
           </div>
         </div>
       </div>

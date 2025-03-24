@@ -6,6 +6,10 @@ from api.models import User, List, Permission, toDoList
 from api.views.to_do_list import ViewToDoList
 from random import choice
 
+"""
+Tests for the ToDoList view class
+"""
+
 class ListViewTestCase(APITestCase):
     fixtures = ['api/tests/fixtures/default_user.json',
                 'api/tests/fixtures/default_lists.json',
@@ -13,7 +17,9 @@ class ListViewTestCase(APITestCase):
                 'api/tests/fixtures/default_list_task.json']
 
     def setUp(self):
-        """Set up data for testing using fixtures."""
+        """
+        Set up data for testing using fixtures.
+        """
 
         self.factory = RequestFactory()
         self.user = User.objects.get(username='@alice123')
@@ -23,7 +29,9 @@ class ListViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.user)
 
     def test_get_lists_for_user(self):
-        """Test if the API correctly returns lists for an authenticated user based on permissions."""
+        """
+        Test if the API correctly returns lists for an authenticated user based on permissions.
+        """
 
         response = self.client.get('/api/todolists/')
 
@@ -37,8 +45,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_get_lists_for_groups(self):
-
-        """Test if the API correctly returns lists for an authenticated user based on permissions."""
+        """
+        Test if the API correctly returns lists for an authenticated user based on permissions.
+        """
 
         response = self.client.get(f'/api/todolists/{self.todo_list.pk}/')
 
@@ -52,7 +61,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_delete_task_success(self):
-        """Test if the API correctly delete lists"""
+        """
+        Test if the API correctly delete lists
+        """
         list_to_delete = choice(toDoList.objects.all())
         id = list_to_delete.pk
 
@@ -63,14 +74,18 @@ class ListViewTestCase(APITestCase):
         self.assertFalse(is_deleted)
 
     def test_delete_task_not_found(self):
-        """ Make an invalid authenticated DELETE request using non-existing task id"""
+        """
+        Make an invalid authenticated DELETE request using non-existing task id
+        """
         response = self.client.delete(
-            '/api/delete_task/9999/')  # Non-existing task
+            '/api/delete_task/9999/')  # Non-existent task
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["error"], "Task doesn't exist")
 
     def test_delete_task_exception(self):
-        """Simulate an exception by sending an invalid task id"""
+        """
+        Simulate an exception by sending an invalid task id
+        """
         request = self.factory.delete(f'/delete_task/{self.todo_list.pk}/')
 
         request.resolver_match = type('', (), {"view_name": "delete_task"})()
@@ -81,7 +96,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_delete_list_success(self):
-        """ Make an authenticated DELETE request to delete a list"""
+        """ 
+        Make an authenticated DELETE request to delete a list
+        """
         list_to_delete = choice(List.objects.all())
         id = list_to_delete.pk
         response = self.client.delete(f'/api/delete_list/{id}/')
@@ -92,9 +109,11 @@ class ListViewTestCase(APITestCase):
             list_id=list_to_delete).exists())
 
     def test_delete_list_not_found(self):
-        """ Make an authenticated DELETE request using non-existent list id"""
+        """ 
+        Make an authenticated DELETE request using non-existent list id
+        """
         response = self.client.delete(
-            '/api/delete_list/9999/')  # Non-existing list
+            '/api/delete_list/9999/')  # Non-existent list
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data["error"], "Task doesn't exist")
 
@@ -109,7 +128,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_delete_invalid_action(self):
-        """ Make an authenticated DELETE request using invalid action"""
+        """ 
+        Make an authenticated DELETE request using invalid action
+        """
         request = self.factory.delete('/api/invalid_action/')
 
         request.resolver_match = type('', (), {"view_name": "invalid_action"})()
@@ -121,7 +142,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_patch_task_success(self):
-        """Make an authenticated PATCH request to update status of the task"""
+        """
+        Make an authenticated PATCH request to update status of the task
+        """
         task = choice(toDoList.objects.all())
         id = task.pk
         response = self.client.patch(f'/api/update_task/{id}/')
@@ -131,9 +154,11 @@ class ListViewTestCase(APITestCase):
         self.assertEqual(task.is_completed, True)
 
     def test_patch_task_not_found(self):
-        """Simulate an error by sending an incorrect task id"""
+        """
+        Simulate an error by sending an incorrect task id
+        """
         request = self.factory.patch(
-        '/api/update_task/9999/')  # Non-existing task
+        '/api/update_task/9999/')  # Non-existent task
     
         request.resolver_match = type(
         '', (), {"view_name": "update_task_status"})()
@@ -144,7 +169,9 @@ class ListViewTestCase(APITestCase):
         self.assertEqual(response.data, {"error": "Task not found"})
 
     def test_patch_task_exception(self):
-        """Simulate an exception by sending an invalid id"""
+        """
+        Simulate an exception by sending an invalid id
+        """
         request = self.factory.patch(f'/patch_task/{self.todo_list.pk}/')
         request.resolver_match = type(
             '', (), {"view_name": "update_task_status"})()
@@ -155,7 +182,9 @@ class ListViewTestCase(APITestCase):
 
 
     def test_post_create_new_task(self):
-        """Make an authenticated POST request to create a new task"""
+        """
+        Make an authenticated POST request to create a new task
+        """
         list_to_delete = choice(List.objects.all())
         id = list_to_delete.pk
         print(id)
@@ -169,7 +198,9 @@ class ListViewTestCase(APITestCase):
         self.assertIn("title", response.data)
 
     def test_post_create_task_exception(self):
-        """Simulate an exception by sending an incorrect data type"""
+        """
+        Simulate an exception by sending an incorrect data type
+        """
         response = self.client.post('/api/new_task/', {
             "list_id": "invalid_id",  # Invalid list_id type
             "title": "Exception Task",
@@ -180,7 +211,9 @@ class ListViewTestCase(APITestCase):
         self.assertIn("Invalid request", response.data["error"])
 
     def test_post_create_task_invalid_list(self):
-        """ Make an authenticated POST request using non-existent list id"""
+        """ 
+        Make an authenticated POST request using non-existent list id
+        """
         response = self.client.post('/api/new_task/', {
             "list_id": 9999,  # Non-existent list ID
             "title": "Invalid Task",
@@ -192,21 +225,27 @@ class ListViewTestCase(APITestCase):
 
 
     def test_post_create_new_list(self):
-        """Make an authenticated POST request to create a new list"""
+        """
+        Make an authenticated POST request to create a new list
+        """
         response = self.client.post(
             '/api/new_list/', {"name": "List", "is_shared": False}, format="json")
 
         self.assertNotEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_post_create_list_exception(self):
-        """Simulate an exception by sending an incorrect data type for is_shared """
+        """
+        Simulate an exception by sending an incorrect data type for is_shared 
+        """
         response = self.client.post('/api/new_list/', {"name": "List", "is_shared": "false"}, format = "json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn("Invalid request", response.data["error"])
 
     def test_post_invalid_action(self):
-        """ Make an authenticated POST request for an invalid action """
+        """ 
+        Make an authenticated POST request for an invalid action 
+        """
         request = self.client.post('/api/invalid_action/', {})
 
         request.resolver_match = type(

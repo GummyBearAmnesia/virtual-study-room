@@ -3,28 +3,21 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-
 from rest_framework import status
-from api.models import SessionUser, User, Rewards
-
+from api.models import Rewards
 from django.db import models
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 
 def get_analytics(request):
+    '''Fetch and return user analytics including streaks, study hours, and earned badges.'''
     user = request.user
 
-    # Debug: Print user data
-    print(f"User: {user.username}")
-    print(f"Hours Studied: {user.hours_studied}")
-    print(f"Total Sessions: {user.total_sessions}")
-    print(f"Streaks: {user.streaks}")
-
-    # Calculate average study hours
+    # Calculate average study hours per session
     avg_study_hours = user.hours_studied / user.total_sessions if user.total_sessions > 0 else 0
 
-    # Define badge thresholds
+    # Badge thresholds based on study hours
     badge_thresholds = {
         1: 1,    # Badge 1 for 1 hour
         2: 5,    # Badge 2 for 5 hours
@@ -36,25 +29,23 @@ def get_analytics(request):
         8: 150,  # Badge 8 for 150 hours
     }
 
-    # Calculate earned badges
+    # Track earned badges or create them if not already earned
     earned_badges = []
     for reward_number, threshold in badge_thresholds.items():
         if user.hours_studied >= threshold:
-            # Check if the user has already earned this badge
-            reward, created = Rewards.objects.get_or_create(
+            reward, _ = Rewards.objects.get_or_create(
                 user=user,
                 reward_number=reward_number,
-                defaults={"date_earned": timezone.now()}  # Set date_earned only if the badge is newly created
+                
+                # Set date_earned only if the badge is newly created
+                defaults={"date_earned": timezone.now()}  
             )
             earned_badges.append({
                 "reward_number": reward.reward_number,
                 "date_earned": reward.date_earned.strftime("%Y-%m-%d")
             })
-            print(f"Existing badge: {reward_number}")  # Debug: Log existing badge
-
-    # Debug: Print earned badges
-    print(f"Earned Badges: {earned_badges}")
-
+            
+    # Return analytics data
     return Response({
         "streaks": user.streaks,
         "total_hours_studied": user.hours_studied,
@@ -66,13 +57,15 @@ def get_analytics(request):
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def update_analytics(request):
-
+    '''Toggle the user's share_analytics preference.'''
     user = request.user
     new_status = not user.share_analytics
 
+    # Toggle share_analytics status
     user.share_analytics = new_status
     user.save()
     
+    # Return success response
     return Response({"message": "Joined successfully!"}, status=status.HTTP_200_OK)
 
     

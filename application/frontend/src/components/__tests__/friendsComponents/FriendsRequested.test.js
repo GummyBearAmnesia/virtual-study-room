@@ -29,7 +29,7 @@ const mockRequestData = [
 
 describe("PendingRequests", () => {
 
-    const mockOnAccept = jest.fn();
+    const mockOnReject = jest.fn();
     const mockLoading = false;
 
     const renderWithContext = (contextValue) => {
@@ -58,9 +58,11 @@ describe("PendingRequests", () => {
         window.alert.mockRestore();
     });
 
+    // Verifies that the loading state is displayed when `loading` is true
+    // Ensures that the component properly indicates when the friend requests are being loaded
     test("shows loading state", () => {
         renderWithContext({
-            onAccept: mockOnAccept,
+            onReject: mockOnReject,
             invitationsRequests: [],
             loading: true,
         });
@@ -68,9 +70,11 @@ describe("PendingRequests", () => {
     });
 
 
+    // Ensures that the list of friend requests is rendered correctly
+    // Verifies that the correct names are displayed for each friend request
     test('renders the list of friends correctly', async () => {
         renderWithContext({
-            onAccept: mockOnAccept,
+            onReject: mockOnReject,
             invitationsRequests: mockRequestData,
             loading: mockLoading,
         });
@@ -80,10 +84,10 @@ describe("PendingRequests", () => {
         expect(friendNames[1]).toHaveTextContent('Name2');
     });
 
-
+    // Verifies that a message indicating no pending invitations is displayed when there are no requests
     test('renders the empty list of friends correctly', async () => {
         renderWithContext({
-            onAccept: mockOnAccept,
+            onReject: mockOnReject,
             invitationsRequests: [],
             loading: mockLoading,
         });
@@ -91,9 +95,11 @@ describe("PendingRequests", () => {
         expect(screen.getByText(/No pending invitations./i)).toBeInTheDocument();
     });
 
+    // Tests that the accept/reject buttons are rendered and function correctly
+    // Simulates the rejection of a friend request and ensures that the appropriate handler is called
     test('renders the invitation actions and handles accept/reject button clicks', async () => {
         renderWithContext({
-            onAccept: mockOnAccept,
+            onReject: mockOnReject,
             invitationsRequests: mockRequestData,
             loading: mockLoading,
         });

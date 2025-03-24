@@ -7,10 +7,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # ACTUALLY WE DONT NEED THIS FILE ANYMORE...
 # LET IT BE AN EXAMPLE
-
 # POST method API call to send credentials to database server
 # we do not use GET here because that would send the password details...
 # ...to the frontend which is less secure!
+
 @api_view(['POST'])
 def login(request):
     username = request.data.get('username')

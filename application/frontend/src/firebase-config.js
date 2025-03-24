@@ -4,7 +4,9 @@ import { getStorage } from "firebase/storage";
 import { getDatabase } from "firebase/database";
 
 
-//web app's firebase configuration
+/**
+ * web app's firebase configuration
+ */
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -15,10 +17,14 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
-//initialise firebase
+/**
+ * initialise firebase
+ */
 const app = initializeApp(firebaseConfig);
 
-//add firebase services
+/**
+ * add firebase services
+ */
 const storage = getStorage(app);
 const database = getDatabase(app);
 

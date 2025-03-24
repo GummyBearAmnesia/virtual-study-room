@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 
 class StudySessionTestCase(TestCase):
     """Unit tests for the StudySession model."""
+
     def setUp(self):
         self.user = User.objects.create(firstname = "John", lastname = "Doe", email = "johndoe@example.com", username = "@johndoe")
         self.sessionName = "Test Session"
@@ -16,7 +17,7 @@ class StudySessionTestCase(TestCase):
         self.session = StudySession.objects.create(createdBy = self.user, sessionName = self.sessionName, startTime = self.startTime, endTime = self.endTime)
 
     def test_study_session_creation(self):
-        # testing if the instantce of a study session is created correctly
+        """ Testing if the instance of a study session is created correctly """
         self.assertEqual(StudySession.objects.count(), 1)
         self.assertEqual(self.session.createdBy.firstname , "John")
         self.assertEqual(self.session.sessionName, "Test Session")
@@ -24,7 +25,7 @@ class StudySessionTestCase(TestCase):
         self._assert_session_is_valid()
 
     def test_study_session_str_method(self):
-        # checking if the __str__ method works
+        """ Checking if the __str__ method returns expected string """
         expected_str = f"Study session {self.sessionName} was created by {self.user} on {self.date}. It was initiated at {self.startTime} and terminated at {self.endTime}"
         self.assertEqual(str(self.session), expected_str)
 

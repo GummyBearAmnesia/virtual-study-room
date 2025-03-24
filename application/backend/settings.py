@@ -32,6 +32,7 @@ ALLOWED_HOSTS = [
     ##"http://127.0.0.1:8000/api", # Localhost IP
     "127.0.0.1",  # Localhost IP
     "https://virtual-study-room-phi.vercel.app", # real website
+    "*"
 ]
 
 
@@ -84,6 +85,7 @@ ASGI_APPLICATION = "backend.asgi.application"
 CHANNEL_LAYERS = {
         "default": {
             "BACKEND": "channels.layers.InMemoryChannelLayer", # when we deploy change to redis?
+            # "BACKEND": "channels_redis.core.RedisChannelLayer", ?
         }
 }
 

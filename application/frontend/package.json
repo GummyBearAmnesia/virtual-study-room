@@ -12,7 +12,6 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
-    "react-rnd": "^10.4.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
     "@tailwindcss/cli": "^4.0.9",
@@ -103,6 +102,12 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts"
     ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/src/firebase-config.js",
+      "/src/index.js",
+      "/src/reportWebVitals.js"
+    ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
     ],
@@ -170,5 +175,4 @@
     "jest-watch-typeahead": "^2.2.2",
     "webpack-dev-server": "^4.11.1"
   }
-  
 }

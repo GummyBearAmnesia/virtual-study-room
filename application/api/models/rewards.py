@@ -13,10 +13,14 @@ In firebase there should be an image/badge for the corresponding reward_number, 
 '''
 
 class Rewards (models.Model):
-    reward_id = models.AutoField(primary_key=True) # Unique instance of the reward as PK
-    user = models.ForeignKey(User, on_delete=models.CASCADE) # Link to the user
-    reward_number = models.IntegerField() # FK links to Firebase reward_id
-    date_earned = models.DateTimeField(auto_now_add=True) # Adds the timestamp for when the reward was earned
+    '''' Unique instance of the reward as PK '''
+    reward_id = models.AutoField(primary_key=True)
+    ''' Link to the user '''
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ''' FK links to Firebase reward_id '''    
+    reward_number = models.IntegerField() 
+    ''' Adds the timestamp for when the reward was earned '''
+    date_earned = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
         return f"{self.user.username} - Reward {self.reward_number}"

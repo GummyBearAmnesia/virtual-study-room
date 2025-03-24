@@ -5,6 +5,10 @@ from api.models.rewards import Rewards
 from rest_framework.test import APIClient, APITestCase
 from rest_framework import status
 
+"""
+Tests for the Profile view functions
+"""
+
 class ProfileViewTestCase(APITestCase):
 
     def setUp(self):
@@ -14,7 +18,7 @@ class ProfileViewTestCase(APITestCase):
 
 
     def test_logged_in_user_retrieved(self):
-        '''Test retrieving the logged-in user's username and description'''
+        ''' Test retrieving the logged-in user's username and description '''
         response = self.client.get('/api/profile/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], self.user.username)
@@ -22,32 +26,31 @@ class ProfileViewTestCase(APITestCase):
 
 
     def test_new_description_saved(self):
-        '''Test updating the user's description in the database'''
+        ''' Test updating the user's description in the database '''
         new_desc = 'hello123'
         response = self.client.put('/api/description/', {'description': new_desc})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['description'], new_desc)
 
-        #verify that is was updated
+        # Verify that is was updated
         self.user.refresh_from_db()
         self.assertEqual(self.user.description, new_desc)
 
     def test_null_description_saved(self):
-        '''Test updating the user's description in the database'''
+        ''' Test updating the user's description in the database '''
         new_desc = None
         response = self.client.put(
             '/api/description/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['description'], "")
 
-        # verify that is was updated
         self.user.refresh_from_db()
         self.assertEqual(self.user.description, "")
 
 
     def test_get_user_badges(self):
-        '''Test the user's badges are correctly returned'''
-        #create rewards badges
+        ''' Test the user's badges are correctly returned '''
+
         Rewards.objects.create(user=self.user, reward_number=1)
         Rewards.objects.create(user=self.user, reward_number=2)
 

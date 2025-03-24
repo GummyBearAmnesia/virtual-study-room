@@ -38,7 +38,12 @@ function SharedMaterials({ socket }) {
         const files = await Promise.all(filePromises);
         setFiles(files);
       } catch (error) {
-        toast.error("Error Fetching Files");
+        toast.dismiss();
+        setTimeout(() => {
+          toast.error("Error Fetching Files", {
+            autoClose: 2000,
+          });
+        }, 500);
       }
     };
 
@@ -74,7 +79,12 @@ function SharedMaterials({ socket }) {
   const handleUploadFile = async (event) => {
     const file = event.target.files[0];
     if (!file) {
-      toast.error("No File Selected, Try Again!");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.error("No File Selected, Try Again!", {
+          autoClose: 2000,
+        });
+      }, 500);
       return;
     }
 
@@ -82,7 +92,12 @@ function SharedMaterials({ socket }) {
       (existingFile) => existingFile.name === file.name
     );
     if (fileExists) {
-      toast.error("This File Already Exists! Please Rename Your File!");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.error("This File Already Exists! Please Rename Your File!", {
+          autoClose: 2000,
+        });
+      }, 500);
       event.target.value = "";
       return;
     }
@@ -94,10 +109,10 @@ function SharedMaterials({ socket }) {
       const fileUrl = await getDownloadURL(fileRef);
       const newFile = { name: file.name, url: fileUrl, type: file.type };
 
-      setFiles((prevFiles) => [
-        ...prevFiles,
-        { name: file.name, url: fileUrl, type: file.type },
-      ]);
+      // setFiles((prevFiles) => [
+      //   ...prevFiles,
+      //   { name: file.name, url: fileUrl, type: file.type },
+      // ]);
 
       // Notify other users via WebSocket
       if (socket && socket.readyState === WebSocket.OPEN) {
@@ -112,9 +127,19 @@ function SharedMaterials({ socket }) {
       //clear the previous file to allow same file to be uploaded whilst still triggering onChange
       event.target.value = "";
 
-      toast.success("File Uploaded!");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.success("File Uploaded!", {
+          autoClose: 2000,
+        });
+      }, 500);
     } catch (error) {
-      toast.error("Error Uploading File");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.error("Error Uploading File", {
+          autoClose: 2000,
+        });
+      }, 500);
     }
   };
 
@@ -138,9 +163,19 @@ function SharedMaterials({ socket }) {
         socket.send(message);
       }
 
-      toast.success("File Deleted Successfully!");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.success("File Deleted Successfully!", {
+          autoClose: 2000,
+        });
+      }, 500);
     } catch (error) {
-      toast.error("Error Deleting File");
+      toast.dismiss();
+      setTimeout(() => {
+        toast.error("Error Deleting File", {
+          autoClose: 2000,
+        });
+      }, 500);
     }
   };
 
@@ -175,7 +210,7 @@ function SharedMaterials({ socket }) {
         >
           +
         </label>
-        <div className="display-files-container">
+        <div className="display-files-container" data-testid="display-files-container">
           {files.map((file, index) => (
             <div key={index} className="file-item">
               <span

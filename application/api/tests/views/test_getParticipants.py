@@ -5,20 +5,20 @@ from rest_framework import status
 from api.models import StudySession, SessionUser, User
 from api.views import get_participants
 
+"""
+Tests for the getParticipants view function
+"""
 
 class GetParticipantsViewTests(TestCase):
     fixtures = ['api/tests/fixtures/default_user.json']
 
     def setUp(self):
-        self.url = '/api/login/'  # Adjust to the correct URL for login view
+        self.url = '/api/login/'  
         self.user_data = {
             'email': 'alice@example.com',
             'password': 'Password123',
         }
-        # Create a user for testing
         self.user = User.objects.get(username='@alice123')
-
-        # Create an authenticated client
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
@@ -38,7 +38,7 @@ class GetParticipantsViewTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("participantsList", response.data)
-        self.assertEqual(len(response.data["participantsList"]), 2)  # 2 participants
+        self.assertEqual(len(response.data["participantsList"]), 2) 
 
         # Verify the participants' usernames
         participants_usernames = [p["username"] for p in response.data["participantsList"]]
@@ -59,7 +59,7 @@ class GetParticipantsViewTests(TestCase):
         """
         Test retrieving participants without authentication.
         """
-        client = APIClient()  # Unauthenticated client
+        client = APIClient()  
         response = client.get(f"/api/get-participants/?roomCode={self.study_session.roomCode}")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

@@ -12,13 +12,13 @@ describe("CreateNewTask", () => {
     let setAddTaskWindowMock, setListsMock;
  
     beforeAll(() => {
-        global.alert = jest.fn(); // Mock window.alert
-        global.console.log = jest.fn(); // Mock window.alert
+        global.alert = jest.fn();
+        global.console.log = jest.fn();
     });
 
     afterAll(() => {
         global.alert.mockRestore();
-        global.console.log.mockRestore(); // Restore alert after tests
+        global.console.log.mockRestore();
     }); 
 
     beforeEach(() => {
@@ -52,6 +52,7 @@ describe("CreateNewTask", () => {
         fireEvent.click(screen.getByText("Save"));
     }
 
+     // Tests that the modal renders correctly when `addTaskWindow` is true
     test("renders modal correctly when addTaskWindow is true", () => {
         setup();
 
@@ -60,6 +61,7 @@ describe("CreateNewTask", () => {
         expect(screen.getByPlaceholderText("Enter task content")).toBeInTheDocument();
     });
 
+    // Tests that the modal does not render when `addTaskWindow` is false
     test("does not render modal when addTaskWindow is false", () => {
         const { container } = render(
             <AddTaskModal
@@ -72,8 +74,8 @@ describe("CreateNewTask", () => {
         expect(container.firstChild).toBeNull();
     });
 
+    // Tests that the form is filled and submitted successfully
     test("allows input and submits the form successfully", async () => {
-        // Setup mock response
         authService.getAuthenticatedRequest.mockResolvedValue({
             id: 1,
             title: "New Task",
@@ -106,11 +108,7 @@ describe("CreateNewTask", () => {
             );
             
         });
-
-        // Ensure setListsMock was called
         await waitFor(() => expect(setListsMock).toHaveBeenCalled());
-
-        // Check updated lists
         await waitFor(() => {
             expect(updatedMockLists[0].tasks).toHaveLength(1);
             expect(updatedMockLists[0].tasks[0]).toMatchObject({
@@ -119,13 +117,11 @@ describe("CreateNewTask", () => {
                 content: "Task details",
             });
         });
-
-        // Ensure modal closes
         await waitFor(() => expect(setAddTaskWindowMock).toHaveBeenCalledWith(false));
     });
 
+    // Tests that the error is handled correctly when there is a generic error with no response
     test("handles generic error without response", async () => {
-        // Simulate a generic error without response data
         authService.getAuthenticatedRequest.mockRejectedValueOnce({
             message: "Network Error",
         });
@@ -144,8 +140,8 @@ describe("CreateNewTask", () => {
         expect(setAddTaskWindowMock).not.toHaveBeenCalled();
     });
 
+    // Tests that the error is handled correctly when the API responds with an error
     test("handles error with response", async () => {
-        // Simulate an error with a response object containing an error message
         authService.getAuthenticatedRequest.mockRejectedValueOnce({
             response: {
                 data: {
@@ -164,12 +160,11 @@ describe("CreateNewTask", () => {
         await waitFor(() => {
             expect(global.alert).toHaveBeenCalledWith("Something went wrong with the request");
         });
-
-        // Check that setLists and setAddTaskWindow were not called
         expect(setListsMock).not.toHaveBeenCalled();
         expect(setAddTaskWindowMock).not.toHaveBeenCalled();
     });
 
+    // Tests that the modal closes when the cancel button is clicked
     test("closes modal on cancel button click", async() => {
         setup();
         const cancelButton = screen.getByText("Cancel");
@@ -178,5 +173,38 @@ describe("CreateNewTask", () => {
         await waitFor(() => expect(setAddTaskWindowMock).toHaveBeenCalledTimes(1));
         await waitFor(() => expect(setAddTaskWindowMock).toHaveBeenCalledWith(false));
 
+    });
+
+    // Tests that tasks are not added when the list is shared
+    test("does not update lists when isShared is true", async () => {
+        authService.getAuthenticatedRequest.mockResolvedValue({
+            id: 1,
+            title: "New Task",
+            content: "Task details",
+            is_completed: false,
+        });
+        render(
+            <AddTaskModal
+                addTaskWindow={true}
+                setAddTaskWindow={setAddTaskWindowMock}
+                listId={1}
+                setLists={setListsMock}
+                isShared={true}
+            />
+        );
+        submitForm();
+        await waitFor(() => {
+            expect(authService.getAuthenticatedRequest).toHaveBeenCalledWith(
+                "/new_task/",
+                "POST",
+                {
+                    list_id: 1,
+                    title: "New Task",
+                    content: "Task details",
+                }
+            );
+        });
+        await waitFor(() => expect(setListsMock).not.toHaveBeenCalled());
+        await waitFor(() => expect(setAddTaskWindowMock).toHaveBeenCalledWith(false));
     });
 })

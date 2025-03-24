@@ -1,68 +1,72 @@
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: auto;
-    /* Allow the width to adjust based on content */
-    min-width: 400px;
-    /* Set a minimum width */
-    max-width: 600px;
-    /* Prevent it from being too wide */
-    display: flex;
-    flex-direction: column;
-    /* Stack children vertically */
-    align-items: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    position: relative;
+.modal-content-friends {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other elements */
 }
 
-.profile-section {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    /* Align items to the left */
-    width: 100%;
-    flex-wrap: wrap;
-    /* Prevent content from overflowing */
-    gap: 15px;
-    /* Add spacing */
+.profile-section-friends {
+  position: relative; /* Add this line */
+  margin: auto;
+  padding: 20px;
+  border: 5px solid #f2bac9;
+  background-color: white;
+  min-width: 30%;
+  min-height: 40%;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 2001; /* Ensures it is on top of dashboard heading */
+}
+.profile-pic-friends {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 3px solid #ddd;
+  object-fit: cover;
+  flex-shrink: 0;
+  margin-top: 20px;
+  /* Prevent image from resizing */
 }
 
-.profile-pic {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid #ddd;
-    object-fit: cover;
-    flex-shrink: 0;
-    /* Prevent image from resizing */
+.profile-details-friends {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* Allow text to take available space */
+  min-width: 200px;
+  /* Ensure enough space for text */
+  text-align: center;
+  margin-top: 20px;
 }
 
-.profile-details {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    /* Allow text to take available space */
-    min-width: 200px;
-    /* Ensure enough space for text */
-    text-align: left;
+.analytics-section-friends {
+  margin-top: 10px;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: left;
 }
 
-.analytics-section {
-    margin-top: 10px;
-    background: #f9f9f9;
-    padding: 10px;
-    border-radius: 8px;
-    width: 100%;
-    text-align: left;
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
+.close-btn-friends {
+  position: absolute; /* Position the button absolutely within its relative parent */
+  top: 10px; /* Adjust the distance from the top */
+  right: 10px; /* Adjust the distance from the right */
+  background: none;
+  border: none;
+  border-radius: 50%;
+  width: 55px;
+  padding: 5px;
+  font-size: 30px;
+  cursor: pointer;
+  z-index: 1; /* Ensure it's above other content */
 }

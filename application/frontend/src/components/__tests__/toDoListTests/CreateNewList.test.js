@@ -11,13 +11,13 @@ describe("CreateNewList", () => {
     let setAddListWindowMock, setListsMock;
  
     beforeAll(() => {
-        global.alert = jest.fn(); // Mock window.alert
-        global.console.log = jest.fn(); // Mock window.alert
+        global.alert = jest.fn(); 
+        global.console.log = jest.fn();
     });
 
     afterAll(() => {
         global.alert.mockRestore();
-        global.console.log.mockRestore(); // Restore alert after tests
+        global.console.log.mockRestore();
     });
  
     beforeEach(() => {
@@ -25,6 +25,17 @@ describe("CreateNewList", () => {
         setListsMock = jest.fn();
         jest.clearAllMocks();
     });
+ 
+
+    const submitForm = () => {
+        const titleInput = screen.getByPlaceholderText("Enter list name");
+        
+        fireEvent.change(titleInput, { target: { value: "New List" } });
+        
+        expect(titleInput.value).toBe("New List");
+        
+        fireEvent.click(screen.getByText("Save"));
+    }
 
     const setup = () => {
         render(
@@ -36,24 +47,15 @@ describe("CreateNewList", () => {
         );
     };
 
-    const submitForm = () => {
-        const titleInput = screen.getByPlaceholderText("Enter list title");
-        
-        fireEvent.change(titleInput, { target: { value: "New List" } });
-        
-        expect(titleInput.value).toBe("New List");
-        
-        fireEvent.click(screen.getByText("Save"));
-    }
-
+    // Tests the modal renders correctly when `addListWindow` is true
     test("renders modal correctly when addListWindow is true", () => {
         setup();
 
         expect(screen.getByText("Add List")).toBeInTheDocument();
-        expect(screen.getByPlaceholderText("Enter list title")).toBeInTheDocument();
-        expect(screen.getByRole("checkbox")).toBeInTheDocument();
+        expect(screen.getByPlaceholderText("Enter list name")).toBeInTheDocument();
     });
 
+    // Tests the modal does not render when `addListWindow` is false
     test("does not render modal when addListWindow is false", () => {
         const { container } = render(
             <AddListModal
@@ -65,15 +67,13 @@ describe("CreateNewList", () => {
         expect(container.firstChild).toBeNull();
     });
 
+    // Tests if the form is filled and submitted successfully
     test("allows input and submits the form successfully", async () => {
-        // Setup mock response
         authService.getAuthenticatedRequest.mockResolvedValue({
             listId: 2,
             name: "New List",
             isShared: true
         });
-
-        // Initialize the mock list state
         let updatedMockLists = [
             { id: 1, name: "List 1", tasks: [] },
         ];
@@ -91,15 +91,11 @@ describe("CreateNewList", () => {
                 "POST",
                 {
                     name: "New List",
-                    is_shared: true,
+                    is_shared: false,
                 }
             );
         });
-
-        // Ensure setListsMock was called
         await waitFor(() => expect(setListsMock).toHaveBeenCalled());
-
-        // Check updated lists correctly
         await waitFor(() => {
             expect(updatedMockLists).toHaveLength(2);
             expect(updatedMockLists[1]).toMatchObject({
@@ -108,14 +104,11 @@ describe("CreateNewList", () => {
                 tasks: [],
             });
         });
-
-        // Ensure modal closes
         await waitFor(() => expect(setAddListWindowMock).toHaveBeenCalledWith(false));
     });
 
-
+    // Tests handling a generic error when there's no response from the API
     test("handles generic error without response", async () => {
-        // Simulate a generic error without response data
         authService.getAuthenticatedRequest.mockRejectedValueOnce({
             message: "Network Error",
         });
@@ -134,8 +127,8 @@ describe("CreateNewList", () => {
         expect(setAddListWindowMock).not.toHaveBeenCalled();
     });
 
+    // Tests handling a specific error with a response from the API
     test("handles error with response", async () => {
-        // Simulate an error with a response object containing an error message
         authService.getAuthenticatedRequest.mockRejectedValueOnce({
             response: {
                 data: {
@@ -152,15 +145,13 @@ describe("CreateNewList", () => {
         });
 
         await waitFor(() => {
-            // Ensure the alert is called with the error message from the response
             expect(global.alert).toHaveBeenCalledWith("Something went wrong with the request");
         });
-
-        // Check that setLists and setAddTaskWindow were not called
         expect(setListsMock).not.toHaveBeenCalled();
         expect(setAddListWindowMock).not.toHaveBeenCalled();
     });
 
+    // Tests that the modal closes when the cancel button is clicked
     test("closes modal on cancel button click", async () => {
         setup();
         const cancelButton = screen.getByText("Cancel");

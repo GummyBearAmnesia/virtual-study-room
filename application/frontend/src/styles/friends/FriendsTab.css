@@ -1,25 +1,9 @@
-.friends-tabs-container {
-    width: 100%;
-    background-color: white;
-    border-radius: 30px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.dashboard-content .dashboard-panel .friends-tabs-container {
-    border-radius: 30px;
-    box-sizing: border-box;
-    width: 100%;
-    overflow: hidden;
-    height: fit-content;
-    max-height: 90%;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-}
 .tabs {
     display: flex;
     justify-content: space-around;
     background-color: #f0f0f0;
     border-bottom: 2px solid #ddd;
+    border-radius: 30px;
 }
 
 .tabs button {
@@ -35,7 +19,6 @@
 .tabs button.active {
     font-weight: bold;
     color: #007bff;
-    border-bottom: 3px solid #007bff;
 }
 
 .tab-content {

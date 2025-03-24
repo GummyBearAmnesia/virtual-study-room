@@ -10,6 +10,11 @@ const useWebSocket = (isShared, socket, listId, setLists, roomCode) => {
             console.log("WebSocket connected");
         };
 
+        wsSocket.close = () => {
+            console.log("Disconnected from WebSocket");
+        };
+        
+
         wsSocket.onmessage = (event) => {
             const data = JSON.parse(event.data);
 

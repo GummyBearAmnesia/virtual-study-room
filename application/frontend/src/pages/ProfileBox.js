@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { storage } from "../firebase-config";
 import { Navigate, useNavigate } from "react-router-dom";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
-import CalendarPage from "./Calendar";
 import { getAuthenticatedRequest, getAccessToken } from "../utils/authService";
 import defaultAvatar from "../assets/avatars/avatar_2.png";
 import UserAvatar from "../components/UserAvatar";
@@ -163,7 +162,7 @@ function ProfileBox() {
         <h1 className="profile-title">Profile</h1>
         <div className="picture-container">
           <div className="container1">
-            <img src={userData.image} alt="logo" className="profile-pic" />
+            <img src={userData.image} alt="logo" className="profile-pic" data-testid="image-profile-src" />
             <h1 className="profile-username">{userData.username}</h1>
             <button
               className="inventory-button"
@@ -193,21 +192,22 @@ function ProfileBox() {
             </button>
             <button
               className="CalendarButton"
+              data-testid="calendar-button-profile"
               onClick={gotoCalendar}
               style={{
-                width: "45px",
-                height: "45px",
-                borderRadius: "50%",
-                backgroundColor: "#bad7f5", // Static background color
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "24px",
-                transition: "all 0.2s ease-in-out",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                marginBottom: "10px",
+                  width: '45px',
+                  height: '45px',
+                  borderRadius: '50%',
+                  backgroundColor: '#bad7f5', // Static background color
+                  border: 'none',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  transition: 'all 0.2s ease-in-out',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                  marginBottom: '10px',
               }}
             >
               📅

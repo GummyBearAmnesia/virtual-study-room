@@ -1,20 +1,16 @@
 import axios from "axios";
 import {
-    getAccessToken,
-    getRefreshToken,
     isTokenExpired,
     refreshToken,
     getAuthenticatedRequest,
-} from "../utils/authService"; // Update the path accordingly
+} from "../utils/authService";
 import { jwtDecode } from "jwt-decode";
 
-// Mock localStorage
 beforeEach(() => {
     jest.spyOn(Storage.prototype, "getItem");
     jest.spyOn(Storage.prototype, "setItem");
     jest.spyOn(Storage.prototype, "removeItem");
 
-    // Fix for window.location.href issue
     delete window.location;
     window.location = { href: "" };
 });
@@ -31,13 +27,23 @@ describe("Auth Service Tests", () => {
         jest.clearAllMocks();
     });
 
+    beforeEach(() => {
+        jest.spyOn(Storage.prototype, "getItem");
+        jest.spyOn(Storage.prototype, "setItem");
+        jest.spyOn(Storage.prototype, "removeItem");
+
+        delete window.location;
+        window.location = { href: "" };
+        axios.mockReset();
+    });
+
     test("isTokenExpired should return true for expired tokens", () => {
-        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 - 60 }); // Expired 60 sec ago
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 - 60 });
         expect(isTokenExpired("fake_token")).toBe(true);
     });
 
     test("isTokenExpired should return false for valid tokens", () => {
-        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 + 600 }); // Expires in 10 minutes
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 + 600 });
         expect(isTokenExpired("valid_token")).toBe(false);
     });
 
@@ -60,7 +66,7 @@ describe("Auth Service Tests", () => {
 
     test("refreshToken should logout user if refresh token is expired", async () => {
         localStorage.getItem.mockImplementation(() => "expired_refresh_token");
-        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 - 600 }); // Expired
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 - 600 });
 
         await refreshToken();
         expect(localStorage.removeItem).toHaveBeenCalledWith("access_token");
@@ -112,14 +118,109 @@ describe("Auth Service Tests", () => {
         expect(localStorage.setItem).toHaveBeenCalledWith("access_token", "new_access_token");
     });
 
-    test("getAuthenticatedRequest should logout on 401 error", async () => {
-        localStorage.getItem.mockImplementation(() => "valid_token");
+    test("getAuthenticatedRequest should handle request errors and logout on 401", async () => {
+        localStorage.getItem.mockImplementation((key) => (key === "access_token" ? "valid_token" : null));
+
         jwtDecode.mockReturnValue({ exp: Date.now() / 1000 + 600 });
 
-        axios.mockRejectedValue({ response: { status: 401 } });
+        axios.mockRejectedValueOnce({
+            response: {
+                status: 401,
+                data: { message: "Unauthorized" },
+            },
+        });
 
-        await expect(getAuthenticatedRequest("/test")).rejects.toThrow("Request failed with status code 401");
-        expect(localStorage.removeItem).toHaveBeenCalledTimes(2);
+        await expect(getAuthenticatedRequest("/test")).rejects.toEqual({
+            response: {
+                status: 401,
+                data: { message: "Unauthorized" },
+            },
+        });
+
+        expect(localStorage.removeItem).toHaveBeenCalledWith("access_token");
+        expect(localStorage.removeItem).toHaveBeenCalledWith("refresh_token");
         expect(window.location.href).toBe("/login");
     });
+
+    test("getAuthenticatedRequest should throw error if refreshToken fails", async () => {
+        localStorage.getItem.mockImplementation((key) =>
+            key === "access_token" ? "expired_token" : "valid_refresh_token"
+        );
+
+        jwtDecode.mockImplementation((token) =>
+            token === "expired_token" ? { exp: Date.now() / 1000 - 60 } : { exp: Date.now() / 1000 + 600 }
+        );
+
+        axios.post.mockRejectedValue({ response: { status: 401 } });
+
+        await expect(getAuthenticatedRequest("/test")).rejects.toThrow("Authentication failed, please log in again.");
+        expect(localStorage.removeItem).toHaveBeenCalledWith("access_token");
+        expect(localStorage.removeItem).toHaveBeenCalledWith("refresh_token");
+        expect(window.location.href).toBe("/login");
+    });
+
+    test("isTokenExpired should return true for missing tokens", () => {
+        expect(isTokenExpired(null)).toBe(true);
+    });
+
+    test("refreshToken should logout user if refresh token is missing or expired", async () => {
+        localStorage.getItem.mockImplementation(() => null);
+
+        await refreshToken();
+        expect(localStorage.removeItem).toHaveBeenCalledWith("access_token");
+        expect(localStorage.removeItem).toHaveBeenCalledWith("refresh_token");
+        expect(window.location.href).toBe("/login");
+
+        jest.clearAllMocks();
+
+        localStorage.getItem.mockImplementation(() => "expired_refresh_token");
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 - 600 });
+
+        await refreshToken();
+        expect(localStorage.removeItem).toHaveBeenCalledWith("access_token");
+        expect(localStorage.removeItem).toHaveBeenCalledWith("refresh_token");
+        expect(window.location.href).toBe("/login");
+    });
+
+    test("refreshToken should handle case where no new refresh token is returned", async () => {
+        localStorage.getItem.mockImplementation((key) =>
+            key === "refresh_token" ? "valid_refresh_token" : null
+        );
+
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 + 600 });
+
+        axios.post.mockResolvedValue({
+            data: { access: "new_access_token" },
+        });
+
+        const newToken = await refreshToken();
+        expect(newToken).toBe("new_access_token");
+        expect(localStorage.setItem).toHaveBeenCalledWith("access_token", "new_access_token");
+        expect(localStorage.setItem).not.toHaveBeenCalledWith("refresh_token", expect.anything());
+    });
+
+    test("getAuthenticatedRequest should not logout on non-401 errors", async () => {
+        
+        localStorage.getItem.mockImplementation((key) => (key === "access_token" ? "valid_token" : null));
+
+        jwtDecode.mockReturnValue({ exp: Date.now() / 1000 + 600 });
+
+        axios.mockRejectedValueOnce({
+            response: {
+                status: 500,
+                data: { message: "Server Error" },
+            },
+        });
+
+        await expect(getAuthenticatedRequest("/test")).rejects.toEqual({
+            response: {
+                status: 500,
+                data: { message: "Server Error" },
+            },
+        });
+
+        expect(localStorage.removeItem).not.toHaveBeenCalled();
+        expect(window.location.href).not.toBe("/login");
+    });
+
 });

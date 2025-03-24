@@ -135,11 +135,11 @@ const ToDoList = ({ isShared, listId = undefined, socket, roomCode = undefined }
             {lists.map((list) => (
                 <div className="todo-card" key={list.id}>
                     <div className="todo-card-header">
-                        <button onClick={() => handleAddTask(list.id)} className="btn btn-success btn-sm">
+                        <button onClick={() => handleAddTask(list.id)} className="btn btn-success btn-sm" aria-label='add task'>
                             <i className="bi bi-plus-circle"></i>
                         </button>
                         {!isShared ? (
-                            <button onClick={() => handleDeleteList(list.id)} className="btn btn-danger btn-sm">
+                            <button onClick={() => handleDeleteList(list.id)} className="btn btn-danger btn-sm" aria-label='delete list'>
                                 <i className="bi bi-trash"></i>
                             </button>
                         ) : (<></>)
@@ -151,6 +151,7 @@ const ToDoList = ({ isShared, listId = undefined, socket, roomCode = undefined }
                         {list.tasks.map((task) => (
                             <TaskItem
                                 key={task.id}
+                                //key={task.id + (task.is_completed ? "_checked" : "_unchecked")}
                                 task={task}
                                 toggleTaskCompletion={toggleTaskCompletion}
                                 handleDeleteTask={handleDeleteTask}

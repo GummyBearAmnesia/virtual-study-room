@@ -1,27 +1,34 @@
+"""
+Serializer for Appointments.
+
+This file defines the `AppointmentSerializer`, which transforms `Appointments` model 
+instances into JSON representations and vice versa. It ensures that data is correctly 
+structured when received from or sent to the API.
+
+Key Features:
+- Maps model fields to API-friendly names (`name` → `title`, `start_date` → `start`, etc.).
+- Includes optional fields (e.g., `description` from `comments`).
+- Prevents clients from modifying certain fields (`user` is read-only).
+- Ensures proper validation and serialization for API responses.
+
+This serializer helps maintain a clean and structured API interface for appointment-related data.
+"""
+
 from rest_framework import serializers
 from api.models.events import Appointments
 
 
-
 class AppointmentSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(source='name')  # Maps title → name
-    start = serializers.DateTimeField(source='start_date')  # Maps start → start_date
-    end = serializers.DateTimeField(source='end_date')  # Maps end → end_date
-    description = serializers.CharField(source='comments', required=False)  # Maps description → comments
+    title = serializers.CharField(source='name') 
+    start = serializers.DateTimeField(source='start_date') 
+    end = serializers.DateTimeField(source='end_date')  
+    description = serializers.CharField(source='comments', required=False) 
 
     class Meta:
         model = Appointments
-        fields = ['id', 'title', 'description', 'start', 'end', 'status', 'created', 'modified', 'user']
+        fields = ['id', 'title', 'description', 'start', 'end', 'user']
         extra_kwargs = {
-            'user': {'read_only': True},  # Prevent the client from setting the user
+            'user': {'read_only': True}, 
         }
-    
-    # def create(self, validated_data):
-    #     request = self.context.get('request')
-    #     if request and hasattr(request, 'user'):
-    #         validated_data['user'] = request.user
-    #     else:
-    #         raise serializers.ValidationError("User not found in request context.")
-    #     return Appointments.objects.create(**validated_data)
 
     

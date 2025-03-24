@@ -8,27 +8,26 @@ from asgiref.sync import async_to_sync
 from api.models import StudySession, SessionUser, User
 from api.views import create_room, join_room, get_room_details, leave_room, notify_participants
 
-
+"""
+Tests for the Group Study room view functions
+"""
 class GroupStudyRoomViewsTests(TestCase):
     fixtures = ['api/tests/fixtures/default_user.json']
 
     def setUp(self):
         """Set up the test data"""
-        self.url = '/api/login/'  # Adjust to the correct URL for login view
+        self.url = '/api/login/' 
         self.user_data = {
             'email': 'alice@example.com',
             'password': 'Password123',
         }
-        # Create a user for testing
+
         self.user = User.objects.get(username='@alice123')
 
-        # Create a test study session
         self.study_session = StudySession.objects.create(createdBy=self.user, sessionName="Test Room")
 
-        # Set up API client
         self.client = APIClient()
 
-        # Force authentication for testing purposes
         self.client.force_authenticate(user=self.user)
 
     def test_create_room(self):

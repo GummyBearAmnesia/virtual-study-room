@@ -3,7 +3,6 @@ from django.db.models import Q
 from django.core.exceptions import ValidationError
 from .choices import *
 
-
 '''
 Friends model represents a friendship between two users.
 It ensures that each friendship is stored only once using a unique constraint
@@ -15,13 +14,19 @@ class Friends(models.Model):
         'User', on_delete=models.CASCADE, related_name="friendships_initiated")
     user2 = models.ForeignKey(
         'User', on_delete=models.CASCADE, related_name="friendships_received")
+    ''' Storing whether the request has been accepted, rejected, or is still pending '''
     status = models.CharField(
         max_length=10, choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
+    ''' User that created the request '''
     requested_by = models.ForeignKey(
         'User', on_delete=models.CASCADE, related_name="requested_by")
 
     class Meta:
+        ''' 
+        Once a user is friends with another user, they should not be able to 
+        send another friend request to the same user unless they have first been unfriended
+        '''
         constraints = [
             models.UniqueConstraint(
                 fields=['user1', 'user2'], name='unique_friendship')
@@ -73,16 +78,25 @@ class Friends(models.Model):
 
     @staticmethod
     def get_invitations_sent(user):
+        ''' 
+        Get all pending requests initiated by the user 
+        '''
         all_friends = Friends.get_friends_with_status(user, Status.PENDING)
         return [request for request in all_friends if request.requested_by == user]
 
     @staticmethod
     def get_invitations_received(user):
+        ''' 
+        Get all pending request for the user from other users 
+        '''
         all_friends = Friends.get_friends_with_status(user, Status.PENDING)
         return [request for request in all_friends if request.requested_by != user]
 
     @staticmethod
     def get_all_friends(user):
+        ''' 
+        Returns all current friends 
+        '''
         requests = Friends.objects.all()
         return [request for request in requests if request.user1 == user or request.user2 == user]
 
@@ -100,6 +114,9 @@ class Friends(models.Model):
 
     @staticmethod
     def get_friend(Id, current_user):
+        ''' 
+        Get a friend using the friendship ID
+        '''
         try:
             request = Friends.objects.get(pk=Id)
             return request.user1 if request.user2==current_user else request.user2
@@ -115,7 +132,8 @@ class Friends(models.Model):
             friendship = Friends.objects.get(pk=friendsId)
             if friendship.status == Status.PENDING:
                 friendship.delete()
-            else: #in status.ACCEPTED
+            else: 
+                # status = ACCEPTED
                 friendship.status = Status.PENDING
                 friendship.requested_by = Friends.get_friend(friendsId, user)
                 friendship.save()

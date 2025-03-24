@@ -20,9 +20,12 @@ const AllFriends = () => {
         <div className="friends-list-container">
             <div className="friends-list-wrapper">
                 <ul className="friends-list">
-                    {friends.length === 0 ? (
+                    {friends.length === 0 ?
+                        (
                         <p className="no-friends">No friends found.</p>
-                    ) : (
+                        )
+                        :
+                        (
                         friends.map((friend) => (
                             <li key={friend.id} className="friend-card">
                                 <img src={friend.image} alt="logo" className="pic" />
@@ -32,7 +35,8 @@ const AllFriends = () => {
                                 <button className="details-btn" onClick={() => handleOpenProfile(friend.id)} aria-label="details" > <i class="bi bi-eye"></i> </button>
                             </li>
                         ))
-                    )}
+                        )
+                    }
                 </ul>
             <FriendsProfile
                 FriendsId={selectedUser}

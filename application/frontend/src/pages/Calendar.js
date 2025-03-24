@@ -7,6 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useLocation } from "react-router-dom";
 import "../styles/calendar.css";
+import { useNavigate } from "react-router-dom";
+import returnHomeLogo from "../assets/return_home.png";
 
 console.log(require.resolve("@fullcalendar/react"));
 
@@ -20,9 +22,14 @@ const CalendarPage = () => {
   const [eventEnd, setEventEnd] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  const navigate = useNavigate();
 
   const location = useLocation();
   const userId = location.state?.userId;
+
+  const goToDashboard = () => {
+    navigate("/dashboard");
+  };
 
   if (!userId) {
     console.error("User ID is undefined. Redirecting or handling error...");
@@ -68,15 +75,15 @@ const CalendarPage = () => {
       );
 
       if (response) {
-        toast.success("Event added successfully");
-        closeAddEventPopup();
-        fetchEvents(); // Fetch events again to reload the calendar
+        toast.success("Event added successfully"); 
+        closeAddEventPopup(); 
+        fetchEvents(); // Fetch events again to reload the calendar 
       } else {
         toast.error("Error saving event.");
       }
     } catch (error) {
-      console.error("Error saving event:", error);
-      toast.error("Error connecting to backend.");
+      console.error("Error saving event:", error); 
+      toast.error("Error connecting to backend."); 
     }
   };
 
@@ -87,15 +94,15 @@ const CalendarPage = () => {
   };
 
   const closeAddEventPopup = () => {
-    setShowPopup(false);
+    setShowPopup(false); 
   };
 
   const handleEventClick = (info) => {
-    setSelectedEvent(info.event);
+    setSelectedEvent(info.event); //----------------------------------------
   };
 
   const closePopup = () => {
-    setSelectedEvent(null);
+    setSelectedEvent(null); //-------------------------------------
   };
 
   const today = new Date();
@@ -107,9 +114,9 @@ const CalendarPage = () => {
 
     let backgroundColor = "#BAD7F2";
     if (eventDate < today) {
-      backgroundColor = "#F2BAC9";
+      backgroundColor = "#F2BAC9"; //----------------------------------------------
     } else if (eventDate.getTime() === today.getTime()) {
-      backgroundColor = "#B0F2B4";
+      backgroundColor = "#B0F2B4";  //-----------------------------------------------
     }
 
     return {
@@ -123,16 +130,31 @@ const CalendarPage = () => {
 
   return (
     <div className="Page">
-      <h1 className="Header">My Calendar</h1>
+      <h1 className="Header">
+        My Calendar
+        <div className="top-bar">
+          <button onClick={goToDashboard} className="dashboard-button">
+            <img src={returnHomeLogo} alt="return" />
+          </button>
+        </div>
+      </h1>
       <ToastContainer position="top-center" />
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
         initialView="timeGridWeek"
         events={processedEvents}
         headerToolbar={{
-          left: "prev,today,next",
-          center: "title",
-          right: "addEventButton,timeGridWeek,dayGridMonth,dayGridYear",
+          left: `
+            <button aria-label="prev" id="prev-button">Prev</button>
+            <button aria-label="today" id="today-button">Today</button>
+            <button aria-label="next" id="next-button">Next</button>
+          `,
+          center: 'title',
+          right: `
+            <button aria-label="add-event">Add Event</button>
+            <button aria-label="week-view">Week View</button>
+            <button aria-label="month-view">Month View</button>
+          `
         }}
         customButtons={{
           addEventButton: {
@@ -153,8 +175,9 @@ const CalendarPage = () => {
             <h2>Add Event</h2>
             <form onSubmit={handleSubmit}>
               <div>
-                <label>Title:</label>
+                <label htmlFor="eventTitle">Title:</label>
                 <input
+                  id="eventTitle"
                   type="text"
                   value={eventTitle}
                   onChange={(e) => setEventTitle(e.target.value)}
@@ -162,15 +185,17 @@ const CalendarPage = () => {
                 />
               </div>
               <div>
-                <label>Description:</label>
+                <label htmlFor="eventDescription">Description:</label>
                 <textarea
+                  id="eventDescription"
                   value={eventDescription}
                   onChange={(e) => setEventDescription(e.target.value)}
                 />
               </div>
               <div>
-                <label>Start:</label>
+                <label htmlFor="eventStart">Start:</label>
                 <input
+                  id="eventStart"
                   type="datetime-local"
                   value={eventStart}
                   onChange={(e) => setEventStart(e.target.value)}
@@ -178,8 +203,9 @@ const CalendarPage = () => {
                 />
               </div>
               <div>
-                <label>End:</label>
+                <label htmlFor="eventEnd">End:</label>
                 <input
+                  id="eventEnd"
                   type="datetime-local"
                   value={eventEnd}
                   onChange={(e) => setEventEnd(e.target.value)}

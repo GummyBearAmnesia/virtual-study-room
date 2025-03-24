@@ -1,23 +1,45 @@
 .Header {
-  border: 3px solid #f2bac9;
-  font-family: "Inter", sans-serif;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  text-shadow: 
+      0 0 2px rgba(255, 255, 255, 0.8),
+      0 0 8px rgba(186, 198, 241, 0.6),
+      0 0 12px rgba(186, 198, 241, 0.4),
+      0 1px 2px rgba(0, 0, 0, 0.3);
+  margin-left: 0 !important; 
+  margin-right: auto !important; 
+  order: 0 !important; 
+  width: 100%;
   padding: 15px;
-  text-align: center;
-  color: white;
-  background-color: #f2bac9;
-  font-size: 48px;
-  font-weight: 700;
+  background: linear-gradient(135deg, #bac6f1 0%, #d1cbed 100%); 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  top: 0;
+  left: 0;
+  margin: 0;
   box-sizing: border-box;
   z-index: 1000;
+  border: 3px solid #bac6f1;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  height: 80px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .Page {
   display: fixed;
-  overflow: hidden;
+  overflow: auto;
   justify-content: center;
   margin: 0;
   box-sizing: border-box; /* Ensure padding/border don't increase its size */
   background-color: #f6f0f0;
+  position: relative;
 }
 
 button.addEventButton {
@@ -28,7 +50,6 @@ button.addEventButton {
   font-weight: bold !important; /* Make button text bold */
   text-align: center;
   border-color: #ffe7ac;
-  font-family: "Inter", sans-serif;
   padding: 10px 20px;
   font-weight: 700;
   transition: background-color 0.3s ease;
@@ -135,7 +156,7 @@ button.addEventButton {
 }
 
 .popup-content button:hover {
-  background-color: #bad7f2; /* Darker red for button hover */
+  background-color: #BAD7F1; /* Darker red for button hover */
 }
 
 .popup-content button[type="button"] {
@@ -147,16 +168,37 @@ button.addEventButton {
 }
 
 /* Calendar toolbar button styles */
+.fc-header-toolbar {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  /* color: #5D576B; */
+  background: linear-gradient(135deg, #bac6f1 0%, #d1cbed 100%);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  padding: 15px 50px;
+  margin-bottom: 0 !important;
+  text-shadow: 
+    0 0 2px rgba(255, 255, 255, 0.8),
+    0 0 8px rgba(186, 198, 241, 0.6),
+    0 0 12px rgba(186, 198, 241, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.3);
+}
 .fc-toolbar .fc-button {
-  background-color: #bad7f2 !important; /* Set background color */
-  /* Text color */
-  border-radius: 15% !important; /* Rounded corners */
-  font-weight: bold !important; /* Make button text bold */
-  text-align: center;
-  color: black;
-  border-color: #bad7f2;
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
+  background-color: #bad7f2 !important;
+  border-color: #bad7f2 !important;
+  color: black !important;
+  border-radius: 30px !important;
+  font-family: "Inter", sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: capitalize !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+  margin: 10px; 
+}
+
+.fc-button:hover {
+  background-color: #a0c4e9 !important;
 }
 
 /* Specific styling for individual toolbar sections if needed */
@@ -171,15 +213,52 @@ button.addEventButton {
 .fc-prev-button,
 .fc-next-button,
 .fc-today-button {
-  background-color: #bad7f2 !important; /* Set background color */
-  border-color: #bad7f2;
-  border-radius: 15% !important; /* Rounded corners */
-  font-weight: bold !important; /* Make button text bold */
-  font-family: "Inter", sans-serif;
-  text-align: center;
-  color: black;
-  font-weight: 700;
+  background-color: #ffe7ac !important;
+  border-color: #ffe7ac !important;
 }
+
+.fc-today-button:hover {
+  background-color: #f8d78c !important;
+}
+
+
+.fc-col-header {
+  background-color: rgba(209, 203, 237, 0.3);
+}
+.fc-col-header-cell {
+  padding: 10px 0;
+}
+
+.fc-daygrid-day:hover {
+  background-color: rgba(186, 215, 242, 0.2);
+}
+
+.fc-event {
+  width: 70% !important;
+  margin: 2px auto !important;
+  border-radius: 20px !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: bold !important;
+  color: black !important;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 3px 0;
+}
+
+.fc-event-time {
+  font-weight: 600;
+}
+
+.fc-event:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
 
 .event-popup input[type="text"],
 .event-popup input[type="datetime-local"],
@@ -191,4 +270,72 @@ button.addEventButton {
   font-family: "Inter", sans-serif;
   font-size: 14px;
   color: #333;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.dashboard-button img{
+  position: static !important;
+  width: 40px;
+  height: 40px;
+  background-color: transparent !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  margin: 0 !important;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.dashboard-button::after {
+  content: "Return to Dashboard";  /* The tooltip text */
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+
+    /* Positioning */
+    position: absolute;
+    left: 50%;
+    top: 150%;
+    transform: translateX(-50%);
+
+    /* Hidden by default */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.dashboard-button:hover img {
+  filter: brightness(0) invert(1) drop-shadow(0 0 3px rgba(255, 255, 255, 0.7));
+}
+
+@media (max-width: 768px) {
+  .fc-header-toolbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .fc-event {
+    width: 85% !important;
+    font-size: 0.7em;
+  }
 }

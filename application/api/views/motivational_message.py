@@ -6,9 +6,16 @@ from random import randint
 
 @api_view(['GET'])
 def motivationalMessage(request):
+    '''
+    Fetch and return a random motivational message from the database
+    '''
+    # Get the ID of the first message and total number of messages
     start = (MotivationalMessage.objects.first()).id
     numMessages = MotivationalMessage.objects.count()
-    # choosing a random motivational message from the database
+
+    # GET a random message using a ransom ID within the given range
     motivation = MotivationalMessage.objects.get(id = randint(start, start+numMessages-1))
     message = motivation.text
+
+    # Return the message
     return Response({'message': message})

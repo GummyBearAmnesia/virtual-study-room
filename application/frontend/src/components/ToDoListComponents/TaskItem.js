@@ -17,7 +17,7 @@ const TaskItem = ({ task, toggleTaskCompletion, handleDeleteTask, toggleTaskDeta
 
                 <div className="task-item-buttons">
                     {/* Delete Task Button */}
-                    <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger btn-sm" aria-label="Delete List">
+                    <button onClick={() => handleDeleteTask(task.id)} className="btn btn-danger btn-sm" aria-label="Delete Task">
                         <i className="bi bi-trash"></i>
                     </button>
                     {/* Expand/Collapse Button for Task Details */}

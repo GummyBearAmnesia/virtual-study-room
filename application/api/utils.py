@@ -1,4 +1,18 @@
-from datetime import datetime, timedelta
+"""
+Utilities for Calendar Rendering.
+
+This file defines a custom `Calendar` class that extends Django's `HTMLCalendar` 
+to generate an HTML calendar view with event data.
+
+Key Features:
+- Formats individual days (`formatday`) to include events.
+- Formats weeks (`formatweek`) and months (`formatmonth`) into structured HTML tables.
+- Retrieves events from the database, filtering them by year and month.
+- Generates a visually structured calendar with event listings.
+
+This utility is useful for dynamically displaying event schedules in a calendar format.
+"""
+
 from calendar import HTMLCalendar
 from urllib import request
 from .models.events import Appointments
@@ -15,8 +29,6 @@ class Calendar(HTMLCalendar):
 		self.month = month
 		super(Calendar, self).__init__()
 
-	# formats a day as a td
-	# filter events by day
 	def formatday(self, day, events):
 		events_per_day = events.filter(start_time__day=day)
 		d = ''
@@ -27,15 +39,12 @@ class Calendar(HTMLCalendar):
 			return f"<td><span class='date'>{day}</span><ul> {d} </ul></td>"
 		return '<td></td>'
 
-	# formats a week as a tr 
 	def formatweek(self, theweek, events):
 		week = ''
 		for d, weekday in theweek:
 			week += self.formatday(d, events)
 		return f'<tr> {week} </tr>'
 
-	# formats a month as a table
-	# filter events by year and month
 	def formatmonth(self, withyear=True):
 		events = Appointments.objects.filter(start_time__year=self.year, start_time__month=self.month)
 

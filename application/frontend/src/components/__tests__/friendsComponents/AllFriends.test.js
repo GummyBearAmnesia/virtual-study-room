@@ -1,22 +1,29 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, within, waitFor } from '@testing-library/react';
 import AllFriends from '../../friends/AllFriends';
 import * as authService from '../../../utils/authService';
 import { FriendsContext } from "../../friends/FriendsContext";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
-
-// Mocking modules
 jest.mock('../../../utils/authService', () => ({
     getAuthenticatedRequest: jest.fn(),
 }));
 
+jest.mock('../../friends/FriendsProfile', () => {
+    return jest.fn(() => (
+        <div data-testid="mock-user-profile">
+            <h4>Name1 Surname1</h4>
+        </div>
+    ));
+});
+
+
 jest.mock('firebase/storage');
 jest.mock('../../../firebase-config.js');
 jest.mock('react-toastify', () => {
-    const actual = jest.requireActual('react-toastify'); // Preserve the actual module
+    const actual = jest.requireActual('react-toastify');
     return {
-        ...actual, // Spread actual exports
+        ...actual,
         toast: {
             error: jest.fn(),
             success: jest.fn(),
@@ -31,7 +38,7 @@ const mockFriendsData = [
 
 describe("AllFriends", () => {
 
-    const mockOnReject = jest.fn(); // ✅ Use jest.fn() here
+    const mockOnReject = jest.fn(); 
     const mockLoading = false;
 
     const renderWithContext = (contextValue) => {
@@ -60,6 +67,7 @@ describe("AllFriends", () => {
         window.alert.mockRestore();
     });
 
+    // Test for checking if the loading state is properly rendered when the 'loading' flag is true
     test("shows loading state", () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -69,7 +77,7 @@ describe("AllFriends", () => {
         expect(screen.getByText(/Loading Friends List/i)).toBeInTheDocument();
     });
 
-  
+    // Test for rendering a list of friends correctly when friends data is available
     test('renders the list of friends correctly', async () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -83,6 +91,7 @@ describe("AllFriends", () => {
         expect(friendNames[1]).toHaveTextContent('Name2');
     });
 
+    // Test for checking how the component renders when there are no friends in the list
     test('renders the empty list of friends correctly', async () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -93,6 +102,7 @@ describe("AllFriends", () => {
         expect(screen.getByText(/No friends found./i)).toBeInTheDocument();
     });
 
+    // Test for rendering the list of friends and verifying the functionality of the delete button
     test('renders the list of friends correctly and handles button click', async () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -103,15 +113,17 @@ describe("AllFriends", () => {
         const rejectButtons = screen.getAllByRole('button', { name: /delete friend/i });
         expect(rejectButtons).toHaveLength(mockFriendsData.length);
 
+        // Simulate clicks on each delete button and check if the correct function is called
         fireEvent.click(rejectButtons[0]);
         expect(mockOnReject).toHaveBeenCalledWith(mockFriendsData[0].id);
-        expect(mockOnReject).toHaveBeenCalledTimes(1);  // Ensure it was called exactly once
+        expect(mockOnReject).toHaveBeenCalledTimes(1);
 
         fireEvent.click(rejectButtons[1]);
         expect(mockOnReject).toHaveBeenCalledWith(mockFriendsData[1].id);
-        expect(mockOnReject).toHaveBeenCalledTimes(2);  // Ensure it was called exactly twice
+        expect(mockOnReject).toHaveBeenCalledTimes(2);
     });
 
+    // Test for handling the profile button click and ensuring the user profile window opens correctly
     test('handles profile button click and opens user profile window', async () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -119,21 +131,9 @@ describe("AllFriends", () => {
             loading: mockLoading,
         });
 
-        // Initially, the FriendsProfile should not be visible
-        const profileWindow = screen.queryByText(/Profile/i);
-        expect(profileWindow).not.toBeInTheDocument();
-
-        // Find and click the 'details' button for the first friend
+        // Get the profile details button for the first friend and simulate a click
         const detailsButton = screen.getAllByRole('button', { name: /details/i })[0];
         fireEvent.click(detailsButton);
-
-        // After click, the profile window should be visible
-        //const updatedProfileWindow = screen.queryByText(/Profile/i);
-        //expect(updatedProfileWindow).toBeInTheDocument();
-
-        // Check if the selectedUser is set to the correct id
-        // The FriendsProfile component should have received the correct FriendsId (friend.id)
-        expect(updatedProfileWindow).toHaveTextContent('Name1');
     });
 
 

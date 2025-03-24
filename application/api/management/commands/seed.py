@@ -300,7 +300,6 @@ class Command(BaseCommand):
                     start_date=start_date,
                     end_date=end_date,
                     comments=f"Sample comment for event {i + 1}",
-                    status=random.choice(['Pending', 'Confirmed', 'Cancelled']),
                 )
         self.stdout.write(self.style.SUCCESS('Successfully seeded events for all users.'))
         

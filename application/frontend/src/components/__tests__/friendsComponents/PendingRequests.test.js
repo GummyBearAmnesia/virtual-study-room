@@ -28,7 +28,7 @@ const mockRequestData = [
 
 describe("PendingRequests", () => {
 
-    const mockOnReject = jest.fn(); // ✅ Use jest.fn() here
+    const mockOnReject = jest.fn();
     const mockOnAccept = jest.fn();
     const mockLoading = false;
 
@@ -58,6 +58,7 @@ describe("PendingRequests", () => {
         window.alert.mockRestore();
     });
 
+    //Verifies that the loading state is displayed when the component is in the loading state
     test("shows loading state", () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -68,7 +69,7 @@ describe("PendingRequests", () => {
         expect(screen.getByText(/Loading Friend Requests.../i)).toBeInTheDocument();
     });
 
-
+    // Ensures that the list of friend requests is rendered correctly when there is data
     test('renders the list of friends correctly', async () => {
         renderWithContext({
             onAccept: mockOnAccept,
@@ -83,6 +84,7 @@ describe("PendingRequests", () => {
     });
 
 
+    // Verifies that the empty state is shown when there are no pending friend requests
     test('renders the empty list of friends correctly', async () => {
         renderWithContext({
             onReject: mockOnReject,
@@ -94,6 +96,7 @@ describe("PendingRequests", () => {
         expect(screen.getByText(/No pending invitations./i)).toBeInTheDocument();
     });
 
+    // Verifies the functionality of accept/reject buttons and ensures that actions are triggered correctly
     test('renders the invitation actions and handles accept/reject button clicks', async () => {
         renderWithContext({
             onAccept: mockOnAccept,

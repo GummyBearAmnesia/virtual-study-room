@@ -3,9 +3,16 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from api.models import User
 
+"""
+Tests for the User model
+"""
+
 class UserModelTest(TestCase):
+
     def setUp(self):
-        """Set up test data"""
+        """
+        Set up test data
+        """
         self.user_data =    {
             "email": "testuser@email.com",
             "description": "",
@@ -16,7 +23,9 @@ class UserModelTest(TestCase):
         }
     
     def test_user_creation(self):
-        """Test creating a user with valid details"""
+        """
+        Test creating a user with valid details
+        """
         User = get_user_model()
         user = User.objects.create_user(**self.user_data)
 
@@ -27,53 +36,68 @@ class UserModelTest(TestCase):
         self.assertTrue(user.check_password(self.user_data['password']))
     
     def test_email_normlalisation(self):
-        """Test that email is normalized -- lowercased domain part"""
+        """
+        Test that email is normalized -- lowercased domain part
+        """
         User = get_user_model()
         email = 'Test@EXAMPLE.com'
         user = User.objects.create_user(description = "", email=email, firstname="Test", lastname="User", username="testuser", password="Password123!")
         self.assertEqual(user.email, "Test@example.com")
 
     def test_user_without_email_error(self):
-        """Test that creating a user without an email raises an error"""
+        """
+        Test that creating a user without an email raises an error
+        """
         User = get_user_model()
         with self.assertRaises(ValueError):
             User.objects.create_user(description = "", email="", firstname="Test", lastname="User", username="testUser", password="password123")
         
     def test_user_without_username_error(self):
-        """Test that creating a user without a username raises an error"""
+        """
+        Test that creating a user without a username raises an error
+        """
         User = get_user_model()
         with self.assertRaises(ValueError):
             User.objects.create_user(description = "", email="test@example.com", firstname="Test", lastname="User", username="", password="password123")
 
     def test_user_without_firstname_error(self):
-        """Test that creating a user without a username raises an error"""
+        """
+        Test that creating a user without a username raises an error
+        """
         User = get_user_model()
         with self.assertRaises(ValueError):
             User.objects.create_user(description="", email="test@example.com",
                                      firstname="", lastname="User", username="Test", password="password123")
 
     def test_user_without_lastname_error(self):
-        """Test that creating a user without a username raises an error"""
+        """
+        Test that creating a user without a username raises an error
+        """
         User = get_user_model()
         with self.assertRaises(ValueError):
             User.objects.create_user(description="", email="test@example.com",
                                      firstname="FirstName", lastname="", username="Test", password="password123")
 
     def test_user_without_password_error(self):
-        """Test that creating a user without a password raises an error"""
+        """
+        Test that creating a user without a password raises an error
+        """
         User = get_user_model()
         with self.assertRaises(ValueError):
             User.objects.create_user(description = "", email="test@example.com", firstname="Test", lastname="User", username="testUser", password="")
 
     def test_user_with_none_description_fails(self):
-        """Test that creating a user with None description fails when null=False"""
+        """
+        Test that creating a user with None description fails when null=False
+        """
         User = get_user_model()
         with self.assertRaises(IntegrityError):
             User.objects.create_user(description=None, email="test_none@example.com", firstname="Test", lastname="User", username="testUserNone", password="password123")
 
     def test_user_with_none_description_fails(self):
-        """Test that creating a user with None description fails when null=False"""
-
+        """
+        Test that creating a user with None description fails when null=False
+        """
         user = User.objects.create_user(**self.user_data)
         full_name = user.full_name()
         self.assertEqual(full_name, "Test User")

@@ -12,10 +12,16 @@ from django.core.exceptions import ValidationError
 from django.db import IntegrityError, transaction
 
 class SignUpView( APIView):
-
+    '''
+    Handles user registration. Validates input data and creeates an new user.
+    '''
     def post(self, request):
+        '''
+        Create a new user with the provided registration data.
+        '''
         try:
             data = request.data  
+            # Clean input data
             firstname = data.get("firstname", "").strip()
             lastname = data.get("lastname", "").strip()
             username = data.get("username", "").strip()
@@ -24,9 +30,10 @@ class SignUpView( APIView):
             password = data.get("password")
             password_confirmation = data.get("passwordConfirmation")
 
+            # Create and validate the new user
             user = User.objects.create_user(
                 firstname=firstname, lastname=lastname, username=username, email=email, description=description, password=password)
-            user.full_clean()
+            user.full_clean() # Validate model fields
             user.save()
 
             return Response({"message": "User registered successfully!"}, status=status.HTTP_201_CREATED)

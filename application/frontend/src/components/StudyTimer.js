@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react'; 
-import { getDatabase, ref, set, onValue } from 'firebase/database';
-import { database } from '../firebase-config';
+import React, { useState, useEffect } from 'react';
 import 'tailwindcss';
 import '@fontsource/vt323';
 import '@fontsource/press-start-2p';
 
+// Study Timer in the Group Study Room
 const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
-  const [studyLength, setStudyLength] = useState(25);
+  // State variables for timer settings
+  const [studyLength, setStudyLength] = useState(25); // Study duration - deafault 25 mins
   const [breakLength, setBreakLength] = useState(5);
-  const [rounds, setRounds] = useState(4);
+  const [rounds, setRounds] = useState(4);  // Total no. of rounds of study+break
   const [currentRound, setCurrentRound] = useState(1);
   const [isBreak, setIsBreak] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(studyLength * 60);
-  const [isRunning, setIsRunning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(studyLength * 60); // Time left in seconds
+  const [isRunning, setIsRunning] = useState(false);  // Whether timer is running or not
   const [currentPage, setCurrentPage] = useState('welcome');
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);  // If timer is minimised or not
   const [isPaused, setIsPaused] = useState(false);
-  const [playSound, setPlaySound] = useState(true);
-  const [studyTime, setStudyTime] = useState({ hours: 0, minutes: 25, seconds: 0 });
+  const [playSound, setPlaySound] = useState(true); //Play sound on timer completion
+  const [studyTime, setStudyTime] = useState({ hours: 0, minutes: 25, seconds: 0 });  // Study time input
   const [breakTime, setBreakTime] = useState({ hours: 0, minutes: 5, seconds: 0 });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Error message for invalid inputs
 
+  // Sound effect for timer completion
   const completionSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
 
+  // On component mount, load the saved settings from localStorage
   useEffect(() => {
     const savedStudyLength = localStorage.getItem('studyLength');
     const savedBreakLength = localStorage.getItem('breakLength');
@@ -33,12 +35,14 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     if (savedRounds) setRounds(parseInt(savedRounds));
   }, []);
 
+  // Save settings to localStorage
   const saveSettings = () => {
     localStorage.setItem('studyLength', studyLength);
     localStorage.setItem('breakLength', breakLength);
     localStorage.setItem('rounds', rounds);
   };
 
+  // Handle exit button click
   const handleExit = () => {
     if (onClose) {
       onClose();
@@ -47,14 +51,17 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     }
   };
 
+  // Handle minimise button click
   const handleMinimize = () => {
     setIsMinimized(true);
   };
 
+  // Handle restore button click
   const handleRestore = () => {
     setIsMinimized(false);
   };
 
+  // Validate time input values
   const validateTimeInput = (time, type) => {
     if (time.hours < 0 || time.hours > 99) {
       setErrorMessage(`Invalid ${type} hours. Please enter a value between 0 and 99.`);
@@ -71,6 +78,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     return true;
   };
 
+  // Start the timer if all valid
   const startTimer = () => {
     if (!validateTimeInput(studyTime, 'study') || !validateTimeInput(breakTime, 'break')) {
       return;
@@ -81,18 +89,20 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
       return;
     }
 
+    // Conversion to seconds
     const totalStudySeconds = (
-      studyTime.hours * 3600 + 
-      studyTime.minutes * 60 + 
+      studyTime.hours * 3600 +
+      studyTime.minutes * 60 +
       studyTime.seconds
     );
-    
+
     const totalBreakSeconds = (
-      breakTime.hours * 3600 + 
-      breakTime.minutes * 60 + 
+      breakTime.hours * 3600 +
+      breakTime.minutes * 60 +
       breakTime.seconds
     );
 
+    // Set timer state
     setTimeLeft(totalStudySeconds);
     setStudyLength(totalStudySeconds);
     setBreakLength(totalBreakSeconds);
@@ -112,7 +122,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
             if (playSound) {
               completionSound.play();
             }
-            
+
+            // When timer is completed
             if (!isBreak) {
               if (currentRound >= rounds) {
                 setCurrentPage('completed');
@@ -138,24 +149,26 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Toggle pause/resume
   const toggleTimer = () => {
     setIsPaused(!isPaused);
   };
 
+  // Reset the timer
   const resetTimer = () => {
     const totalStudySeconds = (
-      studyTime.hours * 3600 + 
-      studyTime.minutes * 60 + 
+      studyTime.hours * 3600 +
+      studyTime.minutes * 60 +
       studyTime.seconds
     );
-    
+
     setTimeLeft(totalStudySeconds);
     setCurrentRound(1);
     setIsBreak(false);
@@ -163,6 +176,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     setIsPaused(false);
   };
 
+  // Handle back button click
   const handleBack = () => {
     setIsRunning(false);
     setIsPaused(false);
@@ -175,12 +189,13 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
     setErrorMessage('');
   };
 
+  // Automatically clear error message after 3 seconds
   useEffect(() => {
     if (errorMessage) {
       const timer = setTimeout(() => {
         setErrorMessage('');
       }, 3000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [errorMessage]);
@@ -291,11 +306,12 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
           }
         `}
       </style>
-      
+
+      {/* Error message display */}
       {errorMessage && (
-        <div 
+        <div
           className="fixed p-3 z-50 flex items-center justify-center"
-          style={{ 
+          style={{
             backgroundColor: '#e2e8ff',
             borderBottom: '2px solid rgba(209, 203, 237, 0.5)',
             borderRadius: '8px',
@@ -309,9 +325,9 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
             margin: '0 auto'
           }}
         >
-          <span 
-            style={{ 
-              color: '#99a8c7', 
+          <span
+            style={{
+              color: '#99a8c7',
               fontFamily: 'VT323, monospace',
               fontSize: '18px'
             }}
@@ -320,7 +336,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
           </span>
         </div>
       )}
-      
+
+      {/* Timer UI */}
       <div className="study-timer-wrapper">
         <div className="timer-content">
           {currentPage === 'completed' ? (
@@ -330,11 +347,11 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                 <br />
                 Here, have a blueberry
               </div>
-              
-              <div style={{ 
-                position: "absolute", 
+
+              <div style={{
+                position: "absolute",
                 bottom: "10px",
-                left: "0", 
+                left: "0",
                 width: "100%",
                 padding: "0 10px 20px 10px"
               }}>
@@ -347,8 +364,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                     setIsRunning(false);
                   }}
                   className="w-full text-white rounded-lg"
-                  style={{ 
-                    backgroundColor: '#d1cbed', 
+                  style={{
+                    backgroundColor: '#d1cbed',
                     fontFamily: '"Press Start 2P", monospace',
                     transition: 'background-color 0.3s, transform 0.3s',
                     color: 'white',
@@ -375,10 +392,10 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                 <div className="text-2xl mb-4 press-start" style={{ color: '#bac6f1' }}>
                   Set Your Study Timer
                 </div>
-                
+
                 <div className="w-full space-y-3">
                   <div className="flex flex-col items-center space-y-2">
-                    <label className="input-label" style={{ 
+                    <label className="input-label" style={{
                       color: '#d1cbed',
                       fontSize: '20px'
                     }}>Study Time</label>
@@ -389,7 +406,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         onChange={(e) => {
                           const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 99) {
-                            setStudyTime({...studyTime, hours: value});
+                            setStudyTime({ ...studyTime, hours: value });
                           }
                         }}
                         min="0"
@@ -402,7 +419,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         onChange={(e) => {
                           const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 59) {
-                            setStudyTime({...studyTime, minutes: value});
+                            setStudyTime({ ...studyTime, minutes: value });
                           }
                         }}
                         min="0"
@@ -415,7 +432,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         onChange={(e) => {
                           const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 59) {
-                            setStudyTime({...studyTime, seconds: value});
+                            setStudyTime({ ...studyTime, seconds: value });
                           }
                         }}
                         min="0"
@@ -426,7 +443,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                   </div>
 
                   <div className="flex flex-col items-center space-y-2">
-                    <label className="input-label" style={{ 
+                    <label className="input-label" style={{
                       color: '#d1cbed',
                       fontSize: '20px'
                     }}>Break Time</label>
@@ -437,7 +454,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         onChange={(e) => {
                           const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 99) {
-                            setBreakTime({...breakTime, hours: value});
+                            setBreakTime({ ...breakTime, hours: value });
                           }
                         }}
                         min="0"
@@ -450,7 +467,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         onChange={(e) => {
                           const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 59) {
-                            setBreakTime({...breakTime, minutes: value});
+                            setBreakTime({ ...breakTime, minutes: value });
                           }
                         }}
                         min="0"
@@ -461,9 +478,9 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         type="number"
                         value={breakTime.seconds}
                         onChange={(e) => {
-                          const                           value = parseInt(e.target.value) || 0;
+                          const value = parseInt(e.target.value) || 0;
                           if (value >= 0 && value <= 59) {
-                            setBreakTime({...breakTime, seconds: value});
+                            setBreakTime({ ...breakTime, seconds: value });
                           }
                         }}
                         min="0"
@@ -474,11 +491,11 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                   </div>
 
                   <div className="flex flex-col items-center" style={{ width: 'auto', position: 'relative' }}>
-                    <label className="input-label" style={{ 
+                    <label className="input-label" style={{
                       color: '#d1cbed',
                       fontSize: '20px'
                     }}>Rounds</label>
-                    
+
                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0' }}>
                       <input
                         type="number"
@@ -488,9 +505,9 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         placeholder="4"
                         style={{ width: '3rem' }}
                       />
-                      <div style={{ 
-                        display: 'flex', 
-                        flexDirection: 'row', 
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'row',
                         alignItems: 'center',
                         marginLeft: '0',
                         position: 'absolute',
@@ -510,7 +527,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                         >
                           {playSound ? '💜' : '🤍'}
                         </button>
-                        <span className="input-label" style={{ 
+                        <span className="input-label" style={{
                           color: '#d1cbed',
                           fontSize: '20px',
                           marginLeft: '10px',
@@ -553,7 +570,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                 flexDirection: 'row',
                 flexWrap: 'nowrap'
               }}>
-                <button 
+                <button
                   onClick={handleBack}
                   style={{
                     position: 'absolute',
@@ -575,8 +592,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                     e.currentTarget.querySelector('.triangle').style.borderRightColor = '#d1cbed';
                   }}
                 >
-                  <div 
-                    className="triangle" 
+                  <div
+                    className="triangle"
                     style={{
                       width: 0,
                       height: 0,
@@ -587,8 +604,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                     }}
                   />
                 </button>
-                
-                <h2 className="press-start" style={{ 
+
+                <h2 className="press-start" style={{
                   color: '#bac6f1',
                   fontSize: '20px',
                   lineHeight: 1.2,
@@ -611,14 +628,14 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                   )}
                 </h2>
               </div>
-              
+
               <div className="absolute w-full" style={{
                 bottom: '140px',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                <div style={{ 
+                <div style={{
                   color: '#bac6f1',
                   fontFamily: '"Press Start 2P", monospace',
                   fontSize: '50px',
@@ -639,15 +656,15 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                 alignItems: 'center',
                 padding: '0 24px'
               }}>
-                <div style={{ 
+                <div style={{
                   width: '100%',
                   marginBottom: '15px',
                   textAlign: 'center',
                   transform: 'translateY(10px)',
                   position: 'relative',
                 }}>
-                  <span style={{ 
-                    color: '#d1cbed', 
+                  <span style={{
+                    color: '#d1cbed',
                     fontFamily: 'VT323, monospace',
                     fontSize: '20px',
                     display: 'block',
@@ -663,7 +680,7 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                   gap: '24px',
                   width: '100%'
                 }}>
-                  <button 
+                  <button
                     onClick={toggleTimer}
                     style={{
                       backgroundColor: '#d1cbed',
@@ -693,8 +710,8 @@ const StudyTimer = ({ roomId, isHost, onClose, "data-testid": dataTestId }) => {
                       {isPaused ? 'Resume' : 'Pause'}
                     </span>
                   </button>
-                  
-                  <button 
+
+                  <button
                     onClick={resetTimer}
                     style={{
                       backgroundColor: '#d1cbed',
