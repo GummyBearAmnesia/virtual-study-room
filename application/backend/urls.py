@@ -26,6 +26,7 @@ from api.views.analytics import get_analytics, update_analytics
 from api.views.groupStudyRoom import create_room, join_room
 from api.views.calendar import EventViewSet
 from api.views.shared_materials_view import get_current_session
+from api.views.spotify_view import *
 
 event_list = EventViewSet.as_view({'get': 'list', 'post': 'create'})  
 event_detail = EventViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'})
@@ -85,5 +86,14 @@ urlpatterns = [
     path('api/shared_materials/', get_current_session, name='get_current_session'),
 
     path('api/events/', event_list, name='event-list'),
-    path('api/events/<int:pk>/', event_detail, name='event-detail')
+    path('api/events/<int:pk>/', event_detail, name='event-detail'),
+    path('api/get-auth-url', views.AuthURL.as_view()), 
+    path('api/is-authenticated', views.IsAuthenticated.as_view()),
+    path('api/spotify/callback/', views.spotify_callback, name="spotify-callback"),
+    path('api/get-album-tracks', views.GetAlbumTracks.as_view(), name='get_album_tracks'),
+    path('api/token/', views.GetSpotifyToken.as_view(), name='get-token'),
+    path('api/current-playing', views.CurrentSong.as_view(), name='current-playing'),
+    path('api/pause', views.PauseSong.as_view()),
+    path('api/play', views.PlaySong.as_view()),
+    path('api/skip', views.SkipSong.as_view()),
 ]
