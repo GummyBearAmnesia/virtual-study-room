@@ -8,7 +8,6 @@ which is set up in GroupStudyPage.js. It also handles receiving the websocket me
 */
 
 function ChatBox({ socket, roomCode }) {
-
   // Stores data for chatInput, messages and keeps track of when the user is typing
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState([]);
@@ -27,7 +26,7 @@ function ChatBox({ socket, roomCode }) {
     }
   };
 
-  // Handles changing the colour of the text based on which user is typing  
+  // Handles changing the colour of the text based on which user is typing
   const stringToColor = (str) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -68,7 +67,7 @@ function ChatBox({ socket, roomCode }) {
           ...prev,
           { sender: data.sender, text: data.message },
         ]);
-      // If typing updates user typing. 'typing...' message times out after 3 seconds
+        // If typing updates user typing. 'typing...' message times out after 3 seconds
       } else if (data.type === "typing") {
         setTypingUser(data.sender);
         setTimeout(() => {
@@ -83,7 +82,6 @@ function ChatBox({ socket, roomCode }) {
       }
     };
   }, [socket]);
-
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -106,7 +104,6 @@ function ChatBox({ socket, roomCode }) {
     setChatInput("");
   };
 
-
   // Methods to create a typing... popup when a user is typing.
   let typingTimeout;
   const handleTyping = () => {
@@ -115,7 +112,7 @@ function ChatBox({ socket, roomCode }) {
     socket.send(JSON.stringify({ type: "typing", sender: username }));
 
     // Prevent multiple events from being sent too frequently
-    if (isTyping) {
+    if (!isTyping) {
       setIsTyping(true);
     }
     clearTimeout(typingTimeout);
@@ -140,7 +137,6 @@ function ChatBox({ socket, roomCode }) {
               className={`chat-message ${
                 msg.sender === username ? "current-user" : "other-user"
               }`}
-
               // {/* Chose a different text colour for each user */}
               style={{
                 color: userColor,
@@ -153,13 +149,11 @@ function ChatBox({ socket, roomCode }) {
         })}
 
         {/* User is typing indicator ... */}
-        {typingUser && (
-          <p className="typing-indicator">
-            {typingUser} is typing...
-          </p>
+        {typingUser && typingUser !== username && (
+          <p className="typing-indicator">{typingUser} is typing...</p>
         )}
       </div>
-      
+
       {/* Chat Input - User types their message here */}
       <div className="input-container">
         <input
@@ -168,7 +162,6 @@ function ChatBox({ socket, roomCode }) {
             setChatInput(e.target.value);
             handleTyping();
           }}
-
           // {/* On pressing enter the message sends, resets the placeholder */}
           onKeyDown={(e) => e.key === "Enter" && sendMessage(e)}
           placeholder="Type a message..."
