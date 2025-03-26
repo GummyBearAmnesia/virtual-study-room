@@ -110,6 +110,7 @@ function StudyParticipants({ socket, roomCode }) {
                   onError={(e) => {
                     e.target.src = defaultAvatar;
                   }}
+                  className="user-image"
                 />
               </div>
               <div className="user-name">
