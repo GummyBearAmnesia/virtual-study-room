@@ -103,7 +103,9 @@ function GroupStudyPage() {
       return; // Reuse the existing connection
     }
 
-    const ws = new WebSocket(`ws://localhost:8000/ws/room/${finalRoomCode}/`);
+    const ws = new WebSocket(
+      `wss://virtual-study-room-unly.onrender.com/ws/room/${finalRoomCode}/`
+    );
 
     //Logs when connection is established
     ws.onopen = () => {

@@ -34,8 +34,8 @@ const Analytics = () => {
         const response = await axios.get(
           // Endpoint for fetching analytics
 
-          //"https://studyspot.pythonanywhere.com/api/analytics/", <- URL to be used in deployment
-          "http://127.0.0.1:8000/api/analytics/",
+          "https://virtual-study-room-unly.onrender.com/api/analytics",
+          //"http://127.0.0.1:8000/api/analytics/",
 
           {
             headers: {

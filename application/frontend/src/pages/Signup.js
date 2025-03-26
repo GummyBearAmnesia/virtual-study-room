@@ -3,14 +3,13 @@ import "../styles/Signup.css";
 import "../styles/Login.css";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /*
 Handles user sign up, creating a new user and storing it in the backend.
 Also handles field authentication.
 */
-
 
 function Signup() {
   //fields that the user will input
@@ -27,13 +26,12 @@ function Signup() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
 
-
-
   // Ensures that the email is unique and not already linked to an account
   const checkEmailExists = async (email) => {
     try {
       const { data } = await axios.get(
-        `http://127.0.0.1:8000/api/check-email/`,
+        "https://virtual-study-room-unly.onrender.com",
+        //`http://127.0.0.1:8000/api/check-email/`,
         {
           params: { email },
         }
@@ -48,8 +46,8 @@ function Signup() {
   const checkUsernameExists = async (username) => {
     try {
       const { data } = await axios.get(
-        // URL for deployment -> "https://studyspot.pythonanywhere.com/api/check-username/",
-        `http://127.0.0.1:8000/api/check-username/`,
+        "https://virtual-study-room-unly.onrender.com",
+        //`http://127.0.0.1:8000/api/check-username/`,
         {
           params: { username },
         }
@@ -73,7 +71,6 @@ function Signup() {
     if (!formData.lastname.trim()) {
       newErrors.lastname = "Last Name is required";
     }
-
 
     // using regex to check the username, email, and password are in the correct format
     const usernameRegex = /^@\w{3,}$/;
@@ -144,8 +141,8 @@ function Signup() {
       const isValid = await validate();
       if (isValid) {
         const response = await axios.post(
-          // URL for deployment -> "https://studyspot.pythonanywhere.com/api/signup/",
-          "http://127.0.0.1:8000/api/signup/",
+          "https://virtual-study-room-unly.onrender.com/api/signup/",
+          //"http://127.0.0.1:8000/api/signup/",
           formData,
           {
             headers: { "Content-Type": "application/json" },
@@ -153,30 +150,27 @@ function Signup() {
         );
 
         toast.success(response.data.message, {
-          hideProgressBar: true
+          hideProgressBar: true,
         });
 
         setTimeout(() => {
           navigate("/login");
-        }, 1800)
+        }, 1800);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
     }
   };
 
-
   // Displays the sign up page
   return (
     <div className="signup-container">
       {/* Positioning for toastify messages */}
-      <ToastContainer position='top-center'/>
-
+      <ToastContainer position="top-center" />
 
       <Link to="/">
         <h1 className="login-heading1">The Study Spot</h1>
       </Link>
-
 
       <form className="signup-form">
         <h1 className="heading2">Signup</h1>
@@ -197,12 +191,14 @@ function Signup() {
               placeholder=" "
             />
             {errors.firstname && (
-              <p data-testid="error-message-firstname" className="error-message">
+              <p
+                data-testid="error-message-firstname"
+                className="error-message"
+              >
                 {errors.firstname}
               </p>
             )}
           </div>
-
 
           {/* Input field for lastname */}
           <div className="field-column">
@@ -226,7 +222,6 @@ function Signup() {
           </div>
         </div>
 
-
         {/* Input field for username */}
         <div className="form-row">
           <div className="field-column">
@@ -235,7 +230,7 @@ function Signup() {
             </label>
             <input
               id="username"
-              type="text" 
+              type="text"
               name="username"
               className="input-field"
               value={formData.username}
@@ -248,7 +243,6 @@ function Signup() {
               </p>
             )}
           </div>
-
 
           {/* Input field for email */}
           <div className="field-column">
@@ -272,7 +266,6 @@ function Signup() {
           </div>
         </div>
 
-
         {/* Input field for details */}
         <div className="form-row">
           <div className="field-column full-width">
@@ -290,7 +283,6 @@ function Signup() {
             />
           </div>
         </div>
-
 
         {/* Input field for password */}
         <div className="form-row">
@@ -313,7 +305,6 @@ function Signup() {
               </p>
             )}
           </div>
-
 
           {/* Input field for password confirmation */}
           <div className="field-column">
@@ -338,7 +329,6 @@ function Signup() {
           </div>
         </div>
 
-
         {/* Checkbox for terms and conditions */}
         <div className="checkbox-container">
           <input
@@ -354,7 +344,12 @@ function Signup() {
         </div>
 
         {/* Button to submit form and complete user signup ( after passing all the checks ) */}
-        <button type="button" data-testid="signup-button-click" className="submit-button" onClick={handleSignup}>
+        <button
+          type="button"
+          data-testid="signup-button-click"
+          className="submit-button"
+          onClick={handleSignup}
+        >
           SIGNUP
         </button>
       </form>

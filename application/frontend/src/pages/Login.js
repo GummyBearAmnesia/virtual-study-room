@@ -11,7 +11,6 @@ This is the login page, handles user authentication and redirects to the user's 
 */
 
 function Login() {
-
   const navigate = useNavigate();
 
   // fields that the user will input
@@ -19,7 +18,6 @@ function Login() {
 
   // store login errors
   const [error, setError] = useState("");
-
 
   // Track the logged-in user
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -71,7 +69,8 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/login/",
+        "https://virtual-study-room-unly.onrender.com/api/login/",
+        //"http://127.0.0.1:8000/api/login/",
         formData, // Contains email and password
         { headers: { "Content-Type": "application/json" } } // No Authorization header here
       );
@@ -115,7 +114,9 @@ function Login() {
         <h1 className="login-heading2">Login</h1>
         {error && <p className="error-message">{error}</p>}{" "}
         {/* Show error if login fails */}
-        <label className="username-text" data-testid='email-label'>Email:</label>
+        <label className="username-text" data-testid="email-label">
+          Email:
+        </label>
         <input
           type="text"
           data-testid="email-input-field"
@@ -124,7 +125,9 @@ function Login() {
           value={formData.email}
           onChange={handleChange}
         />
-        <label className="password-text" data-testid='password-label'>Password:</label>
+        <label className="password-text" data-testid="password-label">
+          Password:
+        </label>
         <input
           type="password"
           data-testid="password-input-field"
@@ -135,7 +138,7 @@ function Login() {
         />
         <button
           type="button"
-          data-testid='login-click-button'
+          data-testid="login-click-button"
           className="login-submit-button"
           onClick={handleLogin}
         >

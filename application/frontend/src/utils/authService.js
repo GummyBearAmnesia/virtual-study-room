@@ -1,7 +1,7 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api"; //change if needed
+const API_BASE_URL = "https://virtual-study-room-unly.onrender.com/api"; //"http://127.0.0.1:8000/api"; //change if needed
 
 /**
  * gets access token from local storage
@@ -20,19 +20,19 @@ export const getRefreshToken = () => localStorage.getItem("refresh_token");
  * @returns - true if token is expired, false otherwise
  */
 export const isTokenExpired = (token) => {
-    if (!token) return true;
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
-    return decoded.exp < currentTime;
+  if (!token) return true;
+  const decoded = jwtDecode(token);
+  const currentTime = Date.now() / 1000;
+  return decoded.exp < currentTime;
 };
 
 /**
  * clears storage and logs out user, redirects to login page
  */
 const logoutUser = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    window.location.href = "/login"; // Redirect user to login page
+  localStorage.removeItem("access_token");
+  localStorage.removeItem("refresh_token");
+  window.location.href = "/login"; // Redirect user to login page
 };
 
 /**
@@ -40,31 +40,33 @@ const logoutUser = () => {
  * @returns the new access token or null if refreshing failed
  */
 export const refreshToken = async () => {
-    const refresh = getRefreshToken();
-    if (!refresh || isTokenExpired(refresh)) {
-        logoutUser();
-        return null;
+  const refresh = getRefreshToken();
+  if (!refresh || isTokenExpired(refresh)) {
+    logoutUser();
+    return null;
+  }
+
+  try {
+    const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
+      refresh: refresh, //sending the refresh token in the body
+    });
+
+    //store new tokens
+    localStorage.setItem("access_token", response.data.access);
+    if (response.data.refresh) {
+      localStorage.setItem("refresh_token", response.data.refresh);
     }
 
-    try {
-        const response = await axios.post(`${API_BASE_URL}/token/refresh/`, {
-            refresh: refresh,  //sending the refresh token in the body
-        });
-
-        //store new tokens
-        localStorage.setItem("access_token", response.data.access);
-        if (response.data.refresh) {
-            localStorage.setItem("refresh_token", response.data.refresh);
-        }
-
-        return response.data.access;
-    } catch (error) {
-        console.error("Error refreshing token:", error.response?.data || error.message);
-        logoutUser();
-        return null;
-    }
+    return response.data.access;
+  } catch (error) {
+    console.error(
+      "Error refreshing token:",
+      error.response?.data || error.message
+    );
+    logoutUser();
+    return null;
+  }
 };
-
 
 /**
  * makes an authenticated request
@@ -73,26 +75,30 @@ export const refreshToken = async () => {
  * @param {*} data - data to send with request
  * @returns - response data
  */
-export const getAuthenticatedRequest = async (url, method = "GET", data = null) => {
-    let token = getAccessToken();
+export const getAuthenticatedRequest = async (
+  url,
+  method = "GET",
+  data = null
+) => {
+  let token = getAccessToken();
 
-    if (!token || isTokenExpired(token)) {
-        token = await refreshToken();
-        if (!token) throw new Error("Authentication failed, please log in again.");
+  if (!token || isTokenExpired(token)) {
+    token = await refreshToken();
+    if (!token) throw new Error("Authentication failed, please log in again.");
+  }
+
+  try {
+    const headers = { Authorization: `Bearer ${token}` };
+    const config = { method, url: `${API_BASE_URL}${url}`, headers, data };
+    console.log(`${API_BASE_URL}${url}`);
+
+    const response = await axios(config);
+    return response.data;
+  } catch (error) {
+    console.error(`Error making authenticated request to ${url}:`, error);
+    if (error.response && error.response.status === 401) {
+      logoutUser();
     }
-
-    try {
-        const headers = { Authorization: `Bearer ${token}` };
-        const config = { method, url: `${API_BASE_URL}${url}`, headers, data };
-        console.log(`${API_BASE_URL}${url}`)
-
-        const response = await axios(config);
-        return response.data;
-    } catch (error) {
-        console.error(`Error making authenticated request to ${url}:`, error);
-        if (error.response && error.response.status === 401) {
-            logoutUser();
-        }
-        throw error;
-    }
+    throw error;
+  }
 };
