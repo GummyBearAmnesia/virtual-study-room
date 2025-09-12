@@ -1,4 +1,12 @@
 # THE STUDY SPOT ~ Team MANGOCAT
+
+## Screenshots
+
+<img width="1885" height="885" alt="Screenshot 2025-09-12 185831" src="https://github.com/user-attachments/assets/d498ca1d-e206-4870-8bad-d92609823e77" />
+
+<img width="1882" height="890" alt="Screenshot 2025-09-12 185706" src="https://github.com/user-attachments/assets/311208f0-922d-43aa-837f-a250f834e936" />
+
+
 ## Team members
 The members of the team are:
 - Aamukta Thogata
